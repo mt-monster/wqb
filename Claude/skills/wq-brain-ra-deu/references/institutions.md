@@ -98,4 +98,15 @@
 实测该族最好 S0.82（`quantity_institutional_shares_acquired`，2Y1.68 = 「2Y有S无」形态）。
 
 **开批前**：`institutions6` 的 19 个 UNTESTED 里，先查 `to_med` —— **机构家数/持股数类大概率 <0.03**。
+
+### 2026-11-23 修正（DEU/TOP500/D1 实测，全字段画像已归档）
+
+- **「机构家数整类无用」应降级为「单信号弱、可作组合腿」**：`institutions6` 11 字段全 MATRIX、cov 全 1.0、2014–2023 十年有仓。
+  本日实测（decay0/SUBINDUSTRY/trunc0.08/nanON）：
+  - breadth `(buyers−sellers)/holders` + MODEL 双预期腿 → **S1.15 / F0.64 / 2Y1.46**（全批最佳）；
+  - 净流 `(mv_acq−mv_dis)/equity_inst` + 腿 → 1.00；低渗透 + 腿 → 0.98；
+  - 纯本集三腿 add → **−0.29**（稀释）；cap/size 桶中性化 → **−0.04/−0.13**（破坏信号）。
+  ⇒ 单信号上限仍约 0.7–0.8（前序结论成立），但**不是「任何骨架无用」**；跨集搭档可抬到 1.15，距 S 闸仍差 0.43。
+- **画像归档**：`tracking/DEU/reference/datasets/{institutions6,institutions25,fund_holdings_panel,institutions1}.md`，四份均过 `tools/gates/field_profile_completeness_gate.py`。
+- **数据集状态**：institutions25（24 VECTOR，字段 cov 全 0.0）2026-11-03 探针 12 臂天花板 0.61；fund_holdings_panel 9 年窗口（EUR 先验 2015–2023）+ 天花板 0.70；institutions1 仅 2019–2023 ⇒ 三集保留「可逆假设/不投」，**不判死**。
 <!-- profiles:manual:end -->

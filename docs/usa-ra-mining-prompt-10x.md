@@ -174,7 +174,7 @@ REGULAR alpha，本战役目标 10 颗 submit-ready（= `submit_verdict` 判定 
     `--set decay=…` / `--no-settings-prior` 可关闭。
   【prod-first】每槽先 1–2 条骨架查 `prod_corr`；USA 预警线 **0.6**（≥0.6 即停扩换腿，不再等 0.7）。
   【连坐隔离（默认开）】ERROR 批解析坏式回写 `expressions.status='fail'`，无辜式作为"重发批"优先重发一次。
-  【批次故障协议】8 子模拟全 ERROR → 重发相同表达式（USA/D0 3 次确认）；CROWDING 连续 2 次 → 跳过该中性化；
+  【批次故障协议】8 子模拟全 ERROR → 重发相同表达式（~~USA/D0 3 次确认~~，D0 已排除）；CROWDING 连续 2 次 → 跳过该中性化；
     transient "try again" → 拆 5 条/批；429 → 指数退避、批大小 ≤5。
   【积压清理】`SELECT region,status,COUNT(*) FROM expressions WHERE region='USA' GROUP BY status`：
     pending+gated > 本波表达式数 ×2 → S2→S3 断链，本波结束优先把近闸积压纳入下一波，禁止无脑堆库。
@@ -257,7 +257,7 @@ REGULAR alpha，本战役目标 10 颗 submit-ready（= `submit_verdict` 判定 
   □ 新信号族已过 prod-first 探针（prod-first 硬门）
   □ 提交前 `Failed RA == 0` + `submit_verdict` 200 + 用户确认
   □ 回写三处齐：`wave_results` + `registry_empirical` + `s6_verdict_<wave>`
-  □ USA profile 注入全部生效：排除饱和族、prod 预警 0.6、Mode B 强制正交、delay0 不混批
+  □ USA profile 注入全部生效：排除饱和族、prod 预警 0.6、Mode B 强制正交、~~delay0 不混批~~（D0 已排除）
 
 【禁止（反模式）】
   - 手写 `_gate_waveNN.py` / `w*_batches.json` / 把 `final_expressions.json` 当真相源。
@@ -267,7 +267,7 @@ REGULAR alpha，本战役目标 10 颗 submit-ready（= `submit_verdict` 判定 
   - submit_verdict READY 后自动 `workflow_submit_alpha`。
   - 调用已废弃的 `glb_pipeline` / `gbr_pipeline` / `glb_alpha_machine`；`brain-deepExplore`。
   - 先摊满 8 条再查 prod（USA 代价翻倍）；同族变体 >3 次 prod ≥0.6 仍磨参数。
-  - delay0 探针与 delay1 混批。
+  - ~~delay0 探针与 delay1 混批~~（D0 已排除，无需隔离）。
   - 把 `workflow_judge` / `workflow_campaign(stage="S2")` 当提交权威或门禁。
 ---
 
@@ -281,7 +281,7 @@ REGULAR alpha，本战役目标 10 颗 submit-ready（= `submit_verdict` 判定 
 
 ### 2.2 静态配置（与 `tracking/USA/config/settings.json` 一致）
 - `universe`: [TOP3000, TOP1000, TOP500]；`universe_default: TOP3000`
-- `delay`: [1, 0]；`delay_default: 1`（**delay0 探针单独成批，不与 delay1 混批**）
+- `delay`: [1, 0]；`delay_default: 1`（~~delay0 探针单独成批，不与 delay1 混批~~；D0 已排除，只做 delay 1）
 - `neutralization_default: SUBINDUSTRY`（`settings.json` 同值；次优轨 SECTOR）
 - 固定仿真设置（`settings.json`）：decay=5 / truncation=0.08 / maxTrade=OFF / pasteurization=ON /
   unitHandling=VERIFY / nanHandling=ON / language=FASTEXPR / 起止 2013-01-01→2023-12-31
@@ -333,7 +333,7 @@ REGULAR alpha，本战役目标 10 颗 submit-ready（= `submit_verdict` 判定 
 ### 2.8 USA 四条避坑（`references/regions/USA.md` 正文）
 1. 禁止生成 book/PE/ROE 等经典基本面单因子及其线性变体（必死）。
 2. 禁止"先摊满 8 条再查 prod"（全局反模式，USA 代价翻倍）。
-3. delay0 探针单独成批，不与 delay1 混批，避免设置噪声误判信号族。
+3. ~~delay0 探针单独成批，不与 delay1 混批，避免设置噪声误判信号族~~（D0 已排除，只做 delay 1）。
 4. 步 7 Mode B 必须启用正交方向推荐：同族变体 >3 次仍 prod_corr ≥0.6 → 判该族死刑写 dead_end，
    换正交概念，禁止同族继续磨参数。
 

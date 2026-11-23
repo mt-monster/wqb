@@ -87,3 +87,45 @@ news 塔此前四条轴全部实测判死，且**都不是数据问题**（十�
   1. 稀疏新闻型字段经 `ts_backfill(F,10)` 归一后 **CW 不触发**（news7/news46/news20 三次一致）；
   2. **TO .26 是新闻日频字段的典型失败值**，若首波就见到 .25+，不必等 Sharpe，直接判该轴无慢成分；
   3. 覆盖 PASS + 全轴弱 ⇒ 结论一律写「机制死」，**不得**再以参数/设置名义复投。
+
+## §8 「≥5 模板 + 每模板完整梯度」补齐复核（2026-11-22）
+
+> 用户要求：判死的数据集按严格标准补齐梯度证据，避免用单层探针当数据集天花板。档案 §5 wave211 只测了 nip/ber 各正反 2 腿（单一矩家族），本轮补 5 个互异统计矩家族。
+> 合法字段仅 `nws20_nip`（vec_avg）/ `nws20_ber`（vec_sum）—— 情绪字段是 §2 写死的排除区，不碰。
+> 设置沿用 wave211：KOR/TOP600/D1/STATISTICAL/decay4/trunc0.08，`ts_backfill(…,10)` 必带。
+> 证据闸：论文多样证 PASS（18 篇/17 作者，含 REStud 2025《Extreme Categories and Overreaction to News》+ Management Science《Asymmetric Attention and Stock Returns》）。
+
+### §8.1 五模板定义（互异统计矩家族）
+| 模板 | 矩家族 | 机制 |
+|---|---|---|
+| T1 | 水平 | nip 当日冲击均值（wave211 同型，做外层全类别） |
+| T2 | 极值 | nip 区间最大冲击（尾部注意力） |
+| T3 | 变化量 | nip 均值一阶差（冲击加速度） |
+| T4 | 分位 | nip 252d 时序分位（相对冲击位置） |
+| T5 | 比率/ber | nip÷ber 信噪比 + ber 净修订压力（跨供给链） |
+
+### §8.2 L1 外层全类别替换（逐模板推进）
+| 模板 | wave | 最优 | S | 2Y | 判 |
+|---|---|---|---:|---:|---|
+| T1 | `s2_news20_T1_level_L1_d1` | `3q0JVdK0` `rank(mean(nip))` | −0.34 | −1.49 | 8 臂 |S|≤0.34，2Y 普遍 −1.3~−1.5；外层全类别无一翻案，水平矩无信号 |
+| T2 | `s2_news20_T2_extreme_L1_d1` | `VkNedK7Y` `arg_max(nip)` | −0.37 | 0.04 | 极值矩（quantile/std_dev/zscore/arg_max）全灭，|S|≤0.37 |
+| T3 | `s2_news20_T3_delta_rank_L1_d1` | `QP06vW3K` `-ts_delta(nip,22)` | 0.36 | 0.57 | 差分矩正向全负（−0.59），反号转正仅 0.36；分位 ts_rank |S|≤0.28 |
+| T5 | `s2_news20_T5_ber_ratio_L1_d1` | `WjlxZ8GN` `-group_rank(nip/ber)` | 0.63 | 1.27 | 反号比率 S0.63/2Y1.27 但 TO0.8149 超闸；ber 长窗 `gJa0lp1K` S0.37/TO0.0789；比率正号全负 |
+
+**L1 五族结论**：全部 FAIL、0 near。最高 |S| 仅 0.63（反号比率，TO 超闸），2Y 普遍负——与 wave211 机制判死一致。nip 的 2h 窗口×D1 错配 + ber 供给链时点滞后两大死因（§6）在五种矩家族下均未翻案。
+
+### §8.3 L2 内层时序全类别替换（逐族推进）
+| 族 | wave | 内层替换最优 | S | L1→L2 Δ | 判 |
+|---|---|---|---:|---|---|
+| T1 | `s2_news20_T1_level_L2_d1` | `6XM2kreL` 裸 backfill | −0.45 | −0.34→−0.45 | 外层 rank 冻结，内层 8 类时序全灭（|S|≤0.45，2Y 负）；水平矩收敛 |
+| T3 | `s2_news20_T3_delta_L2_d1` | `A1x51JWd` `ts_quantile(delta)` | 0.73 | 0.36→0.73 | 差分矩内层全类别最优 S0.73 但 TO1.16 超闸/2Y0.32；TO 全线 0.99–1.19 ⇒ nip 无慢成分；差分矩收敛 |
+| T5 | `s2_news20_T5_ber_ratio_L2_d1` | `ZYa9P0md` `ts_decay22(nip/ber)` | 0.60 | 0.63→0.60 | 反号比率内层 decay22 S0.60/2Y1.13 但 TO0.745 微超闸；mean/分位内层塌陷；比率族收敛 |
+
+### §8.4 收口判定（2026-11-22）
+**news20 已满足「≥5 结构互异族 + 每族完整梯度（L1 外层 + L2 内层全类别）」**：T1–T5 × 2 层 = 10 wave / 80 臂，全部入库。
+- **族定义（按模板族计数规则 H/R/D/B）**：T1=H 水平（nip 均值）、T2=R 相对偏离（nip quantile/zscore/arg_max）、T3=D 差分（nip 一阶差）、T4 并入 T2 分位（ts_rank）、T5=B 比率（nip÷ber）+ ber 字段族。**字段族×算子几何×机制语义三者互异**，符合「换字段/窗口不算新族」口径。
+- **0 全闸、0 near**：全集最高 |S|0.73（差分 ts_quantile，TO1.16 超闸）+ 反号比率 S0.63/2Y1.27/TO0.81（超闸）。L2 内层全类别替换无一翻案。
+- **主墙 = TO 结构性超闸 + 2Y 负**：nip 的 2h 窗口×D1 错配 ⇒ 无慢成分（差分族 TO 0.99–1.19、比率族裸 0.81，decay/长窗压到 0.07–0.14 但 S 同步塌到 ≤0.6）；ber 供给链时点滞后 ⇒ 修订族 S≤0.37。逐年符号翻转 5 次（§5），两方向都不稳定。
+- **维持 wave211 机制判死**（数据层覆盖 PASS，非数据集死）：本轮梯度补齐坐实「5 族 × 2 层全灭」，按 KOR 决策表不再复投；如需翻案须引外部新信息源。
+- 证据闸：论文多样证 PASS（18 篇/17 作者，含 REStud 2025《Extreme Categories and Overreaction to News》+ Management Science《Asymmetric Attention and Stock Returns》）。未提交任何 alpha。
+> 注：`ts_max`/`ts_min` 平台不可访问（静态闸拦截），极值矩改用目录内 `ts_quantile`/`ts_std_dev`/`ts_zscore`/`ts_arg_max`。

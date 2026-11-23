@@ -177,7 +177,7 @@ docs/
 
 | 目录 | 关系 | 说明 |
 |---|---|---|
-| `reference/` | 互补 | 机器库经验(machine_lib_experience)、USA D0 经验、news 系列等专题经验文档 |
+| `reference/` | 互补 | 机器库经验(machine_lib_experience)、~~USA D0 经验~~（D0 已排除）、news 系列等专题经验文档 |
 | `reports/` | 互补 | 按日期归档的专题报告（PPA提交教训/论坛经验/EUR体检/模板库等） |
 | `tracking/mining/` | 数据源 | 挖掘批次结果JSON、字段覆盖率、平台universe固化数据 |
 | `tools/` | 工具源 | 数据体检/论坛研究/批量提交等可执行工具 |

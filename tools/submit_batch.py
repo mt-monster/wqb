@@ -37,8 +37,9 @@
 是强度闸**：IND behavioral_signals 族同表达式 decay8 下，nanHandling=OFF 或
 maxTrade=ON ⇒ `sharpe 2.19 → 0.46`。**换档位 = 换信号**，跨档位结果不可比。
 
-而回测入口有多套、缺省互不相同（本工具 BASE / MCP `create_simulation` /
-MCP `create_multi_simulation` / `brain-sim-alphas-in-batch-and-track` 纯透传无缺省）：
+而回测入口有多套、缺省互不相同（本工具 BASE / MCP `create_multi_simulation` /
+`brain-sim-alphas-in-batch-and-track` 纯透传无缺省；MCP 单仿真 `create_simulation`
+已于 2026-11-21 删除）：
 - 本工具现每次运行回显实际生效档位，命中弱档时打 `[WARN]`；
 - 战役权威档位仍以 `tracking/<R>/config/settings.json` 为准（toolkit 铁律：
   region 只从 settings.json 派生）。**本工具 BASE 与之可能不一致，必要时显式传参覆盖。**
@@ -119,8 +120,8 @@ def warn_strength_gates(settings):
     IND behavioral_signals 族同表达式 decay8 下，二者取弱档
     ⇒ `sharpe 2.19 → 0.46`。也就是说换档位等于**换信号**，而不只是换风格。
 
-    而回测入口有多套且缺省互不相同（本工具 / MCP `create_simulation` /
-    MCP `create_multi_simulation` / `brain-sim-alphas-in-batch-and-track`），
+    而回测入口有多套且缺省互不相同（本工具 / MCP `create_multi_simulation` /
+    `brain-sim-alphas-in-batch-and-track`；MCP 单仿真入口 2026-11-21 已删），
     「用哪套工具跑」会静默改变结论。本函数让每次运行都回显实际生效的档位，
     至少让「跨工具结果不可比」这件事在日志里可见。
     """

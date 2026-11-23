@@ -143,11 +143,12 @@ def main():
             # 构造简单表达式: rank(field)
             expr = f"rank({a.sample_field})"
             # 调用平台 API 快速回测
-            # 注意: 这里需要集成 MCP create_simulation, 目前用占位实现
+            # 注意: 回测出口是 MCP create_multi_simulation（单仿真工具 2026-11-21 已删；
+            # 平台拒绝单元素数组 ⇒ 探针需 2 条），目前用占位实现
             print(f"[sample] 表达式: {expr}", file=sys.stderr)
-            print(f"[sample] 需要集成 MCP create_simulation 实测 longCount+shortCount", file=sys.stderr)
-            # TODO: 集成 MCP create_simulation
-            # result = api.create_simulation(expr, settings)
+            print(f"[sample] 需要集成 MCP create_multi_simulation（2 条起）实测 longCount+shortCount", file=sys.stderr)
+            # TODO: 集成 MCP create_multi_simulation（至少 2 条表达式）
+            # result = api.create_multi_simulation([expr, baseline_expr], settings)
             # sample_stock_count = result.get('longCount', 0) + result.get('shortCount', 0)
         except Exception as ex:
             print(f"[sample] 实测失败: {ex}", file=sys.stderr)

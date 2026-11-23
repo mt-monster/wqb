@@ -209,7 +209,7 @@ def pull_fields(api, region: str, universe: str, delay: int,
 
 def pull_pyramid(api, delay=None):
     """塔点亮表。★ 必须按 delay 过滤：形态 B 的每条记录都带 delay，跨 delay 求和会把
-    D1 的点亮状态套到 D0 上（GBR 实测：D0 十四类**全 0**，聚合后会误判 45 个集「已点亮塔」）。"""
+    D1 的点亮状态套到 ~~D0~~ 上（GBR 实测：D0 十四类**全 0**，聚合后会误判 45 个集「已点亮塔」；D0 已排除，只做 D1）。"""
     try:
         j = _get_json(api, "/users/self/activities/pyramid-alphas")
     except Exception as e:                                         # pragma: no cover

@@ -572,6 +572,180 @@ BASKET_MUTUAL_CORR_MAX: float = 0.7
 #: 放宽互相关阈值后，同数据集兄弟可能 0.6x 相关仍过阈，用本警戒点名而非硬禁。
 BASKET_DATASET_CONCENTRATION_WARN: int = 2
 
+
+# ---------------------------------------------------------------------------
+# 梯度扫描纪律（2026-11-23 落地；用户「三、优化空间 全部落地」裁定）
+#
+# 背景：insiders1 在 11-06~11-08 跑完 30+ 臂（窗口/幅度/设置轴）后写下「全轴穷尽」，
+# 复审核对平台读回的真实表达式后发现 **4 个算子类别轴一格未扫**（L1 vec 折叠 /
+# L4 时序 / L5·L8 外层 group / 分组轴）。补齐 45 臂后 S 不动但 2Y +0.15 / sub +0.05 /
+# robust +0.08，并证伪两条跨集外推律。
+#
+# 三处落点：
+#   ① 本节常量 = 扫描顺序 / 参数层 / no-op 律 / 批级设置（唯一事实源）
+#   ② `tools/research/gradient_coverage.py` = 覆盖率审计 + 缺臂计划 + 算子 lint
+#   ③ `docs/experience/02_signal_patterns.md` §19 = 人看版纪律
+# ---------------------------------------------------------------------------
+
+#: 层扫描顺序 = **杠杆量级降序**（实测类内 ΔS，见 `tracking/EUR/reference/datasets/insiders1.md` §11.1）。
+#: 语义层（类内 ΔS > 0.30）必须全类替换；参数层（ΔS < 0.05）一轮即可，禁止精调。
+GRADIENT_SCAN_ORDER: tuple = (
+    "L1_vector_fold",      # vec_* 折叠 —— ΔS 0.40（sum≡avg > max > min ≫ stddev≈range）
+    "L2_arithmetic",       # add/subtract/multiply/divide —— 结构固定，只查量纲坑
+    "L3_logical",          # greater/less/if_else 条件
+    "L4_time_series",      # ts_* —— ΔS 1.40（最大杠杆；稀疏事件流 ts_sum 不可换）
+    "L5_group_inner",      # 内层 group_* —— ΔS 0.77
+    "L6_cross_sectional",  # rank/winsorize/quantile/normalize
+    "L7_transform",        # tail/bucket/trade_when
+    "L8_group_outer",      # 外层 group_*
+    "L9_grouping_axis",    # industry/sector/market/subindustry/country/exchange —— ΔS 0.11 / Δ2Y 0.20
+    "L10_window",          # 窗口 —— 半语义（S↔2Y 跷跷板，须报双指标）
+    "L11_amplitude",       # winsorize std / signed_power / quantile —— 参数层
+    "L12_tail_q",          # tail(lower,upper) —— 参数层
+    "L13_settings",        # decay / truncation / universe / 中性化 —— 批级参数，一值一批
+)
+
+#: 参数层（类内 ΔS < 0.05）：一轮扫描即可，**禁止在参数层反复精调**。
+GRADIENT_PARAM_LAYERS: frozenset = frozenset({"L11_amplitude", "L12_tail_q", "L13_settings"})
+
+#: 分组轴候选（EUR 全集实测序：sector > market > industry > subindustry > country ≡ exchange；
+#: 跨区必须先实测再排序，本元组只定义"要扫哪些"，不定义优劣）。
+GRADIENT_GROUPING_AXES: tuple = (
+    "industry", "sector", "market", "subindustry", "country", "exchange",
+)
+
+#: 窗口探针（跨越 1 月/季/半年/年/两年）；窗口是半语义层，须同时报 S 与 2Y（常见严格跷跷板）。
+GRADIENT_WINDOW_PROBES: tuple = (22, 44, 66, 88, 126, 252)
+
+#: 参数层探针（一轮即可）
+GRADIENT_TAIL_Q_PROBES: tuple = ((0.15, 0.85), (0.25, 0.75), (0.35, 0.65))
+GRADIENT_AMPLITUDE_PROBES: dict = {"winsorize_std": (2, 3, 4)}
+
+#: 批级设置：属于 `create_multi_simulation` 的**批级**参数，同批内所有臂共享
+#: ⇒ **不能在批内做梯度**，必须一值一批（2026-11-23 实测因同批放同码臂白烧 1 个臂位）。
+GRADIENT_BATCH_LEVEL_SETTINGS: tuple = (
+    "decay",
+    "truncation",
+    "universe",
+    "neutralization",
+    "nan_handling",
+    "max_trade",
+    "pasteurization",
+    "delay",
+)
+
+#: 已确认的 no-op 律（换上去读数逐位相同 ⇒ 不必再花臂位）。工具按层/结构触发提示。
+GRADIENT_NOOP_LAWS: dict = {
+    "monotone_before_group_rank": (
+        "group_rank 之前的任何单调变换（constant/quantile/signed_power/winsorize）数学上是空操作"
+    ),
+    "vec_sum_equiv_vec_avg": (
+        "下游有 rank/group_rank 吸收尺度时 vec_sum ≡ vec_avg（risk60 + insiders1 两集复现）"
+    ),
+    "truncation_after_rank": (
+        "最终层是 rank()/group_rank()/quantile() 时 truncation 是结构性 no-op"
+        "（insiders1 trunc 0.05 与 0.08 三臂读数逐位相同）"
+    ),
+    "inner_backfill_makes_group_backfill_noop": (
+        "内层已有 ts_backfill ⇒ 外层 group_backfill 不改变任何读数（risk60 实证）"
+    ),
+    # ── 2026-11-23 用户「三、优化空间 全部落地」补入（insider_agg_matrix 163 臂 + risk60 实证）──
+    "zscore_on_already_standardized_field": (
+        "字段本身已是无量纲 0/±1 指示器（如 directional_indicator）时再 ts_zscore ⇒ 近似常数"
+        "⇒ 实测 TO 0.00 / S 0.00（insiders N7 整臂归零）"
+    ),
+    "signed_power_on_positive_rank_shell": (
+        "正值核 + group_rank 壳上 signed_power(·,2) 是 no-op（读数逐位相同；rank 只吃序，平方不改序）。"
+        "同一条杠杆在别的核上可能是最强杠杆 —— 见 GRADIENT_NONPORTABLE_LEVERS"
+    ),
+    "decay_noop_when_turnover_already_low": (
+        "TO 已低于 ~2% 时提高 decay 是 no-op（无平滑对象）：risk60 T2 的 d4/d8/d16 三臂"
+        "读数逐位相同（0.77/1.02/1.62/0.94）。decay 只对 TO 尚在正常区间的核有效"
+    ),
+    "group_aggregator_always_collapses": (
+        "group_sum / group_std_dev 这类聚合型外层算子一律崩：TO 70%+ / RA 5–6"
+        "（risk60/68 与 insiders 合计 10 次复现）⇒ 结构型死因，不必再试"
+    ),
+}
+
+#: **跨核不可移植的杠杆登记表**（2026-11-23 用户「三、优化空间」#2 落地）。
+#:
+#: 教训：同一个杠杆在不同核上可以是「最强杠杆 / 纯损害 / no-op」三种完全相反的结论
+#: （本轮踩 4 次、约 60 臂）。因此**杠杆结论必须带「核指纹」登记，禁止跨核继承**；
+#: 换核后必须重测该杠杆再引用。消费点：`tools/gates/gradient_stop_gate.py` 的 D1/D2
+#: 与 `tools/research/gradient_coverage.py` 的 noop 告警可读本表打印提示。
+GRADIENT_NONPORTABLE_LEVERS: dict = {
+    "signed_power_2": {
+        "strong_on": {
+            "kernel": "risk60 T2 cost-curve（vec_avg(offer)-vec_min）的 group_neutralize 壳",
+            "delta": {"S": "+0.11", "F": "+0.36"},
+        },
+        "harmful_on": {
+            "kernel": "risk60 T3 spread-ratio 的 group_zscore 壳",
+            "delta": {"sub": "0.69 → 0.57", "RA": "3 → 5"},
+        },
+        "noop_on": {
+            "kernel": "insiders N1 total_buy/avg_buy 的 group_rank 壳（正值核）",
+            "delta": "读数逐位相同",
+        },
+    },
+    "ts_mean_smoothing": {
+        "harmful_on": {
+            "kernel": "insiders N1 参与广度（变动型：人数每日变）",
+            "delta": {"S": "0.66 → 0.20"},
+        },
+        "near_free_on": {
+            "kernel": "risk60 T4 双残差 add（水平型）与 insiders N2 角色分歧（水平型）",
+            "delta": {"S": "1.25 → 1.24（risk60）/ +0.01（N2）", "TO": "N2 0.547 → 0.109（−44pp）"},
+        },
+        "harmful_on_flow_kernel": {
+            "kernel": "PV1 四腿（volume / ts_corr / 换手 / 波动，流量型）—— 2026-11-23 双尺度移植批",
+            "delta": {
+                "S": "1.39 → 1.15（共尺度）/ 1.06（双尺度慢66）/ 0.80（双尺度慢252）",
+                "TO": "11.9% → 8.6% / 6.6% / 6.7%",
+            },
+            "note": (
+                "★ 双尺度比纯平滑更差（1.06 < 1.15）⇒「慢腿+快腿相加能救平滑」只在水平型核成立"
+                "（risk60 双尺度 1.34 > 慢腿单独 1.24），流量型核上慢腿平滑掉的正是信号本身"
+            ),
+        },
+    },
+    "raise_decay": {
+        "effective_on": {
+            "kernel": "insiders N2 ts_zscore(role,252)（TO 54.7%）",
+            "delta": {"TO": "−44pp", "S": "+0.01"},
+        },
+        "noop_on": {
+            "kernel": "risk60 T2 cost-curve（TO 已 1.3%）",
+            "delta": "d4/d8/d16 逐位相同",
+        },
+    },
+    "lower_truncation": {
+        "noop_on": {
+            "kernel": "risk60 T1 ts_max_diff 与 T3 spread-ratio 的 rank/gz 壳",
+            "delta": "0.02/0.04/0.08 逐位相同",
+        },
+        "harmful_on": {
+            "kernel": "risk60 T2 cost-curve 的 SECTOR 轴",
+            "delta": {"F": "1.03 → 0.85", "2Y": "1.62 → 1.48", "RA": "2 → 4"},
+        },
+    },
+    "vector_fold_choice": {
+        "max_over_avg": {
+            "kernel": "KOR 全 VECTOR 数据集（尾部摩擦最强的折叠基）",
+            "delta": {"2Y": "vec_max 1.70 过闸，vec_avg 未过"},
+        },
+        "harmful_on": {
+            "kernel": "DEU sentiment7 snt7_all_languages_views（向量维 = 语言 × 访问类型）",
+            "delta": {"S": "vec_avg 2.03 → vec_max 1.41", "F": "1.61 → 0.94", "RA": "0 → 4（含 IS_LADDER 第4年）"},
+            "note": (
+                "★ vec_max 取到「最热单一语言页」这一噪声最大的分量 ⇒ 「max > avg」不是通用律，"
+                "归约选择须逐核实测；向量维若本身是「同一量的分项拆分」，avg 才是聚合、max 是抽取极值"
+            ),
+        },
+    },
+}
+
 #: 全局提交闸（**fail-closed**）：`=1` 才允许 workflow 提交 alpha——它只解除闸门，
 #: **不等于自动提交**：真正提交仍需 `confirm_submit=True` + 用户明确确认（AGENTS.md §7）。
 #: ⚠ 本模块唯一的 `os.environ` 读取点，且是文档已承诺的口径：`docs/env_registry.json` 把

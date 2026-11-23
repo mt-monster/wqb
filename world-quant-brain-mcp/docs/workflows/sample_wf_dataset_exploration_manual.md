@@ -359,10 +359,10 @@ The Dataset Exploration Expert is a specialized role focused on deep analysis an
 
 **MCP Tool Integration for Platform Tools:**
 - **Data Explorer**: Use `mcp_brain-api_get_datasets` and `mcp_brain-api_get_datafields`
-- **Simulation Engine**: Use `mcp_brain-api_create_simulation` with proper settings
+- **Simulation Engine**: Use `mcp_brain-api_create_multi_simulation` with proper settings
 - **Documentation System**: Use `mcp_brain-api_get_documentations` and `mcp_brain-api_get_documentation_page`
 - **API Access**: All MCP tools provide automated API access
-- **BRAIN 6-Tips**: Implemented through `mcp_brain-api_create_simulation` calls
+- **BRAIN 6-Tips**: Implemented through `mcp_brain-api_create_multi_simulation` calls
 
 #### 2. External Resources
 - **Financial Databases**: Additional context for financial fields
@@ -376,7 +376,7 @@ The Dataset Exploration Expert is a specialized role focused on deep analysis an
 - **Collaboration Platforms**: Team coordination and knowledge sharing
 
 **MCP-Enhanced Analysis Capabilities:**
-- **Statistical Analysis**: Use `mcp_brain-api_create_simulation` for data behavior testing
+- **Statistical Analysis**: Use `mcp_brain-api_create_multi_simulation` for data behavior testing
 - **Data Quality Assessment**: Use `mcp_brain-api_get_platform_setting_options` for validation
 - **Pattern Recognition**: Use `mcp_brain-api_get_operators` for available analysis functions
 - **Documentation Management**: Use `mcp_brain-api_get_documentations` for comprehensive knowledge access
@@ -409,7 +409,7 @@ Success in this role requires a combination of technical expertise, analytical t
 ### **Core Data Exploration Tools**
 - **`mcp_brain-api_get_datasets`**: Discover and filter available datasets
 - **`mcp_brain-api_get_datafields`**: Retrieve field inventory and metadata
-- **`mcp_brain-api_create_simulation`**: Execute data analysis simulations
+- **`mcp_brain-api_create_multi_simulation`**: Execute data analysis simulations
 - **`mcp_brain-api_get_platform_setting_options`**: Validate simulation parameters
 
 ### **Documentation & Knowledge Tools**

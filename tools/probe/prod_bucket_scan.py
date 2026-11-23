@@ -10,7 +10,7 @@
   python tools/prod_bucket_scan.py <id1> [<id2> ...]      # 查指定 alpha
   python tools/prod_bucket_scan.py --file ids.txt          # 从文件读每行一个 id
   python tools/prod_bucket_scan.py --file ids.txt --labels labels.txt
-  python tools/prod_bucket_scan.py 78NoOeVx --all-buckets  # 打全直方图（D0-P 诊断前置分型用）
+  python tools/prod_bucket_scan.py 78NoOeVx --all-buckets  # 打全直方图（~~D0-P~~ 诊断前置分型用；D0 已排除）
 输出: 每行 `id  prod_max  n([0.7,0.8))  判定(SCAN/DEAD)`；--all-buckets 另附各桶计数与三型判定
 """
 import argparse, asyncio, json, os, sys
@@ -90,7 +90,7 @@ def all_buckets(d):
 
 
 def wall_shape(bs):
-    """D0-P 诊断前置第 1 步的三型分型（决策表 decision-table.md D0-P）。
+    """~~D0-P~~ 诊断前置第 1 步的三型分型（决策表 decision-table.md ~~D0-P~~；D0 已排除，仅作历史参考）。
 
     口径：0.6-0.7 桶计数 = 拥挤度（密墙 vs 钉子）；0.7+ 计数 = 压住过线的钉子数。
     """
@@ -111,7 +111,7 @@ async def main():
     ap.add_argument("--file")
     ap.add_argument("--labels")
     ap.add_argument("--all-buckets", action="store_true",
-                    help="额外打印全部非空 prod 直方图桶计数与 D0-P 三型分型（诊断前置用）")
+                    help="额外打印全部非空 prod 直方图桶计数与 ~~D0-P~~ 三型分型（诊断前置用；D0 已排除）")
     a = ap.parse_args()
 
     ids = list(a.ids)
@@ -146,7 +146,7 @@ async def main():
         print(f"{aid:<12}{labels.get(aid,''):<14}{str(mx):<10}{str(n):<12}{v}")
         if bs:
             print(f"  buckets: " + " ".join(f"[{lo:.1f},{hi:.1f})={n}" for lo, hi, n in bs))
-            print(f"  D0-P 分型: {wall_shape(bs)}")
+            print(f"  ~~D0-P~~ 分型: {wall_shape(bs)}")
 
 
 asyncio.run(main())

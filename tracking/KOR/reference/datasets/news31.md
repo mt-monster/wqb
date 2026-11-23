@@ -190,3 +190,28 @@ TO 与字段无关 ⇒ 驱动换手的是**壳层几何**（252 日 ts_rank 吃�
 - **但 5 年为负、TO 常年 0.22–0.27** ⇒ 数据完整 ≠ 有信号；坏的是壳体时序几何，不是数据。
 - ⛔ **本节结论对 `news31` 的定位**：数据可用，但本波机制未证成；若后续再用本集，
   **必须换时序几何（先聚合再排序）**，且**不得**再用 `ts_rank(·,252)` 直接吃日频。
+
+## 5 「≥5 结构互异族 + 每族完整梯度」补齐复核（2026-11-22）
+> 用户要求按严格标准补齐梯度。本节执行档案 §3.2 写死的"复活条件"：用先降频聚合（`ts_mean(F,5)`/`ts_decay_linear(F,10)`）再 `group_rank` 的新几何，**弃用 252 日 ts_rank 吃日频**。KOR/TOP600/D1/INDUSTRY/decay4/trunc0.08。
+> 论文闸 PASS（18篇13作者，含 JF 2023《Front-Page News: The Effect of News Positioning》直接对口）。
+> 合法字段族：F1 显著性（firstmentionsentence/wordcount/bodysize）、F2 注意力稀释（companycount）、urgency（快讯/全文）；情绪/新颖度/时间戳/关联 ID 均按档案排除。
+
+### 5.1 新几何 L1（逐族推进）
+| 族 | wave | 最优 | S | 2Y | 判 |
+|---|---|---|---:|---:|---|
+| F1 句位显著性 | `s2_news31_T1_prominence_newgeo_L1_d1` | `rK7wk3lm` `-decay10` | 0.29 | −0.56 | 新几何全灭，|S|≤0.33；TS TO 0.58–1.20 仍高（降频未解决换手），正反双向都无信号 |
+| F2 注意力稀释 + urgency | `s2_news31_T2_dilution_urgency_newgeo_L1_d1` | `pwakQAb3` `ts_mean(companycount,5)` | 0.51 | 0.37 | 正向稀释 S0.51（longCount 12/TO0.59）、urgency 反号 S0.43/TO1.08；**全臂 CW=0.5–1.0**，仍远低于闸 |
+| F1 篇幅代理 | `s2_news31_T3_length_newgeo_L1_d1` | `ZYa9waEj` `ts_mean(bodysize,5)` | 0.28 | 0.81 | wordcount/bodysize/sentencecount 全灭，最高 S0.28、decay10 臂 TO1.21；CW 全臂主墙 |
+
+### 5.2 L2 内层时序替换（在最优新几何上再换窗）
+| 族 | wave | 内层替换最优 | S | 判 |
+|---|---|---|---:|---|
+| F2 稀释 | `s2_news31_T2_dilution_L2_d1` | `leaYkWx7` `ts_mean(companycount,10)` | 0.12 | 内层换窗全劣化（L1 ts_mean5 S0.51 为最优）；mean10 S0.12、长窗/decay 全 ≤0.11、TO1.15；稀释族收敛 |
+
+### 5.3 收口判定（2026-11-22）
+**news31 按档案"复活条件"补齐梯度：F1 显著性（句位+篇幅）/F2 注意力稀释/urgency 三族 × L1+L2 = 7 wave / 56 臂，全部入库。**
+- **族数诚实标注**：本集合法字段仅 F1 显著性（firstmentionsentence/wordcount/bodysize/sentencecount）、F2 稀释（companycount）、urgency 三族；情绪/新颖度/时间戳/关联 ID 是档案 §0.2 写死排除区 ⇒ **受字段落地性限制凑不满独立 5 族**，不硬凑同构冒充。
+- **0 全闸、无 near**：最高可读 S0.51（companycount ts_mean5 正向，longCount 12/TO0.59/CW0.5）；句位/篇幅族 |S|≤0.29。
+- **档案"复活条件"已验证失败**：§3.2 写死"必须先降频聚合（ts_mean5/ts_decay10）再 group_rank 才允许复活"——本轮三族全部用该新几何，L2 又换内层窗，仍全灭、TO 0.58–1.20 未解决。⇒ **新几何不足以翻案**，维持停投（parked，不判死）。
+- **主墙 = CW + 2Y 负 + 事件稀疏 TO**：结构元数据是 1–10 小整数/稀疏二值，横截面并列⇒权重集中；日频事件无论怎么降频都留不住慢成分。
+- **不判死**：记「复活几何已证伪、信号层弱」；翻案须引外部新信息源。论文闸 PASS（JF 2023《Front-Page News》）。全程前台 MCP、未起后台任务、未提交任何 alpha。

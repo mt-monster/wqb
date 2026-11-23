@@ -81,3 +81,25 @@ def test_valid_expression_passes(gate):
     """正常表达式不得被新闸误拒（防假阳性阻断生产）。"""
     res = gate._toolkit_gate_check(["group_rank(ts_zscore(ts_backfill(close, 66), 252), industry)"])
     assert res is None or 1 not in res["failed_expressions"]
+
+
+# --- 2026-11-23 REGULAR scope 闸（平台 get_operators 103 个零漂移核对）---
+
+@pytest.mark.parametrize("expr", [
+    "generate_stats(alpha)",                  # COMBO-only
+    "combo_a(alpha, nlength=250)",            # COMBO-only
+    "rank(reduce_sum(alpha))",                # COMBO-only reduce_*
+    "rank(self_corr(close))",                 # COMBO-only
+    "rank(close) + universe_size",            # SELECTION-only（无参形态）
+])
+def test_non_regular_scope_blocked(gate, expr):
+    """COMBO/SELECTION-only 算子进 REGULAR 批 ⇒ 本地必须拦下（否则整批 CANCELLED）。"""
+    issues = _issues(gate, [expr])
+    assert issues, f"{expr} 应被 REGULAR scope 闸拦下"
+    assert any("[SCOPE]" in s for s in issues.get(1, [])), issues
+
+
+def test_regular_scope_passes(gate):
+    """REGULAR 域算子不得被 scope 闸误拒。"""
+    res = gate._toolkit_gate_check(["group_rank(ts_zscore(ts_backfill(close, 66), 252), industry)"])
+    assert res is None or 1 not in res["failed_expressions"]

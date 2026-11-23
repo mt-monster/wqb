@@ -287,3 +287,12 @@ output_report/.cache_genius_os_alphas.json
 
 # opmin 挖掘批次输入（运行期产物，非报告）
 output_report/opmin-2r5mo67z/*.txt
+
+# SA 候选实验快照（顶层 output/ 从未入库、零引用、可重生成，非报告）
+/output/
+
+# OS alpha 快照数据（output_report/ 下运行期产物，无日期后缀、零引用、非报告）
+output_report/os_alphas_full.json
+output_report/os_alphas_full_withtags.json
+output_report/os_alphas_partial.json
+output_report/os_alphas_snapshot.json

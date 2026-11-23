@@ -32,11 +32,15 @@ v1（`osmosis_allocate.py`）只做「按 inv 质量比例分 100k」，有三�
 1. 候选过滤：ACTIVE REGULAR（USA 额外要求 `os.sharpe >= --usa-min-os`）
 2. 硬闸：`inv < --drop-inv-below` 剔除；`(is-inv)/is >= --decay-cut` 剔除；
    `TO > --turnover-cut` 且 `inv < --turnover-inv-min` 剔除
-3. SA 池：按 inv 取每 scope topN（预算 `--sa-share`，单颗 `--sa-max`，超额回流 RA）
-4. 相关性剪枝：SA 先固定为锚点；RA 按权重降序贪心接受，
+3. margin 软加权：阈值默认「本区候选 margin 中位 × `--margin-median-factor`」（0.6），
+   低于阈值权重 ×`--margin-soft-weight`（0.5）；`--margin-mode absolute` 回到固定 bp
+4. SA 池：按 inv 取每 scope topN（预算 `--sa-share`，单颗 `--sa-max`，超额回流 RA）
+5. 相关性剪枝：SA 先固定为锚点；RA 按权重降序贪心接受，
    与已保留集合 `ρ >= --corr-cut` 丢弃，`ρ ∈ [--corr-soft, --corr-cut)` 保留但权重 ×`--soft-weight`
-5. 若剪枝后 scope 内颗数 <10（平台硬要求），按权重回补被丢弃者（权重 ×0.25，标记 forced）
-6. RA 池按权重点数化，最后 trim 到恰好 100,000
+6. 数量上限 `--max-ra`（默认 24）+ **在位者滞回 `--entry-hysteresis`（默认 1.10）**：
+   上一期已在 plan 里的 RA 排序权重 ×1.10，挑战者须强 10% 才能顶掉——降低边缘互换
+7. 若剪枝后 scope 内颗数 <10（平台硬要求），按权重回补被丢弃者（权重 ×0.25，标记 forced）
+8. RA 池按权重点数化，最后 trim 到恰好 100,000
 
 ## 用法
 
@@ -206,23 +210,57 @@ def base_weight(a: Dict[str, Any], usa: bool) -> float:
 
 
 def margin_soft_factor(a: Dict[str, Any], args) -> Tuple[float, Optional[float]]:
-    """margin 软加权（2026-11-16 增补，官方+论坛 review 结论）。
+    """margin 软加权（2026-11-16 增补；2026-11-22 加二阶）。
 
     依据：Genius Combined Osmosis = after-cost Sharpe（费后）；论坛 11-02 实证帖
-    （margin≥1.5×地板甜点）+ 62 赞原理帖「毛 Sharpe 好看、费后白干」。
-    口径：margin 转 bp 后低于 `--margin-floor`（默认 10bp）的候选权重 ×`--margin-soft-weight`
-    （默认 0.5）——软降权不清零，保证每 scope 仍能凑满 ≥10 颗；margin 缺失按未降权处理
-    （不做惩罚，缺失≠差）。仅作用于 RA 权重；SA 锚点不受影响（top4 由 inv 决定）。
+    「净 ≈ 毛 × (1 − 地板/margin)」——margin 越贴地板，费后留存越少。
 
-    返回 (factor, margin_bp)：factor∈{1.0, margin_soft_weight}，margin_bp 供日志。
+    两阶（阈值见 `margin_floor_bp`，默认绝对 10bp）：
+      * `margin < 地板`                 ⇒ 权重 ×`--margin-soft-weight`（0.5）
+      * `margin < 地板 × hard-tier`（默认 0.5，即 <5bp）⇒ ×`--margin-hard-weight`（0.25）
+    二阶专门打「费后基本归零」的极端尾巴（实测 GLB 有 1.84bp 的件），而不扩大一阶范围。
+    软降权不清零，保证每 scope 仍能凑满 ≥10 颗；margin 缺失不罚（缺失≠差）。
+    仅作用于 RA 权重；SA 锚点不受影响（top4 由 inv 决定）。
+
+    返回 (factor, margin_bp)。
     """
     m = a.get("margin")
-    if m is None or args.margin_floor <= 0:
+    floor_bp = getattr(args, "_margin_floor_bp", 0.0) or 0.0
+    if m is None or floor_bp <= 0:
         return 1.0, None
     bp = float(m) * 10000.0
-    if bp < args.margin_floor:
+    tier = float(getattr(args, "margin_hard_tier", 0.0) or 0.0)
+    if tier > 0 and bp < floor_bp * tier:
+        return args.margin_hard_weight, bp
+    if bp < floor_bp:
         return args.margin_soft_weight, bp
     return 1.0, bp
+
+
+def margin_floor_bp(rows: List[Dict[str, Any]], args) -> float:
+    """本 scope 的 margin 软加权一阶阈值（bp）。
+
+    默认 `--margin-mode absolute`：固定 `--margin-floor`（10bp = 官方费后代理 0 线）。
+
+    `--margin-mode median`（实验性，**默认关闭**）：阈值 = 上一期 plan 该区 margin 中位
+    × `--margin-median-factor`。2026-11-22 实测该口径**反效果**：GLB/GBR 阈值被压到
+    3.8/6.8bp，<10bp 点数占比从 22.2% 升到 27.2% ⇒ 低 margin 暴露反而变大。保留开关
+    以便日后有更强的成本分层数据时再试，但不作默认。
+    """
+    if getattr(args, "margin_mode", "absolute") != "median":
+        return float(args.margin_floor or 0.0)
+    tf = float(getattr(args, "margin_median_factor", 0.6) or 0.0)
+    if tf <= 0:
+        return float(args.margin_floor or 0.0)
+    reg = rows[0]["region"] if rows else ""
+    base = [v for v in (getattr(args, "_baseline_margin", {}) or {}).get(reg, []) if v is not None]
+    if len(base) < 5:  # 基线不足 ⇒ 退回候选池中位
+        base = [float(r["margin"]) * 10000.0 for r in rows
+                if r.get("alpha_type") != "SUPER" and r.get("margin") is not None]
+    if len(base) < 5:
+        return float(args.margin_floor or 0.0)
+    return round(statistics.median(base) * tf, 2)
+
 
 
 # --------------------------------------------------------------------------- #
@@ -252,7 +290,10 @@ def plan_scope(region: str, rows: List[Dict[str, Any]], mat: Dict[str, Dict[str,
     log["dropped_filter"] = dropped_filter
 
     weight = {r["alpha_id"]: base_weight(r, usa) for r in kept_c}
-    # margin 软加权（费后质量维度，2026-11-16）：低于地板的 RA 权重打折，仅记账不清零。
+    # margin 软加权（费后质量维度，2026-11-16）：低于阈值的 RA 权重打折，仅记账不清零。
+    # 阈值口径见 margin_floor_bp（2026-11-22 起默认按区中位相对化）。
+    args._margin_floor_bp = margin_floor_bp(kept_c, args)
+    log["margin_floor_bp"] = round(args._margin_floor_bp, 2)
     margin_soft: Dict[str, float] = {}
     for r in kept_c:
         f, bp = margin_soft_factor(r, args)
@@ -300,10 +341,27 @@ def plan_scope(region: str, rows: List[Dict[str, Any]], mat: Dict[str, Dict[str,
     if any(a not in mat for a in anchors):
         print(f"[warn] {region}: SA 锚点缺相关行 -> 该 scope 的剪枝可能不完整", file=sys.stderr)
 
-    # --- 3b. 数量上限（论坛实证：每区 15–20 颗优于铺满；OC2025 全量分析 62 赞）---
+    # --- 3b. 数量上限 + 在位滞回（官方 tips #16 "Avoid radical reshuffles"）---
+    # 2026-11-22：单纯「点数 deadband」不可行——把 |Δ|<300 的件回退到旧值，每 scope 会留下
+    # 1.2%~3.8% 的残差，重分配会扭曲存量权重或破坏 100k 精确性。改为**在位者保护**：
+    # 已在上一期 plan 里的 RA 排序时权重 ×`--entry-hysteresis`（默认 1.10），挑战者必须
+    # 比在位者强 10% 才能顶掉它。点数仍按真实权重算 ⇒ 总额与权重口径都不受影响，
+    # 只降低「边缘件互换」造成的整池重排。
     log["dropped_cap"] = []
+    log["hysteresis_kept"] = []
+    incumbent = set(getattr(args, "_baseline", {}).get(region, ()))
+    hyst = float(getattr(args, "entry_hysteresis", 1.0) or 1.0)
     if args.max_ra and len(kept_ra) > args.max_ra:
-        kept_ra.sort(key=lambda r: weight[r["alpha_id"]], reverse=True)
+        if hyst > 1.0 and incumbent:
+            rank_w = {r["alpha_id"]: weight[r["alpha_id"]] *
+                      (hyst if r["alpha_id"] in incumbent else 1.0) for r in kept_ra}
+            kept_ra.sort(key=lambda r: rank_w[r["alpha_id"]], reverse=True)
+            cut_w = max([weight[r["alpha_id"]] for r in kept_ra[args.max_ra:]] or [0.0])
+            log["hysteresis_kept"] = [r["alpha_id"] for r in kept_ra[:args.max_ra]
+                                      if r["alpha_id"] in incumbent
+                                      and weight[r["alpha_id"]] < cut_w]
+        else:
+            kept_ra.sort(key=lambda r: weight[r["alpha_id"]], reverse=True)
         for r in kept_ra[args.max_ra:]:
             log["dropped_cap"].append((r["alpha_id"], round(weight[r["alpha_id"]], 3)))
         kept_ra = kept_ra[:args.max_ra]
@@ -450,22 +508,39 @@ def build_arg_parser() -> argparse.ArgumentParser:
                     help="PnL 缺失、相关未知的 alpha 权重折扣（不当零相关处理）")
     ap.add_argument("--soft-weight", type=float, default=0.50)
     ap.add_argument("--margin-floor", type=float, default=10.0,
-                    help="margin 软加地板（bp，10bp=官方费后代理 0 线；0=关闭软加权）")
+                    help="margin 软加权地板（bp，10bp=官方费后代理 0 线）；--margin-mode absolute 时才直接用")
+    ap.add_argument("--margin-mode", choices=["absolute", "median"], default="absolute",
+                    help="margin 阈值口径：absolute=固定 --margin-floor（默认）；"
+                         "median=本区中位×factor（实验性，实测反效果，默认关闭）")
+    ap.add_argument("--margin-median-factor", type=float, default=0.6,
+                    help="--margin-mode median 的倍数（默认 0.6；0=退回 absolute）")
     ap.add_argument("--margin-soft-weight", type=float, default=0.50,
                     help="margin<地板 的候选权重折扣（软降权不清零，保 ≥10 颗资格）")
+    ap.add_argument("--margin-hard-tier", type=float, default=0.5,
+                    help="二阶阈值 = 地板×该值（默认 0.5 ⇒ <5bp）；0=关闭二阶")
+    ap.add_argument("--margin-hard-weight", type=float, default=0.25,
+                    help="二阶区间（margin < 地板×hard-tier）的权重折扣，默认 0.25")
     ap.add_argument("--decay-cut", type=float, default=0.60)
     ap.add_argument("--drop-inv-below", type=float, default=1.0)
     ap.add_argument("--turnover-cut", type=float, default=0.20)
     ap.add_argument("--turnover-inv-min", type=float, default=1.5)
     ap.add_argument("--turnover-os-min", type=float, default=1.0)
     ap.add_argument("--usa-min-os", type=float, default=0.0)
-    ap.add_argument("--max-ra", type=int, default=20,
-                    help="每 scope REGULAR 颗数上限（0=不限）。论坛实证 15–20 优于铺满")
+    ap.add_argument("--max-ra", type=int, default=24,
+                    help="每 scope REGULAR 颗数上限（0=不限）。2026-11-22 由 20 提到 24："
+                         "官方 tip「larger number of high-quality Alphas」+ 实测 cap 掉 31% 过期硬闸件")
+    ap.add_argument("--entry-hysteresis", type=float, default=1.10,
+                    help="在位者保护倍数：已在上一期 plan 的 RA 排序权重 ×该值（1.0=关闭）。"
+                         "官方 tip#16「Avoid radical reshuffles」")
+    ap.add_argument("--baseline-plan", default=os.path.join(RESULTS, "osmosis_plan.json"),
+                    help="在位者判定的基线 plan（默认 results/osmosis_plan.json = 平台状态快照）")
     ap.add_argument("--sa-top-n", type=int, default=4)
     ap.add_argument("--sa-share", type=float, default=0.22)
     ap.add_argument("--sa-max", type=int, default=10_000)
-    ap.add_argument("--regular-max-pts", type=int, default=15_000,
-                    help="单颗 REGULAR 点数上限（默认 15000，对齐论坛 DL61056；0=不限）")
+    ap.add_argument("--regular-max-pts", type=int, default=12_000,
+                    help="单颗 REGULAR 点数上限（2026-11-22 由 15000 降到 12000：GLB 在 margin 二阶"
+                         "降权后单颗顶到 15000 = 该 scope 15%% 点数，官方「Control volatility」口径下过集中；"
+                         "12000 ⇒ top1 ≤12%%）")
     ap.add_argument("--years", type=int, default=4)
     ap.add_argument("--apply", action="store_true", help="写入平台（默认只出 plan）")
     ap.add_argument("--no-zero", action="store_true",
@@ -518,8 +593,10 @@ def make_plan(pool: List[Dict[str, Any]], want: List[str], args
         plan.extend(sel)
         print(f"[{reg}] 候选 {len(rows)} → 计划 {len(sel)} 颗 / "
               f"{sum(p['points'] for p in sel):,} 点 | n_eff {log['neff_before']} → {log['neff_after']} "
-              f"| 剔除: 硬闸 {len(log['dropped_filter'])} / 相关 {len(log['dropped_corr'])} "
-              f"| soft降权 {len(log['soft'])} | margin降权 {len(log.get('margin_soft', {}))} | forced {len(log.get('forced', []))}",
+              f"| 剔除: 硬闸 {len(log['dropped_filter'])} / 相关 {len(log['dropped_corr'])} / cap {len(log.get('dropped_cap', []))} "
+              f"| soft降权 {len(log['soft'])} | margin降权 {len(log.get('margin_soft', {}))}"
+              f"@ {log.get('margin_floor_bp')}bp | 滞回保留 {len(log.get('hysteresis_kept', []))} "
+              f"| forced {len(log.get('forced', []))}",
               file=sys.stderr)
     return plan, logs, mats
 
@@ -536,9 +613,45 @@ def print_summary(plan: List[Dict[str, Any]], want: List[str], logs: Dict[str, A
     print(f"合计  {len(plan):3} {sum(p['points'] for p in plan):>8,}")
 
 
+def load_baseline(path: str) -> Dict[str, set]:
+    """读取上一期 plan，返回 region -> {alpha_id}（用于在位者滞回）。
+
+    基线缺失/不可读时返回空 dict ⇒ 滞回自动失效，退化为纯权重排序。
+    """
+    ids, _ = load_baseline_margins(path)
+    return ids
+
+
+def load_baseline_margins(path: str) -> Tuple[Dict[str, set], Dict[str, List[float]]]:
+    """基线 plan → (region -> {alpha_id}, region -> [margin_bp])。"""
+    if not path or not os.path.exists(path):
+        return {}, {}
+    try:
+        rows = json.load(open(path, encoding="utf-8"))
+    except Exception:
+        return {}, {}
+    ids: Dict[str, set] = defaultdict(set)
+    marg: Dict[str, List[float]] = defaultdict(list)
+    for r in rows if isinstance(rows, list) else []:
+        rid, reg = r.get("alpha_id"), r.get("region")
+        if not rid or not reg:
+            continue
+        ids[reg].add(rid)
+        if r.get("margin_bp") is not None:
+            marg[reg].append(float(r["margin_bp"]))
+    return dict(ids), dict(marg)
+
+
 def main() -> int:
     args = build_arg_parser().parse_args()
     args._blacklist = load_blacklist()
+    args._baseline, args._baseline_margin = load_baseline_margins(args.baseline_plan)
+    if args._baseline:
+        print(f"[baseline] 在位者基线 {os.path.basename(args.baseline_plan)}："
+              f"{sum(len(v) for v in args._baseline.values())} 颗 / {len(args._baseline)} scope",
+              file=sys.stderr)
+    else:
+        print(f"[baseline] 无可用基线（{args.baseline_plan}）⇒ 在位者滞回关闭", file=sys.stderr)
     want = [s.strip().upper() for s in args.scopes.split(",") if s.strip()]
 
     pool = build_pool()

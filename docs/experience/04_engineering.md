@@ -489,3 +489,46 @@ toolkit `gate.py`（原 2060 行单文件）已按业务功能拆为 **facade + 
 - **monkeypatch 契约是拆分的硬约束**：模块 `__getattr__` 只对**属性读**生效，函数内的全局名字解析不走它——所以 `monkeypatch.setattr(gate, "_mask_denominators", …)` 这种写路径对实现函数**不可见**（facade `__dict__` 有值，实现模块读自己的全局）。凡是「patch 后调 check_one/gate_signature 验证行为」的测试，patch 目标必须落在实现模块（`sys.modules[g.check_one.__module__]`，与加载名解耦）；源码文本断言同理指向实现文件。改测试时**只换 patch/读取目标，断言语义零改动**——这是测试跟随实现搬家的正当维护，不是放宽契约。
 - **为什么首选拆分而不是「兼容 shim 保测试」**：曾评估让 `check_one` 经 facade 反查助手（bind-facade 模式），但测试文件各自以不同模块名 importlib 加载 gate.py，facade 实例会互相覆盖注册，patch 依旧不可见——改测试目标比造隐式绑定诚实。
 - **拆分的连带面（漏一处测试即红）**：① 源码文本断言（`GATE_CODE_VERSION` → `_gate_expr_checks.py`；exposure SQL → `_gate_diversity.py`；闸8 EVENT 文本 → `_gate_sanity.py`）；② `docs/ledger_keys.json` 的 readers（`diversity_audit_latest` → `_gate_diversity.py`）；③ `tools/index_tables.py env` 表的读取位置列（`--apply` 重生成）；④ toolkit SKILL.md 必须提及每个 `scripts/*.py`（守护 `test_sd_docs`）；⑤ INDEX/AGENTS.md 的闸表权威措辞。
+
+## 19. ★ 梯度测试六条落地纪律：把「穷尽」变成机械判据（2026-11-23 用户「三、优化空间」裁定）
+
+背景：KOR imbalance5 一轮 **浅梯度**（每层 8 档、2–3 层，13 wave ~90 臂）曾报「5 模板达标」，
+用户质询「所有梯度都回测了吗／算子都替换过吗／参数都精调过吗」后按 catalog 全类别重做
+（12 wave **86 臂**），天花板从 S1.55 刷到 **S1.94**；但三颗 near 最终 **2Y（差 0.16–0.31）
++ prod（0.967–0.973）双墙锁死、0 交付**。教训不是「跑得少」，而是**没有机制回答「缺哪几个臂」
+与「什么时候该停」**——六条纪律现已全部工具化，不靠人记。
+
+| # | 纪律 | 落点（机械执行点） | 实证依据 |
+|---|---|---|---|
+| 1 | **算子是"全类别"不是"抽样"** | `tools/research/gradient_coverage.py audit` 把表达式拆 L1…L13，逐层报 `tested/missing/coverage`（同类可换算子全集 − 已测集）；`plan` 出缺臂候选（自动跳 `GRADIENT_NOOP_LAWS`），`lint` 离线查幽灵算子/元数 | 上一轮 4 个算子类别轴一格未扫（L1 vec 折叠／L4 时序／L5·L8 外层 group／分组轴）；补 45 臂后 S 不变但 **2Y +0.15 / sub +0.05 / robust +0.08** |
+| 2 | **settings 与算子臂分家，一值一批** | `gradient_coverage.py plan` 把 settings 轴单列「一值一批」，并对 `GRADIENT_BATCH_LEVEL_SETTINGS` 拒绝生成同批臂；扫档必须用 **`batch_create_simulations`（per-item settings）** | `create_multi_simulation` 整批共享一套 settings；本轮误派 6 条同表达式同设置，平台去重合并成 1 个 alpha，白烧一批 |
+| 3 | **扫描顺序固定：语义层在前** | `GRADIENT_SCAN_ORDER`（杠杆量级降序）决定 `plan` 排序；换基线后必须 **L5-R 重扫内层**（7 次内核翻转全发生在换基线后） | risk60 12 构造：`ts_ir` 在 6/12 构造是 L2 冠军；imb5 换 `group_scale` 后内层排序整体反转 |
+| 4 | **该不该停 = 可机械判定的四条** | `tools/gates/gradient_stop_gate.py`：D1 `--l1-range`（max_S<1.0 且极差<0.7 ⇒ STOP）、D2 `--to-band`（先把 TO 压进 5–20% 再读 S）、D3 `--three-point`（S/F/2Y 冠军不重合 ⇒ SWING=不可交付）、D4 `--lint-expr`（裸常数 UNITS／标准化字段再 zscore／VECTOR 未降维） | insiders N1 max_S 0.68/极差 0.69 ⇒ 只投 10 臂即停省 ~90 臂；risk60 T4 极差 0.78 一路到 L5 才出 RA-1 件；本轮 8 模板全 SWING |
+| 5 | **prod 前置，别等梯度跑完** | `gradient_stop_gate.py D5 --prod <check_correlation.json>`：`prod ≥ 0.90` ⇒ `TRANSFER`（密墙，同集换骨架无效）／`0.70–0.90` ⇒ `STOP`／不可用 ⇒ `PROD_UNAVAILABLE`（不可判闸，须 `refresh=True`） | imb5 三颗 near prod **0.967/0.967/0.973**，全是梯度跑完才查；若 L1 探针后即查可省后续 ~70 臂 |
+| 6 | **交付层 prod 必须本轮实测 + 档案自带来源** | `tools/submit_verdict.py --prod` → `wqb.prod_verdict.delivery_block`（只认 `platform_live`；缓存/预读/不可用一律 BLOCKED，`reason_code=PROD_GATE`）；`archive_fields()` 产出 `prod_corr_source`/`corr_checked_at`（预读值**不伪造 now**） | N1PlYMGX 缓存 0.60 被判 PASS，`refresh=True` 后真值 **0.9726（漂移 +0.37）**；`gate_allowed`（48h 缓存可判闸）与 `delivery_block`（交付必须实测）刻意分两档 |
+
+**配套：成本意识（不是纪律，是决策前置）**
+开波前先算四项余量再决定投不投百臂级梯度：**字段数**（imb5 只 2 字段 ⇒ 5 模板里 4 个天然弱，字段数是模板数物理上限）
+× **头部字段 aC**（imb5_score aC 1109 = 极拥挤，prod 母件撞车风险高）
+× **prod 初探**（≥0.8 直接转集） × **2Y 历史形态**（描述含 resilience/shock/regime 的条件型因子，
+2Y ladder 结构性不可达：先换 1 档中性化确认 S 天花板，2Y 仍 <1.0 即判 regime 死，不扫 backfill/幂次谱）。
+
+**分工（别把三只工具当重复实现）**
+`gradient_gate.py` 管「痕迹在不在」；`research/gradient_coverage.py` 管「每层缺哪几个臂」；
+`gates/gradient_stop_gate.py` 管「该不该停 + 批能不能发（含 prod 前置）」。
+守护：`tests/unit/04_gates/test_gradient_stop_gate.py`（24 例）、
+`tests/unit/09_core/test_gradient_coverage.py`（19 例）、
+`tests/unit/05_submit_quota/test_batch_status_stuck.py`（9 例）、
+`tests/unit/09_core/test_prod_verdict_20261110.py`（28 例含 archive/delivery）。
+
+## 20. multisim 调度实测：≤2 臂才进得去 + 卡死父批次可 DELETE（2026-11-23 DEU）
+
+- **现象**：`create_multi_simulation` 提交后父任务 `progress` 停在 0.15/0.35、`child_count=0` 持续 25–35 min。
+  本会话三次复现：**10 臂**（`2XZ4cr6kG4Gvb6816RTO7bEq`）、**8 臂**（`4cmP9s5Ur4qI9MZ3zPO05PF`、`2SuFWj6vb4iA8R2PzOzXlem`）、
+  **4 臂**（`14IL9l3w74j1aoYvqofhUVb`）全部不启动；同期 **2 臂**批次两次均正常完成（约 15–30 min）。
+  ⇒ 本账号按 **2 臂/批** 派发最稳（用户上限是 8 臂，2 臂是平台实际可调度值；不是表达式错，别重试同批）。
+- **卡死处置**：MCP 无 cancel 工具；`DELETE https://api.worldquantbrain.com/simulations/{id}` 对**未启动/已停**父批次返回 **200**
+  （已启动并结束时返回 400 —— 先看 `batch_status` 再删）。脚本样例 `logs/_tmp_cancel_sim.py`（用后删）。
+- **别用 8 臂硬扛**：等待成本 > 分批成本。2 臂批 × N 的端到端 ≈ 8 臂批「假设能跑」的成本，但可控、可归因。
+- **与 §19 纪律 2 的边界**：`create_multi_simulation` 整批共享 settings；settings 轴仍必须一值一批（`batch_create_simulations`），
+  不要把「2 臂」误解成可以混 settings。

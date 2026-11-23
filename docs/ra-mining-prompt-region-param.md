@@ -174,7 +174,7 @@
 
 【验收清单（提交给用户前逐项自检）】
   □ 步0 region_rotation 已跑（清库存回切判定落 ledger）；库存扫描先于新挖
-  □ profile 注入全部生效（排除族/prod 预警/循环策略/delay0 隔离）
+  □ profile 注入全部生效（排除族/prod 预警/循环策略/~~delay0 隔离~~；D0 已排除）
   □ 白名单内生成；已点亮塔未作主数据集；体检包 + typed catalog 就位
   □ 每批过步5 门禁（gate_results.all_pass 落库）；闸 PF 无 enforced 拦截或已按拦截换骨架
   □ 七槽配给 ≥2 跨金字塔、≥1 win 换腿、弱探针 ≤1

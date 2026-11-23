@@ -1,5 +1,5 @@
 ---
-last_verified: 2026-11-16
+last_verified: 2026-11-21
 name: wq-brain-alpha-optimization-v1
 description: "现有 WorldQuant BRAIN alpha 的两模式改进器：Mode B（想法层——换信号概念/字段组合，含卡闸后的组合腿救援）→ Mode A（参数层——冻结核心想法，8 候选严格批调 decay/窗口/中性化/nanHandling·maxTrade）。用户要求改进/优化某个 alpha ID、修复失败的提交测试项（含 IS_LADDER_SHARPE），或候选已按资格判定表（references/mode-b-qualification.md）值得继续改时使用。prod 相关性墙按 RA 决策表 D0-P 处置，本 skill 不承诺把 PROD 压到某个数。"
 layer: L4
@@ -51,6 +51,7 @@ $WQ_PY tools/mode_b_qualify.py evaluate --region <REGION> --sharpe <S> --fitness
   [`02_signal_patterns.md` §12](docs/experience/02_signal_patterns.md)；
   最常用的两条是 `signed_power(x,0.5)` → `quantile(x)`（最强破闸）与外层轴 sector → market
   （**依赖包装算子，不可外推**）。
+- **★★ 梯度回测（必做，2026-11-21 用户指令）**：进入改进阶段的候选（`failed_ra_count ∈ {1,2}` 或 `S ≥ 1.0` 近闸件）一律走「**同槽位全类别替换 + Δ 表归因 + 逐层推进**」，不得单点换算子即停、也不得跳过它直接盲扫参数。定义/层次序（内层信号→内层时序→分组轴→外层包装→设置档）、工具（`operator_swap_matrix.py`）、验收四条（臂数=同 arity 候选 / ≥2 层 / 每层最优+Δ+收敛 / 收敛后不微调续命）见 [`wq-brain-ra-pipeline` 步 7](../wq-brain-ra-pipeline/SKILL.md) 与 [`step7-diagnose.md` §7.10](../wq-brain-ra-pipeline/references/step7-diagnose.md)；机械核对 `tools/gates/gradient_gate.py`（PARTIAL/MISSING = exit 2）。**未完成一次完整梯度的数据集，「天花板 / 判死」只能记 PROVISIONAL**（反例：GBR institutions6 多骨架横向扫描 ⇒ PROVISIONAL）。
   ⚠ 机械等价类：闸1b-2（算子调用点数 <10）拦下的表达式，**先考虑能否用等价算子缩短**再判死。
 - **止损阶梯**（同一 alpha 累计，先到先停）：
 

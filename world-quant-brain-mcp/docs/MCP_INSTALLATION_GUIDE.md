@@ -182,8 +182,8 @@ docker run -d \
 - `value_factor_trendScore()` - 获取因子趋势得分
 
 ### 仿真 (tools_sim)
-- `create_multi_simulation()` - 创建批量仿真 ⭐
-- `create_simulation()` - 创建单个仿真
+- `create_multi_simulation()` - **唯一回测出口**：批量仿真，也接受 1 条（单条探针）⭐
+- `batch_create_simulations()` - 逐条独立设置提交（异步，立即返回全部 location）
 - `get_simulation_result()` - 获取仿真结果
 - `run_diagnostics()` - 运行诊断
 - `simulate_with_instrumentation()` - 带检测的仿真

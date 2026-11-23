@@ -460,7 +460,7 @@ DEU 23.0%）按旧口径（只算 sharpe）统计；严格口径 `ra_failed_chec
 | region | universe（profile） | delay | neutralization_default | 关键提示 |
 |---|---|---|---|---|
 | EUR | TOP1600/TOPCS1600/ILLIQUID_MINVOL1M | [1,0] | SUBINDUSTRY | win 配方：0.4 慢 MODEL 残差 + 0.6 快 PV，decay4；换腿扩配 |
-| GBR | TOP700 | [1,0] | SUBINDUSTRY | TOP700/D1/SUBINDUSTRY 为 region_kb settings_proven；delay0 可探 |
+| GBR | TOP700 | [1,0] | SUBINDUSTRY | TOP700/D1/SUBINDUSTRY 为 region_kb settings_proven；~~delay0 可探~~（D0 已排除） |
 | KOR | TOP600 | [1] | STATISTICAL | 有效面=分析师预期变化；图表/新闻/AI/信用四大红灯；CW 闸升级 FAIL |
 | GLB | TOP3000 | [1] | SUBINDUSTRY | 跨区铁律发源地：emotion 死路 + anl15 精确表达式封禁；大宇宙跨区组合 delay 需实测 |
 | IND | TOP500 | [1] | SUBINDUSTRY | TOP500 长窗结构区：2Y Sharpe 强，`scale(-rank(x))` 破墙语法实证 |

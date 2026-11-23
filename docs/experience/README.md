@@ -20,7 +20,7 @@
 | 文件 | 主题 | 核心内容 |
 |---|---|---|
 | [01_platform_gates.md](01_platform_gates.md) | **平台规则与硬门槛** | 提交层四闸、SUB 比值律、配额、相关性取数、点塔口径、universe/中性化合法档位、幽灵算子与幽灵字段 |
-| [02_signal_patterns.md](02_signal_patterns.md) | **信号 / 结构有效性规律** | 合规单信号结构、组合形态铁律、破闸旋钮（分组轴 / decay / 中性化）、IS→OS 衰减、漏斗真相、时间轴回归族（§18 `ts_step`/`rettype`） |
+| [02_signal_patterns.md](02_signal_patterns.md) | **信号 / 结构有效性规律** | 合规单信号结构、组合形态铁律、破闸旋钮（分组轴 / decay / 中性化）、IS→OS 衰减、漏斗真相、时间轴回归族（§18 `ts_step`/`rettype`）、**梯度分层扫描纪律（§27：层×类内全覆盖 / 5 条 no-op 律 / settings 一值一批）** |
 | [03_region_dataset.md](03_region_dataset.md) | **区域与数据集特性** | 12 区实测画像、已判死数据集清单、塔点亮状态、选区优先级 |
 | [04_engineering.md](04_engineering.md) | **工程与流程纪律** | skill 单点写入、DB 写锁与裸连接守卫、闸 SEM、提交钩子、测试守护、并发会话纪律 |
 | [05_antipatterns.md](05_antipatterns.md) | **反模式与已证伪路径** | 加权混腿禁令、同族连提、存量微调抢救、已证伪端点与算子、误判陷阱 |

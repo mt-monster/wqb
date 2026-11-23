@@ -149,3 +149,63 @@ def gate_allowed(result: Any, threshold: Optional[float] = None) -> bool:
     """
     v = prod_verdict(result, threshold)
     return bool(v["usable"] and v["passes"] is True)
+
+
+def archive_fields(result: Any, threshold: Optional[float] = None) -> Dict[str, Any]:
+    """产出**可直接落档案/台账**的 prod 字段（交付层强制记录用，2026-11-23）。
+
+    动机：本轮 imb5 的 prod 来源（缓存 vs 实测）只写在人脑里，N1PlYMGX 缓存 0.60
+    被当成可交付依据，refresh 后真值 0.9726（漂移 +0.37）。档案必须自带来源与时刻，
+    否则「这个 0.60 是怎么来的」无从复核。
+
+    返回字段（键名与 ``alphas.prod_corr_source`` / ``corr_checked_at`` 对齐）::
+
+        {"prod_correlation": value|None,
+         "prod_corr_source": "<provenance>:<source>",
+         "corr_checked_at": "<UTC ISO8601>|None",
+         "prod_provenance": "platform_live|cache|preread|nonrealtime|unavailable",
+         "prod_usable": bool, "prod_passes": bool|None,
+         "prod_age_hours": float|None, "prod_status": str}
+
+    ``corr_checked_at`` 取缓存测量时刻（``cached_at``）或本次实测时刻（无则 None，
+    **不伪造 now**——预读值测量时间不可知，写 now 会制造假新鲜度）。
+    """
+    from datetime import datetime, timezone
+
+    v = prod_verdict(result, threshold)
+    checked = v.get("cached_at")
+    if not checked and v.get("provenance") == "platform_live":
+        checked = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    src = v.get("provenance") or "unavailable"
+    if v.get("source"):
+        src = f"{src}:{v['source']}"
+    return {
+        "prod_correlation": v.get("value"),
+        "prod_corr_source": src,
+        "corr_checked_at": checked,
+        "prod_provenance": v.get("provenance"),
+        "prod_usable": bool(v.get("usable")),
+        "prod_passes": v.get("passes"),
+        "prod_age_hours": v.get("age_hours"),
+        "prod_status": v.get("status"),
+    }
+
+
+def delivery_block(result: Any, threshold: Optional[float] = None) -> Optional[str]:
+    """交付层唯一放行前检查：返回阻断原因（None = 放行）。
+
+    比 :func:`gate_allowed` 严格一档——**交付终验要求 ``platform_live``**：
+    48h 缓存虽够判闸（gate_allowed 放行），但交付前必须 refresh 实测，
+    否则就是本轮 N1PlYMGX 0.60→0.9726 的重演。
+    """
+    v = prod_verdict(result, threshold)
+    if v["status"] in _UNAVAILABLE_STATUSES:
+        return f"prod 不可用（status={v['status']}）⇒ 先 refresh=True 实测，不得交付"
+    if v["value"] is None:
+        return "prod 无有效数值 ⇒ 先 refresh=True 实测，不得交付"
+    if v["provenance"] != "platform_live":
+        return (f"prod 来源 {v['provenance']}（非本轮实测）⇒ 交付前必须 "
+                "check_correlation(refresh=True) 重测")
+    if v["passes"] is not True:
+        return f"prod {v['value']} ≥ {v['threshold']} ⇒ 撞红线，不得交付"
+    return None

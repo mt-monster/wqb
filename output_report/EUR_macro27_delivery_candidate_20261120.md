@@ -23,7 +23,7 @@
 | prod 相关性 | **0.5339**（平台 <0.7 ✓ / 内部严线 <0.65 ✓） |
 | self 相关性 | **0.2613**（平台 <0.7 ✓ / 内部严线 <0.50 ✓） |
 | platform checks | `checks.fail` 空，`ra_failed=false`，LOW_SHARPE/LOW_FITNESS/TO/CW/SUB/2Y/MATCHED_PYRAMID 全部 PASS |
-| pyramid | **EUR/D1/MACRO**（mult 1.2，该塔当前 0/3） |
+| pyramid | **EUR/D1/MACRO**（mult 1.2，该塔当前 1/3，vRAOWYra 已点亮；本件为第 2 席） |
 
 ## 二、字段画像（要点）
 
@@ -66,7 +66,7 @@
 | self（平台 0.7 / 内部 0.50） | 0.2613 | ✅ 双过 |
 | TO 内部严线 [5%,20%] | 17.39% | ✅ |
 | 档位性质 | risk_neutralized_sharpe 有值 | ✅ 标准档（可交付） |
-| 塔位 | EUR/D1/MACRO 0/3 | ✅ 新塔（点亮第 1 席） |
+| 塔位 | EUR/D1/MACRO 1/3（未满，提交后 2/3） | ✅ 未满塔（与 vRAOWYra 同族 self 0.261） |
 | 数据层 | 2014–2020 零持仓属**序列起点型缺失**（用户 2026-11-20 已放开年限约束） | ✅ 不构成排除 |
 | 内部严线残余 | investability 保留比例 0.555（灰区，非硬失败） | ⚠ |
 | 提交 | 需用户明确确认（不可逆） | ⏸ **未提交** |

@@ -36,7 +36,7 @@ allowed-tools:
 | **最小集（一批）** | 法 1、法 2、法 3 的 N = 5 / 22 / 66、法 4 的 X = 1 | 6 |
 | 扩展集（再一批，仅对将当主信号的字段） | 法 4 的 X = 10 / 100、法 5 的 X = 0 / 1、法 6 的 2–3 个刻度 | ≤ 8 |
 
-- **合批**：`mcp__wq-brain-http__create_multi_simulation`（单次 2–10 条，本仓库标准批 8 条）。**multisim 是连坐语义**——批内任一条 ERROR，其余全部 CANCELLED（toolkit §11）；且该入口有**静态门禁**（语法 / 不可访问算子 / 毒模式），任一条不过就整批拒绝。所以只用**已在平台算子目录（103 个）里的算子**、只写本仓库文法认得的语法（**没有 `? :` 三元**——原帖的 `datafield != 0 ? 1 : 0` 会被拒，比较式本身就返回 0 / 1，直接写 `datafield != 0`）；字段类型没把握（VECTOR / EVENT）先做**单条**探针（`rank(field)` → `rank(vec_avg(field))`），再合批。
+- **合批**：`mcp__wq-brain-http__create_multi_simulation`（单次 2–10 条，本仓库标准批 8 条；**平台硬约束，单元素数组被 400 拒绝**——2026-11-21 实测）。**multisim 是连坐语义**——批内任一条 ERROR，其余全部 CANCELLED（toolkit §11）；且该入口有**静态门禁**（语法 / 不可访问算子 / 毒模式），任一条不过就整批拒绝。所以只用**已在平台算子目录（103 个）里的算子**、只写本仓库文法认得的语法（**没有 `? :` 三元**——原帖的 `datafield != 0 ? 1 : 0` 会被拒，比较式本身就返回 0 / 1，直接写 `datafield != 0`）；字段类型没把握（VECTOR / EVENT）先做**2 条探针**（`rank(field)` + `rank(vec_avg(field))` 同批对照，MCP 单仿真工具已删故单条不可发），再合批。
 - **设置**：Neutralization `None`、Decay `0`、Test Period `P0Y0M0D`（「无测试期」的规范写法；旧文的 `P0Y0M` 也被接受，`P6Y` 是真实 6 年测试期，别混）；region / delay / universe 与目标战役一致（`config.REGIONS[<R>]`）。看 IS Summary 的 **Long Count** 与 **Short Count**。
 - **不入库**：手工 `create_multi_simulation` 不经 `workflow_batch_track` / `harvest_*`，不写 `backtest_results`，不进战役统计（除非你自己去 harvest）；与在跑的战役批**共用账户并发上限**，先 `workflow_task_status` 看有没有批在跑。结论写进对话 / `reports/`，不要为它们造战役波。
 

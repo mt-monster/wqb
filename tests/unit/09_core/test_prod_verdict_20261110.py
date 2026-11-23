@@ -106,3 +106,66 @@ def test_custom_threshold():
 def test_default_threshold_from_config():
     from wqb.config import PRODCORR_CEILING
     assert prod_verdict(_blk(max_correlation=0.5))["threshold"] == float(PRODCORR_CEILING)
+
+
+# ── 2026-11-23 用户「三、优化空间」第 5 条：档案字段 + 交付层强制 ──────────
+# 实证：imb5 N1PlYMGX 缓存 0.60(gate_allowed 放行) → refresh 真值 0.9726（漂移 +0.37）
+# ⇒ 交付前必须 platform_live；缓存够判闸但不够交付。
+def test_archive_fields_record_provenance_and_time():
+    from wqb.prod_verdict import archive_fields
+
+    af = archive_fields(_blk(max_correlation=0.42))
+    assert af["prod_correlation"] == 0.42
+    assert af["prod_provenance"] == "platform_live"
+    assert af["prod_usable"] is True and af["prod_passes"] is True
+    assert af["corr_checked_at"]  # 实测时刻必须落下来
+    assert af["prod_corr_source"].startswith("platform_live")
+
+
+def test_archive_fields_never_fake_freshness_for_preread():
+    """预读值测量时间不可知 ⇒ corr_checked_at 必须是 None，不得写 now 造假新鲜度。"""
+    from wqb.prod_verdict import archive_fields
+
+    af = archive_fields(_blk(max_correlation=0.6, provisional=True))
+    assert af["prod_provenance"] == "preread"
+    assert af["corr_checked_at"] is None
+    assert af["prod_usable"] is False
+
+
+def test_archive_fields_keep_cached_at_from_source():
+    from wqb.prod_verdict import archive_fields
+
+    af = archive_fields(_blk(max_correlation=0.6, from_cache=True,
+                             source="check_correlation",
+                             cached_at="2026-11-23T10:57:22"))
+    assert af["corr_checked_at"] == "2026-11-23T10:57:22"
+    assert af["prod_provenance"] == "cache"
+
+
+def test_delivery_block_rejects_cache_even_if_passing():
+    """缓存值 passes=True 也拦：交付终验必须 refresh 实测（本轮 0.60→0.9726 教训）。"""
+    from wqb.prod_verdict import delivery_block, gate_allowed
+
+    blk = _blk(max_correlation=0.6, from_cache=True, source="check_correlation")
+    assert gate_allowed(blk) is True          # 判闸够用
+    assert "refresh=True" in delivery_block(blk)  # 交付不够用
+
+
+def test_delivery_block_rejects_live_fail():
+    from wqb.prod_verdict import delivery_block
+
+    msg = delivery_block(_blk(max_correlation=0.9707))
+    assert msg and "撞红线" in msg
+
+
+def test_delivery_block_allows_live_pass():
+    from wqb.prod_verdict import delivery_block
+
+    assert delivery_block(_blk(max_correlation=0.42)) is None
+
+
+def test_delivery_block_rejects_unavailable():
+    from wqb.prod_verdict import delivery_block
+
+    assert "refresh=True" in delivery_block({"status": "platform_unavailable",
+                                             "checks": {"production": {"status": "platform_unavailable"}}})

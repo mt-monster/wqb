@@ -75,7 +75,7 @@
 | 4 | S2 概念优先生成 | `workflow_gem`（强制；引擎 = `brain-make-some-gem` headless_runner） |
 | 5 | S2→S3 门禁 | `workflow_execute(node="wave_gate")`（2026-09-11 起有节点）或 CLI `tools/wave_gate.py`（已内置体检硬门 `tools/field_inspect_gate.py`；多样性走 toolkit `gate.py` 闸6） |
 | 6 | S3 并发回测 | `workflow_batch_track`（并发参数见 `wqb.config.CONCURRENCY` 与 `wqb-concurrency` §8） |
-| 7 | S4 诊断改进 | `workflow_campaign(stage="S4")` + `wq-brain-alpha-optimization-v1` |
+| 7 | S4 诊断改进 | `workflow_campaign(stage="S4")` + `wq-brain-alpha-optimization-v1`；**梯度回测必做**（2026-11-21 用户指令：同槽位全类别替换 + Δ 表 + 逐层推进，未完成梯度的数据集「天花板/判死」只能记 PROVISIONAL；见 ra-pipeline 步 7 与 `references/step7-diagnose.md` §7.10）。**四只闸的分工与判据见 `docs/experience/04_engineering.md` §19**（六条落地纪律 2026-11-23）：`gates/gradient_gate.py`=痕迹在不在｜`research/gradient_coverage.py`=每层缺哪几个臂（catalog 全类别覆盖率 + 缺臂 plan + 算子 lint）｜`gates/gradient_stop_gate.py`=该不该停（D1 L1 极差 / D2 TO 带 / D3 三点 / **D5 prod 前置**：prod≥0.90⇒TRANSFER、≥0.70⇒STOP、不可用⇒不可判闸）｜`submit_verdict --prod`=交付层强制本轮实测（缓存/预读一律 BLOCKED） |
 | 8 | S4→S5 稳健闸与提交判定 | `brain-alpha-robustness` → `submit_verdict`（**否决权威**：只能拦不能放）→ `check_correlation(refresh=False)` prod 闸（48h 缓存优先，不默认回源）→ **用户确认** → `workflow_submit_alpha(confirm_submit=True)`（不可逆） |
 | 9 | S6 复盘回写 | `mcp__wqb-db__upsert_wave_result` / `seal_dead_end` / `upsert_registry_empirical`，再跑一次 `assemble-priors`（完成定义见 ra-pipeline `references/step9-writeback.md`） |
 

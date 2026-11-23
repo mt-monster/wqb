@@ -120,13 +120,13 @@ def render_ladder() -> str:
     plo, phi = pl["turnover_range"]
     rows = [
         ("IS Sharpe（`LOW_SHARPE`）",
-         f"Delay-1 > {pl['low_sharpe_min']['delay1']:g} / Delay-0 > {pl['low_sharpe_min']['delay0']:g}",
+         f"Delay-1 > {pl['low_sharpe_min']['delay1']:g}（D0 已排除）",
          f"> {i['sharpe_min']:g}", "`PLATFORM_CHECK_LINES.low_sharpe_min` / `GATES_INTERNAL.sharpe_min`"),
         ("2Y Sharpe（`LOW_2Y_SHARPE` / `IS_LADDER_SHARPE`）",
          f"> {pl['low_2y_sharpe_min']:g}", "—（内部线已取 1.58）",
          "`PLATFORM_CHECK_LINES.low_2y_sharpe_min`；提交准入线 `GATES_PLATFORM.sharpe_min` 取的就是它"),
         ("Fitness（`LOW_FITNESS`）",
-         f"Delay-1 > {pl['low_fitness_min']['delay1']:g} / Delay-0 > {pl['low_fitness_min']['delay0']:g}",
+         f"Delay-1 > {pl['low_fitness_min']['delay1']:g}（D0 已排除）",
          f"> {i['fitness_min']:g}", "`PLATFORM_CHECK_LINES.low_fitness_min` / `GATES_INTERNAL.fitness_min`"),
         ("换手（`LOW_TURNOVER` / `HIGH_TURNOVER`）",
          f"∈ [{_pct(plo)}, {_pct(phi)}]", f"∈ [{_pct(lo)}, {_pct(hi)}]",

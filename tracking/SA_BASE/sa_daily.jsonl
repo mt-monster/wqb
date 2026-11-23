@@ -56,3 +56,5 @@
 {"date_et":"2026-11-13","n":1,"ids":["Wjl6JJQO"],"region":"EUR","S":6.13,"F":4.69,"prod":0.6413,"self":0.6173,"TO":0.2691}
 {"date_et":"2026-11-15","n":1,"ids":["KPg60XNp"],"region":"KOR","S":5.96,"F":7.5,"prod":0.5475,"self":0.5475,"TO":0.1729}
 {"date_et":"2026-11-16","n":1,"ids":["pwa8mYvV"],"region":"GBR","S":5.05,"F":5.18,"prod":0.6548,"self":0.6548,"TO":0.1351}
+{"date_et":"2026-11-20","n":1,"ids":["gJaaER8K"],"region":"IND","S":5.11,"F":5.5,"prod":0.5969,"self":0.5969,"TO":0.1794}
+{"date_et":"2026-11-21","n":1,"ids":["A1xmpg9R"],"region":"KOR","S":5.12,"F":5.01,"prod":0.5178,"self":0.5178,"TO":0.2376,"pyramid_mult":"1.0-1.6","tier":"双5","note":"combo n90; KOR 双5 最低 PC 纪录; base 预估 +$0.09~0.11/天"}

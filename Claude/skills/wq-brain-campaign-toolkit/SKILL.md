@@ -186,7 +186,7 @@ RA 步 6 的「超时恢复清单」指向本节。救援池的来源排除是�
 multisim 是**连坐**语义：批内任一子模拟 ERROR，其余全部 CANCELLED。**排障时禁止再用 multisim 二分**（JPN `Invalid data field close` 实证：3 条 multisim 二分 → 3 条全 ERROR，两批白烧）。
 
 1. 先本地：`python tools/campaign_intel.py ghost-audit`（幽灵算子）→ `wave_gate.py --expr`（语法 / 字段 / 区域非法字段）。
-2. 仍需平台定位时，用**单条** `mcp__wq-brain-http__create_simulation`，按「最简 → 最复杂」逐层加：`rank(field)` → `rank(vec_avg(field))`（VECTOR）→ 加一层 `ts_*`（`ts_delta(field,5)`）→ 加 group / bucket；**第一条报错的层即病灶**。
+2. 仍需平台定位时，用 `mcp__wq-brain-http__create_multi_simulation` **每次 2 条**（2026-11-21 起单仿真 `create_simulation` 已从 MCP 层删除，且平台拒绝单元素数组——故探针也是 2 条：一条基线 `rank(field)` + 一条待测），按「最简 → 最复杂」逐层加：`rank(field)` → `rank(vec_avg(field))`（VECTOR）→ 加一层 `ts_*`（`ts_delta(field,5)`）→ 加 group / bucket；**第一条报错的层即病灶**。
 3. 报错文本与表达式无关时（如 `Invalid data field close` 而式中无 close）先查区域数据可用性：`get_datasets(region, delay, universe, category=pv)` 看 pv1 是否存在（JPN / TOP1600 / D1 无 pv1 → 任何 `ts_*(vec_*(…))` 必错）。
 4. 结论写入 `references/regions/<R>.md` 硬事实 + `platform_constraints.json`（`region_invalid_fields` / `region_vector_ts_forbidden`）+ GEM 侧预闸 `pipeline_pregate.py`，让 GEM 预闸与闸 2b 在下一波前拦住——三处同步，不留口头记忆。
 5. `pipeline.py` 收批日志里 `隔离坏式=N 重发批=M` 是兜底信号：N > 0 说明预闸缺规则，回到第 4 步补规则。
@@ -245,7 +245,7 @@ multisim 是**连坐**语义：批内任一子模拟 ERROR，其余全部 CANCEL
 ### 情景 TK-B　新数据集首波报 `Invalid data field close`
 
 - **前置状态**：JPN / TOP1600 / D1，式中并无 close。
-- **步骤**：按 §11 的二分协议：本地 ghost-audit → 单条 `create_simulation` 逐层加 → 查区域是否有 pv1 → 把结论写进 profile + `platform_constraints.json` + `pipeline_pregate.py`。
+- **步骤**：按 §11 的二分协议：本地 ghost-audit → `create_multi_simulation` 每次 2 条（基线+待测；单仿真工具已删、平台拒单元素）→ 查区域是否有 pv1 → 把结论写进 profile + `platform_constraints.json` + `pipeline_pregate.py`。
 - **完成定义**：下一波 GEM 预闸 / 闸 2b 在本地就拦住同类式子。
 - **反例**：用 multisim 二分；只在对话里记住「JPN 不能用 ts_*(vec_*)」。
 

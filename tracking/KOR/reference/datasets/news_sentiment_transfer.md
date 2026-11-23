@@ -157,4 +157,13 @@ M3 与 M5 是**B 有机制、A 有零散表达** ⇒ 自建骨架，降优先级
 
 | wave | 腿 | 机制 | 表达式（截断） | alpha | S | 2Y | F | TO | 结论 |
 |---|---|---|---|---|---|---|---|---|---|
-| 203 | 待填 | | | | | | | | |
+| 203 | 1 | M1 语调水平 | `hump(subtract(rank(ts_decay_linear(sentiment_score_average, 22)), 0.5), hump=0.003)` | e7aaEnGE | 0.41 | 1.06 | 0.08 | **1.361** | **不交付**：TO 1.36、CW 1.0@2021-03-09、**longCount 仅 42** |
+| 203 | 2 | M2 分歧溢价 | `hump(subtract(0.5, rank(subtract(sentiment_score_maximum, sentiment_score_minimum))), hump=0.003)` | Grmm9nxP | −0.04 | −0.40 | 0.0 | **1.386** | 无信号，结构同病 |
+| 203 | 1b | M1 去 hump 长窗 | `group_rank(ts_decay_linear(sentiment_score_average, 66), sector)` | vRAAEm0a | 0.36 | 0.59 | 0.07 | **1.354** | **仍不交付**：去 hump 后 TO 未降 |
+| 203 | 2b | M2 去 hump 长窗反向 | `multiply(-1, group_rank(ts_decay_linear(subtract(sentiment_score_maximum, sentiment_score_minimum), 66), sector))` | 9qlleRox | 0.03 | −0.22 | 0.0 | **1.315** | 无信号 |
+
+**2026-11-21 wave 203 归因（四条腿两条结论）**：
+
+- **`hump=0.003` 把书压到 42 只**：两腿 `longCount/shortCount` 都只有 42/43，是 CW 1.0 的直接原因——小 hump 参数使绝大多数名字的权重被压到接近 0，只有极端分位的名字吃到权重 ⇒ 集中度爆发。**本集的 hump 配方（KOR 记录的 CW 破法）在这里起反作用**。
+- **但 TO 1.31–1.39 不是 hump 造成的**：去掉 hump、把平滑窗从 22 拉到 66，**TO 几乎没动**（1.354 / 1.315）。⇒ 根因是 **`rank/group_rank` 的每日截面重排本身失控**（该集信号弱、逐日噪声大，排名翻转频繁），平滑窗救不了。
+- M1 的 S 0.36→0.41（两版）是真实弱信号（方向不反），**本集在当前包装下无可行点**：S 远低于 1.58，TO 恒在 1.3 量级。**按止损纪律，sentiment 塔本集暂不再投入**（除非换掉截面重排的外层算子族，如 `ts_quantile` 内核）。

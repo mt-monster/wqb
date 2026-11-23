@@ -45,7 +45,9 @@ def test_brain_client_singleton_identity():
 def test_each_tool_module_registers_at_least_one_tool():
     import importlib
     expected = {
-        "tools_config": 1, "tools_labs": 3, "tools_account": 13, "tools_sim": 6,
+        # 2026-11-21：tools_sim 6→5，单仿真 create_simulation 已从 MCP 层删除
+        # （用户指令：回测一律走 create_multi_simulation；底层方法保留给内部链路）。
+        "tools_config": 1, "tools_labs": 3, "tools_account": 13, "tools_sim": 5,
         "tools_alpha": 8, "tools_data": 10, "tools_submit": 0, "tools_corr": 3,
         "tools_forum": 5, "tools_spc": 4, "tools_ops": 7,
     }

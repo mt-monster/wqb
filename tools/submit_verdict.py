@@ -54,6 +54,7 @@ def _render_checks(checks):
 async def main():
     ap = argparse.ArgumentParser(description="提交层判定：模拟层 + GET /alphas/{id}/submit 双视图（否决权威）")
     ap.add_argument("--alpha-id", required=True)
+    ap.add_argument("--prod", help="check_correlation 返回体 JSON 路径（交付层强制：必须是 refresh=True 实测值）")
     ap.add_argument("--json", action="store_true", help="末行追加机器可读 JSON（含 exit_code / reason_code）")
     a = ap.parse_args()
 
@@ -126,6 +127,27 @@ async def main():
         print(f"  {result['verdict_note']}")
     print(f"  下一步: {result['next_step']}")
 
+    # 交付层 prod 强制闸（2026-11-23 用户「三、优化空间」第 5 条落地）：
+    # --prod 给了就必须是 refresh=True 的本轮实测值，否则 BLOCKED（不是 UNVERIFIABLE）。
+    # 实证：imb5 N1PlYMGX 缓存 0.60 被判 PASS，refresh 后真值 0.9726（漂移 +0.37）。
+    if a.prod:
+        from wqb.prod_verdict import archive_fields, delivery_block
+        prod_raw = json.load(open(a.prod, encoding="utf-8"))
+        block = delivery_block(prod_raw)
+        af = archive_fields(prod_raw)
+        print("\n--- 交付层 prod 闸（--prod）---")
+        print(f"  prod={af['prod_correlation']} source={af['prod_corr_source']} "
+              f"checked_at={af['corr_checked_at']} passes={af['prod_passes']}")
+        print(f"  [archive] {json.dumps(af, ensure_ascii=False)}")
+        if block:
+            result = dict(result)
+            result["verdict"] = "BLOCKED"
+            result["exit_code"] = EXIT_CODES["BLOCKED"]
+            result["reason_code"] = "PROD_GATE"
+            result["verdict_note"] = block
+        if result["verdict"] == "BLOCKED":
+            print(f"  BLOCKED: {block or result.get('verdict_note')}")
+
     # 队列状态升级：仅 SUBMITTABLE（防御分支）时把待提交队列该条 IS_ONLY → SUBMIT_LAYER_VERIFIED。
     # 容错：绝不影响判定结果与退出码。
     if result["verdict"] == "SUBMITTABLE":
@@ -147,7 +169,8 @@ def _finish(result, as_json, exit_codes):
     if as_json:
         print(json.dumps({k: result.get(k) for k in (
             "alpha_id", "alpha_status", "verdict", "exit_code", "reason_code", "next_step",
-            "failed_ra", "failed_ppa", "submit_status", "is_ppa")}, ensure_ascii=False))
+            "failed_ra", "failed_ppa", "submit_status", "is_ppa",
+            "prod_gate_block")}, ensure_ascii=False))
     sys.exit(exit_codes[result["verdict"]])
 
 

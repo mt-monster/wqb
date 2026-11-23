@@ -35,6 +35,9 @@ last_verified: 2026-11-20
    > （DEU 四段式准入 + ATOM 免 IS_Ladder + 已判死类别），通用方法论走 [`wq-basket-composition`](../wq-basket-composition/SKILL.md)。
    > **跑类别战役波次循环时**：每波骨架与硬约束（≤10 臂、并发≤2、臂序归因、预检判据顺序）读
    > [`references/_atom-wave-loop.md`](references/_atom-wave-loop.md)；杠杆与反模式读 [`references/_effective-levers.md`](references/_effective-levers.md)。
+   > **收割已有池（零仿真配额）/ 判克隆墙时**：读 [`references/_harvest-and-clone-wall.md`](references/_harvest-and-clone-wall.md)
+   > （收割分诊的正确分母＝`pyramids.effective ≥ 1` 而非「塔位未点亮」；收割顺序 prod → **本地** self-corr → **本地** 互相关 → 逐年；
+   > 「换字段 ≠ 换信息」；平台 prod 服务账号级熔断的处置；本会话内 MCP 参数类型被压平的绕过办法）。
 4. **步 9 回写之后**刷新组合证据并重渲本 skill：
 
    ```bash

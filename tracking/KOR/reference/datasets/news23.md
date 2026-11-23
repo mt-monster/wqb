@@ -64,4 +64,45 @@
 
 ## 5. 已试记录（追加，不覆盖）
 
-（待本战役波次写入：alpha id / 表达式 / S/F/2Y/failed_ra/prod / 淘汰原因）
+> 2026-11-22「每集 ≥5 模板 + 每模板完整梯度」补齐战役。达标标准见记忆
+> `imbalance-news-template-gradient-compliance-20261122`。全部 KOR/TOP600/D1/INDUSTRY/decay4/trunc0.08。
+
+### 5.1 五模板定义（互异经济机制，非换窗/常数）
+| 模板 | 机制 | 主字段族 |
+|---|---|---|
+| T1 目标方规模 | 目标方销售/净值水平（aC 头部轴） | 族 B `nws23_target_*` |
+| T2 报价溢价 | offer premium 相对公告前价 | 族 A `offer_premium_*` |
+| T3 交易估值 | 报价/估值比 rankval、pricebook | 族 B `nws23_target_rank*` |
+| T4 目标方盈利 | EPS / 净利润 | 族 B `nws23_target_mtlspe/niltm` |
+| T5 收购方规模 | 收购方销售/对价（事件结果，非未来函数字段） | 族 C `nws23_acquiror_asalesltm/value` |
+
+### 5.2 L1 外层截面全类别替换（已完成，5 wave 全 FAIL）
+| 模板 | wave | 最优 alpha | 表达式 | S | F | 2Y | failed_RA | 判 |
+|---|---|---|---|---:|---:|---:|---:|---|
+| T1 | `s2_news23_T1_targetsize_L1_d1` | `MP6VOR06` | `rank(ts_mean(ts_backfill(vec_avg(nws23_target_niltm),22),22))` | 0.23 | 0.11 | −0.01 | — | S 差 1.35，20–60 持仓/年 |
+| T2 | `s2_news23_T2_premium_L1_d1` | `1YW0eWjm` | premium 族 backfill+rank | 0.22 | 0.14 | 0.36 | — | CW FAIL，事件极稀疏（lc≈20） |
+| T3 | `s2_news23_T3_valuation_L1_d1` | `akaGYdv5` | `zscore(...target_rank_rankval...)` | 0.30 | 0.17 | −0.18 | — | 全族最弱 |
+| T4 | `s2_news23_T4_earnings_L1_d1` | `vRAPMerA` | EPS/niltm backfill+rank | 0.20 | 0.09 | 0.10 | — | 无信号 |
+| T5 | `s2_news23_T5_acquiror_L1_d1` | `58JYo0zo` | `group_zscore(ts_mean(ts_backfill(vec_avg(nws23_acquiror_asalesltm),22),22),sector)` | **0.63** | **0.51** | **1.79** | 3（S/F/CW） | ★本集最强，2Y 已过闸、S 差 0.95、CW 0.1127 |
+
+**L1 结论**：T5 收购方规模唯一有读数（S0.63/2Y1.79），T1–T4 全部 S≤0.30。M&A 事件极稀疏（longCount 20–61），截面排序几乎无定价力；2Y 偶高是事件窗效应非稳定信号。
+
+### 5.3 L2 内层时序全类别替换（逐模板推进）
+| 模板 | wave | 内层全类别替换 8 臂最优 | S | 2Y | L1→L2 Δ | 结论 |
+|---|---|---|---:|---:|---|---|
+| T1 | `s2_news23_T1_targetsize_L2_d1` | `xAv5a0jn` `ts_mean(252)` | 0.54 | 0.13 | 0.23→**0.54 (Δ+0.31)** | 长窗抬 S 但 2Y 崩，距闸 1.04；内层收敛 |
+| T3 | `s2_news23_T3_valuation_L2_d1` | `0mP5nGwp` `ts_backfill(22)` | 0.64 | 0.27 | 0.30→**0.64 (Δ+0.34)** | 本集 L2 最高 S；另 `xAv5XlYn` 2Y1.85 过闸但 S0.51/CW0.1215 微超；CW 主墙（7/8）|
+| T4 | `s2_news23_T4_earnings_L2_d1` | `wpoWOgl5` `ts_mean(66)` | 0.38 | 0.17 | 0.20→**0.38 (Δ+0.18)** | EPS 族无定价力，CW 主墙（5/8）；内层收敛 |
+| T2 | `s2_news23_T2_premium_L2_d1` | `wpoW6bGl` `ts_zscore(252)` | 0.29 | 0.51 | 0.22→**0.29 (Δ+0.07)** | 最优臂 longCount=3/CW=1.0，`ts_delta` 臂 lc=sc=0 零持仓异常；CW 是主墙（6/8）；内层收敛 |
+| T5 | `s2_news23_T5_acquiror_L2_d1` | `akaGvrd9` `ts_mean(66)` / `RRePWJ1n` `ts_mean(66,66)` | 0.31 | 0.69/0.58 | 0.63→**0.31 (Δ−0.32)** | **内层替换全灭**，L1 的 `ts_mean(ts_backfill(...,22),22)` 确认为最优；CW 是主墙（5/8） |
+
+T5 L2 内层替换明细（外层 `group_zscore(...,sector)` 冻结）：`ts_backfill(22)` S0.22 / `ts_mean(66)` **S0.31** / `ts_decay_linear` S0.27 / `ts_av_diff` −0.33 / `ts_delta` 0.04 / `ts_backfill(66)` 0.31 / `ts_backfill(252)` 0.28 / `ts_zscore(252)` −0.02。**全类别内层替换无一超过 L1 基线 S0.63 ⇒ T5 内层收敛**。
+
+T1 L2 内层替换明细（外层 `rank(...)` 冻结）：`ts_backfill(22)` S0.11 / `ts_mean(66)` 0.37 / `ts_decay_linear` 0.07 / `ts_av_diff` −0.19 / `ts_delta` 0.37 / `ts_mean(66,66)` 0.38 / `ts_mean(252)` **0.54** / `ts_zscore(252)` −0.26。**长窗 252 抬 S 到 0.54 但 2Y 崩到 0.13，距全闸 1.04 ⇒ T1 内层收敛**。
+### 5.4 收口判定（2026-11-22）
+**news23 已满足「≥5 模板 + 每模板完整梯度」**：T1–T5 五个互异经济机制模板 × 每模板 (L1 外层截面全类别替换 8 臂 + L2 内层时序全类别替换 8 臂) = 10 wave / 80 臂，全部入库。
+- **0 全闸**：全集最高 S0.64（T3 L2 `0mP5nGwp`）距闸 0.94；T5 L1 `58JYo0zo` S0.63/2Y1.79 是唯一 2Y 过闸臂但 S 差 0.95。
+- **主墙 = CW/CONCENTRATED_WEIGHT**（M&A 事件极稀疏，longCount 20–60，极端权重集中）+ S 全线塌（目标方规模/溢价/EPS 族无截面定价力）。
+- **跨族不外推**：族 A 溢价、族 B 估值/盈利、族 C 收购方规模三族各自收敛，2Y 偶高（T3 `xAv5XlYn` 1.85）是事件窗效应，非稳定信号。
+- **不判死**：按红线「轻易不要把数据集判死」，本集记作「梯度证据完整、信号层弱（0 全闸）」；如需新线只能引外部新信息源，不得用本结论外推其它 news 集。
+- 证据闸：论坛 MCP 检索无 M&A 特异模板帖；论文多样证 PASS（16 篇/13 作者，含 JFE《Premium for heightened uncertainty》）。

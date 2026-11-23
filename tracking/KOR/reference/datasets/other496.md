@@ -252,3 +252,68 @@ sim `4aNQ1xeXy4olczb170G4VbBZ`，2 子 0 错。**两个方向都归于零**（|S
 - **本集封账**：独立机制轴已穷尽（四轴全判死），不再开波。VECTOR 共识族经机制反查确认**不属新轴**
   （stddev=分歧度 wave 245 毛 0.05；difference=修正幅度四波死；numitems=广度 wave 267 死；水平轴已由 `xAY86Mkl` 收割）
   ⇒ **不投**，见上一条。
+
+## 8. 2026-11-21 增量：OTHER 塔补席战的零配额收割 + investability 修复批
+
+> 背景：OTHER 塔 2/3 剩 1 席（`get_pyramid_alphas` 实读），全库 prod_clean 盘点（26 颗）后本集 `2rAVLRYP`
+> 是唯一落在未亮塔的候选 ⇒ 零配额收割面聚焦于此。
+
+### 8.1 字段全表复核（104/104，`get_datafields` dataset 级全量，filter_sharpe=false）
+
+与 2026-09-02 快照的差异：**αC 全线上涨**（returns2 294→317 / limit_status 211→252 /
+aftercons_difference 10→32 / aftercons_percentage 3→28）——本集在市场上加速被消费。
+VECTOR 共识族 cov 读数与旧档一致（.61–.69）。分母无通配，全表带实测 cov。
+**头部轴仍 = returns2/limit_status（价格/状态），不是共识轴**（0.1 结论不变）。
+
+### 8.2 `2rAVLRYP` 平台实读（0 配额，get_alpha_details）
+
+- 塔位：**KOR/D1/OTHER，effective=1**（确认落在剩 1 席的塔）
+- 表达式：`group_rank(ts_backfill(vec_avg(oth496_aftercons_percentage), 44), sector)`，STATISTICAL/d2/trunc .08，FULL
+- 指标：S1.67 / F1.04 / TO0.1955 / **2Y 2.82** / subU 1.36 / ret .0753 / DD .0701 / long 276 short 361
+- prod **0.6595**（< 0.70 ✅，2026-11-09 实测）/ self 未测
+- RA checks：**fail=[]**，warning = `LOW_INVESTABILITY_CONSTRAINED_SHARPE`（0.91 vs 1.17）+
+  CLUSTER_TEST 0.96；failed_ra_count=**1**（warning 计失败口径）
+- investability ratio = invest_S/S = 0.91/1.67 = **0.545 < 0.70**
+
+### 8.3 闸失败归因（gate_attribution）与修复批
+
+- 裁决 = **PUSH_TARGETED**；F 闸闭式可行性：TO 0.1955 已带内，already_passes —— F 无缺口
+- 杠杆序：① loosen_concentration（winsorize/tail 放尾部）② finer_group_axis ③ decay 压 TO
+- 修复批 `1gtvrPbBQ55aa6y168vEf6C0`（10 臂，一次一批）：
+  winsorize(sector) / tail(lower=0.05,upper=0.95) / winsorize(industry) / subindustry 轴 /
+  group_neutralize(market) / 裸 rank / ts_decay_linear×5,10 / quantile / 原样对照
+- **注意**：本档 §7 已判「aftercons_percentage 水平轴已被 xAY86Mkl 收割」，但 2rAVLRYP 用
+  **不同设置档**（STATISTICAL/d2 vs xAY86Mkl 的档）+ prod 0.66 干净 ⇒ 修复批是对**同一内核换壳**
+  攻 investability 单闸，不是重开已死轴；若全批失败则 §7 封账结论维持。
+
+### 8.4 修复批读数（`1gtvrPbBQ55aa6y168vEf6C0`，10 臂 FULL，STATISTICAL/d2/trunc .08）
+
+| # | alpha | 变体 | S | F | TO | 2Y | invest_S | invest比 | failed_RA |
+|---|---|---|---:|---:|---:|---:|---:|---:|---|
+| 1 | `e7aNnb0N` | winsorize(std=4, sector) | 1.81 | 0.97 | .265 | 2.55 | 0.94 | 0.52 | 2 |
+| 2 | `qM7Onx61` | tail(5/95) | 0.68 | 0.26 | .316 | 2.40 | 0.63 | — | 2（S/F fail） |
+| 3 | `RRe9Nb1a` | winsorize(industry) | 1.53 | 0.71 | .290 | 2.35 | 0.69 | 0.45 | 3 |
+| 4 | `RRe9Nb1b` | subindustry 轴 | 1.48 | 0.67 | .291 | 2.29 | 0.89 | 0.60 | 3 |
+| 5 | `P05xn2OL` | group_neutralize(market) | 1.81 | 0.97 | .265 | 2.55 | 0.94 | 0.52 | 2 |
+| 6 | **`akaeNb1W`** | **裸 rank（去 sector 分组）** | **1.88** | **1.06** | .253 | **2.66** | **1.00** | 0.53 | **1** |
+| 7 | `xAvVe3Nb` | ts_decay_linear 5（外侧） | 1.49 | 0.89 | .184 | 2.42 | 0.89 | 0.60 | 3 |
+| 8 | `KPgvnNGp` | ts_decay_linear 10 | 1.28 | 0.80 | .149 | 2.30 | 0.80 | 0.62 | 3 |
+| 9 | `kqavnojl` | quantile 壳 | 1.72 | 0.92 | .271 | 2.65 | 0.95 | 0.55 | 2 |
+| 10 | `78Y3xNjx` | 原样对照（=2rAVLRYP 同式重跑） | 1.81 | 0.97 | .265 | 2.55 | 0.94 | 0.52 | 2 |
+
+**关键发现（对照臂 #10 vs 原件 2rAVLRYP）**：同一表达式重跑 S 1.67→1.81、F 1.04→0.97——
+**平台漂移存在但方向互有涨跌**；原样的 2rAVLRYP 存量读数仍然有效。
+
+**归因结论（10 臂穷尽后）**：
+1. **investability 是该内核的结构墙**：全 10 臂 invest ratio 0.45–0.62，距 0.70 全部差 0.08–0.25；
+   limit 随 S 上浮（1.17→1.32）＝动态闸（≈0.70×S），追 S 涨 limit 同涨，**比率追不上**。
+2. **唯一正向杠杆 = 裸 rank**（`akaeNb1W`）：去掉 sector 分组后 S +0.07、F +0.02、invest_S +0.06、
+   subU +0.10，全指标达标只留 investability 1 闸——但 ratio 只从 0.545 → 0.53（limit 同步抬高）。
+3. **负杠杆**：tail 毁信号（S 0.68，把中心预期信息砍掉）；industry/subindustry 轴 S −0.3（修正信号
+   是 sector 级语义）；decay 外压 5/10 只降 S 不降 ratio。
+4. **机制判读**：investability-constrained PnL 是「大权重股票」的子集收益——共识修正信号在
+   KOR/TOP600 的收益集中于中小盘（cov 0.67、long 321/short 317 说明覆盖面广但**权重**集中在大盘），
+   信号本身大盘可投资性弱 ⇒ 这是**信号性质**，不是壳层可修。
+5. **终裁**：⭐ 结构墙确认，10 臂穷尽 + gate_attribution 两杠杆全试 ⇒ 该内核 investability
+   数学不可达（0.70×S 动态闸）。**存量 `2rAVLRYP`（failed_RA=1 仅此一闸）仍是 OTHER 塔唯一
+   近闸候选**，可作 near 交付或等平台 warning 口径放宽；按现行口径不可提交。

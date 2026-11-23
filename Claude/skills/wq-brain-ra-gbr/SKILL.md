@@ -8,7 +8,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "1.1"
-last_verified: 2026-11-20
+last_verified: 2026-11-21
 ---
 
 # GBR 区域挖掘流程（RA 区域分支）
@@ -99,6 +99,21 @@ last_verified: 2026-11-20
    ★ **例外只有一条**：用户明确说「塔已点亮但我要你重测」，且须在波次记录里留痕。
    ★ **实测教训（2026-11-11）**：`continuation_score` 属 PV，GBR PV 塔已点亮（4 颗）⇒ 当轮为它做的裸件探针、借券冷腿组合、窗口谷扫描、单钉破墙（含一颗 prod 0.6831 / S1.80 / F1.27 / 2Y2.46 / fails0 的成品）**全部作废**，浪费约 5 批仿真。`analyst10`（analyst 已点亮）、`fundamental23`/`model354`（fundamental/model 已点亮，且前两者 GBR 根本不存在）同属此类。
    ★ **塔位会因提交而变**，必须每次实时拉 `get_pyramid_alphas`，不得引用本文件或任何清单里的历史塔位。
+
+3d. **PV 不得与其它数据集组腿（2026-11-21 用户明令，GBR 专属硬约束）**：
+
+   - 原话：「不再考虑pv跟其它数据集组腿」「gbr不再考虑pv跟其它数据集组腿」。
+   - 含义：任何**第二腿**（§7.7 的 gating / grouping / residual / ratio，**含 `multiply(signal, ts_rank(volume,66))` 这类加权门控**）都**不得使用 PV 字段**（`volume`/`close`/`returns`/`cap`/pv* 族）。
+   - 判据：`get_alpha_details(id).pyramids.effective > 1` 且 `pyramids.list` 含 `GBR/D1/PV` ⇒ 该件出局；派批前先看表达式有没有 PV 字段，有则不派（省配额）。
+   - 例外：PV **单集**挖掘本身不受影响（但 PV 塔已 ≥3 点亮 ⇒ 按 3c 不发）。
+   - 实证（2026-11-21）：imb5 两族全闸件（`1YWlbQb6`/`1YWOGvmQ`/`Xgaab3nz`/`N1PLLxjw`，S2.0–3.2 / prod 0.55–0.69）**全部因含 `ts_rank(volume,66)` 出局**；PV-free 重建可过平台全部闸（S2.04–2.23 / 2Y1.74–2.00 / RA0 / 逐年 10/10 正），但 **prod 撞公开 imb5 变体 0.72–0.79**（`imb5_score` αC 1962 / uC 770）⇒ PV 门控提供的 prod 稀释不可用后，imb5 的 prod 墙只能靠同集分散器（`imb5_mktcap` 已否证：S 崩到 0.57–0.69）或设置杠杆（INDUSTRY 中性化可把 self 压到 0.44，prod 待测）单独解决。
+
+3e. **混塔只产出一个后就换模板（2026-11-21 用户明令）**：
+
+   - 原话：「混塔只产出一个后就换模板不再持续投入」。
+   - 含义：**混塔**（`pyramids.effective ≥ 2`，跨 category 组腿）的某个模板一旦产出 1 颗可交付件，**该模板立即停止投入**——不再做同模板变体、窗口/内核微调、第二席冲刺；改去换**新模板**（新机制 / 新数据集 / 新塔）。
+   - 理由：混塔件的产能被多塔乘数与相关性双重锁死（同模板变体互相关 0.8–0.99），继续投只会堆同腿件，浪费仿真配额。
+   - 与 3d 的关系：PV 组腿已禁 ⇒ 混塔的 PV 模板天然一 Shot（`0mPPVEoK` 已产出）；剩余单塔（effective=1）ATOM 模板不受本条限制。
 
 4. **步 9 回写之后**刷新组合证据并重渲本 skill：
 
@@ -330,7 +345,15 @@ last_verified: 2026-11-20
 
 ### ⑤ 算子穷举 · 本区覆盖
 
-- **待实测**：完整算子清单（本区实证集中在七层链路，算子穷举记录待补）。
+- **必做（2026-11-21 用户指令「把梯度回测嵌入到回测的流程中必做」；通用条款见 [`wq-brain-ra-pipeline` 步 7](../wq-brain-ra-pipeline/SKILL.md)「梯度回测（必做）」+ [`step7-diagnose.md`](../wq-brain-ra-pipeline/references/step7-diagnose.md) §7.10）**：凡进入改进阶段的候选（`failed_ra_count ∈ {1,2}` 或 `S ≥ 1.0` 近闸件）一律走「**同槽位全类别替换 + Δ 表归因 + 逐层推进**」，**不得**单点换算子即停、也**不得**跳过梯度直接盲扫参数。层次序：内层信号 → 内层时序算子 → 分组轴 → 外层包装 → 设置档；**同层全 Δ≤0 才算该层收敛**；换层后下游层须重扫。
+- **工具**：`$WQ_PY tools/research/operator_swap_matrix.py --expr "<基线>" --op <算子> [--nth N]`（同 category 全替 + arity 三形态 + no-op 去重）；发批前 `operator_audit`（幽灵算子）+ `preflight_expressions`（字段/VECTOR）；每批 ≤10 臂、在飞 ≤2。
+- **本区已完整梯度且出过货的数据集（可直接引用其结论）**：
+  - `institutions1`：主导骨架 `reverse(group_backfill(vector_neut(divide(ts_mean(20), ts_mean(80))))` **91 变体**（decay 层负杠杆）→ 去 decay 层 16 变体 **best S1.63 → 已提交 ZYaQdNO1**
+  - `institutions25`：主导骨架 `reverse(group_rank(vector_neut(ts_quantile(vec_sum),…))` **48 变体** / 105 臂，S1.08 → 1.26 收敛（close）
+  - `imbalance5`：10 臂单维梯度（外层轴 subindustry→sector **+0.62 2Y** → 全闸 S2.35/2Y2.18）
+  - `risk60`：9 臂，S0.28 → 0.52 收敛（信号层弱，关闭）
+- **本区待补（下述结论一律只算 PROVISIONAL）**：`institutions6`（历史多骨架横向扫描、无严格单维梯度 ⇒ 「天花板 0.95」不可写死）、`institutions4`（探针即止 S−0.37）、`insiders12`（本轮 10 臂为文献模板横向，非梯度；信号带 0.7 待梯度确认）。
+- **不算梯度层的反例（防误耗臂）**：`rank`/`group_rank` **前**的单调变换（`signed_power` 0.5/2 / `log`）读数逐位相同；单元素 VECTOR 的 `vec_avg≡vec_max≡vec_min`；稀疏信号下窗口×轴 6 臂逐位相同（先查非零日密度再扫）；`decay 0` 与 `decay 1` 逐位相同。
 
 ### ⑥ 终验 · 本区覆盖
 

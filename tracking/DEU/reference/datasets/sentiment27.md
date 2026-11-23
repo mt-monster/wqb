@@ -266,3 +266,49 @@ DEU / TOP500 / Delay 1 / Neutralization **NONE** / Decay **0** / Truncation 0 / 
 | `snt27_rank` | 0.762（381L+0S） | 0.762 | 0.774 | 0.778 | 0.784 | 0.366 | daily | 5 | 否 | 否 | 单域名源（声明 0.9118 本集最高档），须取负；实测覆盖 0.762 全集最高；法3 各窗覆盖 387/389/392 全集最高 |
 
 **判定**：11 个字段全部有信号形态读数——10 个 daily（短窗 5–22 可用）、`snl27_kurtosis` slow（窗下限 66）；除 kurtosis 外法2 非零 ≈ 法1（缺失是 NaN 而非 0）；`snl27_skewness` / `snl27_kurtosis` 两个无界矩类存在 **!= 0 反号陷阱，禁止用 != 0 变换**；实测覆盖 0.558–0.762 系统性低于平台声明 0.9022/0.9118（−14.6 ～ −34.4pp），缺口与「TOP500 名义规模 vs ≈419 实际有数据标的」的解释一致，且与 §6bis 原记录逐字段吻合（附录已转正）。
+
+## 8. 2026-11-21 增量：sentiment7 × sentiment27「残差化向量中性」族（生产档复跑）
+
+> 口径：DEU / TOP500 / D1 / **生产档**（decay 4 / SUBINDUSTRY / truncation 0.08 / nanHandling OFF / unitHandling VERIFY / pasteurization ON / maxTrade OFF / FASTEXPR / IS 2014-01-01→2023-12-31）。
+> 派发：`mcp__wq-brain-http__create_multi_simulation`，**每批 2 臂**（用户「每次回测派批最多 2 个」），在飞批 ≤ 2；臂序＝派发顺序核对。
+> 骨架：`vector_neut( <snt7 关注度信号> , <snl27 中性化目标> )`——`snt7` 侧 = `ts_quantile(ts_ir(ts_mean(max(ts_backfill(vec_avg(snt7_all_languages_views),22), ts_delay(…,5)),5),22), 252, driver="gaussian")`；`snl27` 侧 = `ts_backfill(vec_avg(<F>),22)`。
+
+### 8.1 本轮新增读数（逐字段／逐臂）
+
+| 字段（snl27 侧） | 臂（中性化目标） | alpha | S | F | 2Y | sub | TO | RA failed | 备注 |
+|---|---|---|---:|---:|---:|---:|---:|---:|---|
+| `snl27_top50pctrankingavg` | 分位内均值 | `leaE9287` | **1.90** | 1.52 | **2.43** | 1.17 | 0.152 | **0** | §1.3 标注的「零臂未回测」字段，本轮首次成臂 |
+| `snl27_top75pctrankingavg` | 分位内均值 | `E5QNLEpr` | 1.89 | 1.51 | 2.42 | 1.17 | 0.152 | 0 | 同族 |
+| `snl27_topranking` | 中心趋势 | `omaRkL82` | **1.94** | 1.57 | **2.46** | 1.19 | 0.152 | 0 | 本轮最高 S |
+| `snl27_skewness` | 分布形状 | `O0WR2L5Y` | 1.84 | 1.46 | 2.18 | 1.05 | 0.153 | 0 | 唯一非分位/非中心的目标 |
+| `snl27_top50pctranking` | 分位截断 | `0mPxawrK` | 1.88 | 1.50 | 2.39 | 1.19 | 0.152 | 0 | — |
+| `snl27_avgranking` | 中心趋势 | `akaeg7xR` | 1.88 | 1.50 | 2.39 | 1.18 | 0.152 | 0 | — |
+| `snl27_totaldomains` | 裸单字段（无残差化） | `akae8krv` | 0.41 | 0.19 | 1.76 | 0.32 | 0.015 | 2 | 计数类裸用＝规模代理（与 §3.2 一致） |
+| `snl27_totalcountrydomains` | 裸单字段 | `A1xe51Rl` | 0.17 | 0.05 | 1.11 | 0.22 | 0.016 | 3 | 同上，更弱 |
+| `snl27_avgranking` | 裸单字段 | `O0WR2767` | −0.13 | −0.03 | 0.46 | −0.45 | 0.024 | 4 | 排名类裸用方向为负（§3.1「须取负」成立） |
+| `snl27_kurtosis` | 裸单字段 | `Jj8o273A` | 0.16 | 0.04 | 0.01 | −0.12 | 0.027 | 4 | 慢变量、slow 档 |
+
+### 8.2 两条负杠杆（可复用）
+
+| 换法 | Δ | 结果 |
+|---|---|---|
+| `snt7_all_languages_views` → `snt7_views` | ΔS **−1.11** | `N1PL2ZO7` S 0.79（RA 失败 3 项，含 `IS_LADDER_SHARPE` 1.31）⇒ **多语言合计是必需口径，单 project 覆盖不足** |
+| `ts_quantile` 窗 252 → 504 | ΔS −0.11 / Δ2Y **−0.37** | `akaegpOw` S 1.79 / 2Y 2.06（RA 全过）⇒ **252 是上界，504 是负杠杆** |
+
+### 8.3 ★ 终判：本族在 DEU 已被占位（self-corr 闸）
+
+- 族内互相关（本地 `compute_mutual_correlation`，4 年 PnL）：`leaE9287`↔`E5QNLEpr` **0.9996**、↔`0mPxawrK` 0.9987、↔`akaeg7xR` 0.9985；`omaRkL82`↔`akaegpOw` 0.9528、↔`O0WR2L5Y` 0.8029 ⇒ **6 个 RA-clean 变体只有 1 条独立信息**。
+- 对已提交件 `bl6OWZ2M`（SENTIMENT 塔在册件，`prod 0.6671 / self 0.0306`）：`omaRkL82` **0.9760**、`akaegpOw` 0.9324、`leaE9287` 0.9755 ⇒ **全部超过 self-corr 0.70 闸**。
+- `check_self_correlation`（本地 OS 池，pool_size 22）逐条复测：`omaRkL82` max **0.9760 FAIL**、`akaegpOw` max **0.9324 FAIL**。
+- 与既有 17 颗篮子互相关全部 |r| < 0.12（`leaE9287` 对篮中 17 颗最大 0.0468）⇒ **不是篮子冲突，是 OS 池克隆**。
+
+⇒ **结论（PROVISIONAL，族级）**：DEU 的 `sentiment7 × sentiment27` 残差化族已被 `bl6OWZ2M` 占位。**换 `snl27` 中性化目标不产生新信息**（分位/中心/形状三类目标之间 0.77–0.999 高度同源，符合 §2.3「同一分布的矩/分位，冗余度约 70%」的预判）；本轮 6 颗 RA-clean 件**均不可交付**（self-corr 闸），仅作**方向锚**与**机制证据**留档。
+
+### 8.4 对档案既有结论的修正
+
+| 原结论 | 本轮实测 | 修正后 |
+|---|---|---|
+| §1.3「`snl27_top50pctrankingavg` 零臂未回测」 | 本轮首次成臂，S 1.90 / 2Y 2.43 / RA 全过 | **已回测**；但落入 §8.3 克隆族 ⇒ 记「已测·被 self-corr 拦」 |
+| §2.3「分位族 4 字段互相近似、可压缩到 3 个语义位」 | 分位/中心/形状三类目标间互相关 0.77–0.999 | **强化**：连「换语义位」都换不出独立 PnL，冗余度应记为 **≥ 90%（对残差化用法而言）** |
+| §3.1「排名类 8 个进表达式前必须取负」 | `snl27_avgranking` 裸用 S **−0.13**（sub −0.45） | **成立**（首次实测确认） |
+| §3.2「计数类裸用＝规模代理」 | `totaldomains` 裸用 S 0.41 / TO 0.015 | **成立**（TO 被压到 1.5%＝换手塌缩到不可交易） |

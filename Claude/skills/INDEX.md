@@ -177,9 +177,9 @@ L7  元技能       pull-brain-skills · planning-with-files · wqb-test-failure
 <!-- gate-ladder:start -->
 | 检查 | 平台线（提交必须） | 内部线（研究阶段，省配额） | 来源常量（`src/wqb/config.py`） |
 |---|---|---|---|
-| IS Sharpe（`LOW_SHARPE`） | Delay-1 > 1.25 / Delay-0 > 2 | > 1.58 | `PLATFORM_CHECK_LINES.low_sharpe_min` / `GATES_INTERNAL.sharpe_min` |
+| IS Sharpe（`LOW_SHARPE`） | Delay-1 > 1.25（D0 已排除） | > 1.58 | `PLATFORM_CHECK_LINES.low_sharpe_min` / `GATES_INTERNAL.sharpe_min` |
 | 2Y Sharpe（`LOW_2Y_SHARPE` / `IS_LADDER_SHARPE`） | > 1.58 | —（内部线已取 1.58） | `PLATFORM_CHECK_LINES.low_2y_sharpe_min`；提交准入线 `GATES_PLATFORM.sharpe_min` 取的就是它 |
-| Fitness（`LOW_FITNESS`） | Delay-1 > 1 / Delay-0 > 1.3 | > 1 | `PLATFORM_CHECK_LINES.low_fitness_min` / `GATES_INTERNAL.fitness_min` |
+| Fitness（`LOW_FITNESS`） | Delay-1 > 1（D0 已排除） | > 1 | `PLATFORM_CHECK_LINES.low_fitness_min` / `GATES_INTERNAL.fitness_min` |
 | 换手（`LOW_TURNOVER` / `HIGH_TURNOVER`） | ∈ [1%, 70%] | ∈ [5%, 20%] | `PLATFORM_CHECK_LINES.turnover_range` / `GATES_INTERNAL.turnover_range` |
 | Margin | 平台不检 | > 10 bp | `GATES_INTERNAL.margin_bp_min` |
 | Returns | 平台不检 | > 5% | `GATES_INTERNAL.returns_min` |
@@ -249,9 +249,9 @@ L7  元技能       pull-brain-skills · planning-with-files · wqb-test-failure
 
 其他 skill 一律**引用本段**，禁止裸写计数数字（`test_docs_consistency.py` 守护；历史变更见 CHANGELOG）：
 
-- `wq-brain-http` 服务器：**72 个工具**。统计口径 = 各 `world-quant-brain-mcp/tools_*.py` 顶部 `@mcp.tool` 装饰器计数：
+- `wq-brain-http` 服务器：**71 个工具**（2026-11-21 删单仿真 create_simulation）。统计口径 = 各 `world-quant-brain-mcp/tools_*.py` 顶部 `@mcp.tool` 装饰器计数：
   `tools_account` 13 / `tools_alpha` 8 / `tools_config` 1 / `tools_corr` 3 / `tools_data` 10 / `tools_forum` 5 /
-  `tools_labs` 3 / `tools_ops` 7 / `tools_sim` 6 / `tools_spc` 4 / `tools_submit` 0 / `tools_workflow` 12（合计 72）。
+  `tools_labs` 3 / `tools_ops` 7 / `tools_sim` 5 / `tools_spc` 4 / `tools_submit` 0 / `tools_workflow` 12（合计 71）。
   2026-11-19 增 `tools_forum` 两个确定性检索工具（`get_forum_posts` / `search_forum_posts_local`，Zendesk 列表端点 + 本地过滤）；
   2026-11-20 **退役并删除旧 Playwright `search_forum_posts`**（「success + 0 结果」是 Cloudflare 挑战页造成的假信号），
   检索只剩上述两个确定性通道。

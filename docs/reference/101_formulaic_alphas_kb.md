@@ -124,7 +124,7 @@ Alpha#46: (0.25 < slope) ? -1 : (slope < 0 ? 1 : -1*(close-delay(close,1)))
 reverse(rank(ts_covariance_approx(rank(close), rank(volume), 5)))  
 # 用 ts_corr 替代：reverse(ts_corr(rank(close), rank(volume), 5))
 
-# 2. 收盘反转（Alpha#42 复刻，delay-0 注意用 D0）
+# 2. 收盘反转（Alpha#42 复刻，~~delay-0 注意用 D0~~；D0 已排除，只做 D1）
 quantile(ts_backfill(vec_avg(vwap), 60)) 差异于 close → rank 差
 # 等价：rank(vwap - close) / rank(vwap + close)
 

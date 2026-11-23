@@ -18,6 +18,14 @@ import zlib
 import msgpack
 logger = logging.getLogger("brain_api")
 
+# ---- 出站 429 埋点（2026-11-23）----
+# 唯一能同时拿到「任务标识 + Retry-After」的漏斗是 ``TransportMixin._request``——
+# 所有 POST /simulations（回测任务）都走它，payload 带 region/universe/expressions，
+# 响应头带 Retry-After。撞 429 时追加写一行 JSON 到本文件，wqb 回测监控面板读取后
+# 展示「哪个任务被限流 + 还剩多久解封」。与 wave_dispatch.json 同源（parents[1]/data）。
+_RATE_LIMIT_LOG = Path(__file__).resolve().parents[1] / "data" / "rate_limit_429.jsonl"
+# 单文件超 1MB 轮转到 .1（429 低频，够存数月；面板只读主文件尾部）。
+
 
 class TransportMixin:
     def __init__(self):
@@ -554,11 +562,11 @@ class TransportMixin:
         timeout = kwargs.pop("timeout", self._default_timeout_seconds)
         # Add extra buffer for asyncio timeout to catch stuck threads
         asyncio_timeout = timeout + 10
-        
+
         async with self._request_semaphore:
             try:
                 # Wrap asyncio.to_thread with wait_for to prevent infinite hangs
-                return await asyncio.wait_for(
+                response = await asyncio.wait_for(
                     asyncio.to_thread(
                         self.session.request,
                         method,
@@ -590,6 +598,92 @@ class TransportMixin:
                     self.log(f"Remote disconnected for {method} {absolute_url}: {error_str}", "ERROR")
                     raise ConnectionError(f"Remote server disconnected: {absolute_url}") from e
                 raise
+
+            # ---- 出站 429 埋点（2026-11-23）----
+            # 成功拿到响应才走到这（上面各 except 已 raise）。撞 429 = 被平台限流，
+            # 记一行 JSON（含任务标识 + Retry-After）供面板展示「哪个任务 + 还剩多久解封」。
+            # fail-safe：_record_rate_limit_hit 内部吞掉一切异常，绝不影响请求主流程。
+            try:
+                if getattr(response, "status_code", None) == 429:
+                    self._record_rate_limit_hit(method, absolute_url, kwargs, response)
+            except Exception:
+                pass
+            return response
+
+    def _record_rate_limit_hit(self, method: str, absolute_url: str, kwargs: dict, response) -> None:
+        """出站 429 埋点：追加写一行 JSON 到 ``data/rate_limit_429.jsonl``。
+
+        从 ``kwargs['json']``（POST /simulations 的 payload）提取任务标识
+        （type/region/universe/delay/neutralization/decay/表达式头），从响应头取
+        Retry-After（解封秒数）。任何异常都吞掉——埋点绝不能影响交易主流程。
+        """
+        try:
+            retry_after = None
+            try:
+                ra = response.headers.get("Retry-After") or response.headers.get("retry-after")
+                if ra is not None:
+                    retry_after = float(ra)
+            except Exception:
+                retry_after = None
+
+            # 任务标识：仅 POST /simulations 的 payload 才有结构化 settings
+            task = None
+            payload = kwargs.get("json") if isinstance(kwargs, dict) else None
+            endpoint = absolute_url
+            try:
+                base = getattr(self, "base_url", "") or ""
+                if base and absolute_url.startswith(base):
+                    endpoint = absolute_url[len(base):] or "/"
+            except Exception:
+                pass
+            if isinstance(payload, dict) and "/simulations" in endpoint:
+                settings = payload.get("settings") if isinstance(payload.get("settings"), dict) else {}
+                task = {
+                    "type": payload.get("type"),
+                    "region": settings.get("region"),
+                    "universe": settings.get("universe"),
+                    "delay": settings.get("delay"),
+                    "neutralization": settings.get("neutralization"),
+                    "decay": settings.get("decay"),
+                }
+                # 表达式头（截断）：REGULAR 在 payload.regular.formula，其余类型取 combo/selection
+                expr = None
+                reg = payload.get("regular")
+                if isinstance(reg, dict):
+                    expr = reg.get("formula") or reg.get("expression")
+                elif isinstance(reg, str):
+                    expr = reg
+                if not expr and isinstance(payload.get("combo"), dict):
+                    expr = payload["combo"].get("formula")
+                if expr:
+                    task["expr"] = str(expr)[:160]
+
+            body = ""
+            try:
+                body = (response.text or "")[:200]
+            except Exception:
+                pass
+
+            now = time.time()
+            rec = {
+                "ts": round(now, 3),
+                "ts_iso": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(now)),
+                "method": method,
+                "endpoint": endpoint,
+                "retry_after": retry_after,
+                "task": task,
+                "body": body,
+            }
+            _RATE_LIMIT_LOG.parent.mkdir(parents=True, exist_ok=True)
+            try:
+                if _RATE_LIMIT_LOG.exists() and _RATE_LIMIT_LOG.stat().st_size > 1_000_000:
+                    os.replace(str(_RATE_LIMIT_LOG), str(_RATE_LIMIT_LOG) + ".1")
+            except Exception:
+                pass
+            with open(_RATE_LIMIT_LOG, "a", encoding="utf-8") as f:
+                f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+        except Exception:
+            pass
 
     def _retry_wait_seconds(self, response: Optional[requests.Response], attempt: int, base_delay: float = 2.0, max_delay: float = 60.0) -> float:
         if response is not None:

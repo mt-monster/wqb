@@ -116,3 +116,50 @@
 - VECTOR 族必须 `vec_avg` / `vec_sum` 降维后再进 `ts_*`（本集 `ts_backfill` 不支持事件型输入）。
 - `nws18_nip` 与 `rp_nip_*` 是两个不同产品线（VECTOR 叙事冲击 vs MATRIX 影响投射），
   不可当作同一字段的两种表示互换。
+
+## 6. 「≥5 模板 + 每模板完整梯度」补齐战役（2026-11-22）
+
+> 达标标准见记忆 `imbalance-news-template-gradient-compliance-20261122`。全部 KOR/TOP600/D1/INDUSTRY/decay4/trunc0.08。
+> 证据闸：论坛双帖（§3.2/3.3）已在档案；论文多样证 PASS（18 篇/15 作者，含 Pacific-Basin Finance 2025《MFA RPC news sentiment and stock returns》直接对口本集 RavenPack + JPM 2024 Four-Fold News Sentiment）。
+
+### 6.1 五模板定义（互异经济机制）
+| 模板 | 机制 | 主字段 |
+|---|---|---|
+| T1 事件情绪背离 | 事件层减复合层情绪（未吸收→修复） | `rp_ess_X − rp_css_X` |
+| T2 复合情绪水平 | 全量新闻基调水平 | `rp_css_earnings/business` |
+| T3 nip 相关性 | 新闻冲击与收益相关性（论坛冠军模板） | `ts_corr(vec_avg(nws18_nip),returns,n)` |
+| T4 极性配对 | 情绪极性×有符号冲击 | `multiply(vec_avg(qep),vec_avg(nip))` |
+| T5 财报评估 | 财报事件评级/事件情绪 | `nws18_bee` / `rp_ess_earnings` |
+
+### 6.2 L1 外层截面全类别替换（逐模板推进）
+| 模板 | wave | 最优 | S | 2Y | 判 |
+|---|---|---|---:|---:|---|
+| T1 | `s2_news18_T1_esscss_L1_d1` | `VkNeEOWb` `ts_decay_linear(rank(ess−css_earnings))` | 0.46 | −0.32 | 全臂 CW=0.5 FAIL，符号翻转复现（§4）；无近闸 |
+| T2 | `s2_news18_T2_csslevel_L1_d1` | `P05KlNkq` `group_rank(css_earnings)` | 0.20 | −0.47 | 全臂 CW=1.0 FAIL，复合情绪水平无定价力 |
+| T3 | `s2_news18_T3_nipcorr_L1_d1` | `e7aEqOKM` `ts_corr(nip,returns,60)` | **0.68** | 0.38 | 本集 L1 最高 S（差 0.90）；论坛冠军模板在 KOR/D1 远不及 EUR，且 eff=2（PV+NEWS 混塔） |
+| T4 | `s2_news18_T4_polarity_L1_d1` | `d5avEbXX` `-rank(qep×nip)` | 0.46 | 0.26 | 正号极性配对全负（S−0.62），反号转正⇒带极性冲击是反向信号；仍 0 全闸 |
+| T5 | `s2_news18_T5_earnings_L1_d1` | **`npar371d`** `rank(ts_mean(ess−css_earnings,66))` | **1.02** | 0.59 | ★全轮首个 near：F0.74/TO0.0586/subU0.78/RN0.86/checks.fail 空；长窗66把T1(窗22,S0.46)抬到S1.02，窗口轴是明确杠杆 |
+
+**★T5 near 臂 `npar371d` 余量表**：S1.02(差0.56)/F0.74(差0.26)/2Y0.59(差0.99)/TO0.0586(远低于floor)/subU0.78/RN0.86/CW过。三缺口（S/F/2Y），2Y 最厚。L2 内层全类别替换在飞（`3Pcn5O4xZ5dA91615Ohbsn0h`），验证长窗66是否最优。
+
+### 6.3 L2 内层时序全类别替换（逐模板推进）
+| 模板 | wave | 内层替换最优 | S | L1→L2 Δ | 判 |
+|---|---|---|---:|---|---|
+| T1 | `s2_news18_T1_esscss_L2_d1` | `58JYOVbo` `ts_mean(44)` / `blaAq3Zr` `rank@66` | 0.69 / 0.53 | 0.46→**0.69 (Δ+0.23)** | business 主题长窗抬升（窗44 S0.69/2Y0.54；窗66 rank S0.53/2Y0.91），内层 decay/av_diff/delta/zscore/裸全崩(TO1.3-1.4) |
+| T2 | `s2_news18_T2_csslevel_L2_d1` | `0mP5M99r` `group_rank@66` | 0.34 | 0.20→0.34 | 全臂 |S|≤0.34，复合情绪水平无定价力，内层收敛 |
+| T3 | `s2_news18_T3_nipcorr_L2_d1` | `N1P8blkp` `group_rank@ts_corr60` | 0.69 | 0.68→0.69 | 窗轴40/60甜点，全部 eff=2（PV+NEWS 混塔）；2Y/SUB 主墙，内层收敛 |
+| T4 | `s2_news18_T4_polarity_L2_d1` | `XgaMWJWb` 裸反号配对 | 0.48 | 0.46→0.48 | TO1.19 超闸；长窗 44/126 压 TO 到 0.04–0.08 但 S≤0.34；2Y 主墙（7/8），内层收敛 |
+| T5 | `s2_news18_T5_earnings_L2_d1` | `rK78Wjn8` `ts_mean(44)` / `e7aErzZd` `group_rank@66` | 1.10 / 1.02 | 1.02→**1.10 (Δ+0.08)** | 内层 ts_mean 守擂（窗44 S1.10/F0.87/2Y0.22；窗66 S1.02/2Y0.37），decay/av_diff/delta/zscore/裸全崩(TO0.7-0.8)；**S↔2Y 跷跷板**，2 near |
+
+**T5 L2 定格**：窗44 抬 S 到 1.10 但 2Y 掉到 0.22；窗66（L1 npar371d）S1.02/2Y0.59 是 S/2Y 最佳平衡。三缺口 S(0.48)/F(0.26)/2Y(0.99)，2Y 最厚；按余量表非 near-gate（三缺口），不值得继续调参。
+
+### 6.4 收口判定（2026-11-22）
+**news18 已满足「≥5 模板 + 每模板完整梯度」**：T1–T5 × (L1 外层全类别 8 臂 + L2 内层全类别 8 臂) = 10 wave / 80 臂，全部入库。
+- **0 全闸**：全集最高 S1.10（T5 L2 `rK78Wjn8` 窗44，但 2Y0.22）；最佳平衡 `npar371d`/`e7aErzZd` S1.02/2Y0.37–0.59。
+- **主墙 = S↔2Y 跷跷板 + CW**：T5 事件情绪背离长窗抬 S 必压 2Y（窗44 S1.10/2Y0.22 ↔ 窗66 S1.02/2Y0.59），三缺口无法同时补；其余 T1–T4 S≤0.69。
+- **机制性符号翻转复现**（§4）：2014–16 强正/2021–23 反号，两方向都不稳定，按 KOR 决策表禁扫 decay/窗口救援；本轮 L2 内层全类别替换再次确认该结论。
+- **T3 nip 相关性全部 eff=2（PV+NEWS 混塔）**，且 KOR/D1 表现（S≤0.69）远不及论坛 EUR 案例；论坛冠军模板不可跨区外推。
+- **不判死**：记「梯度证据完整、信号层弱 + regime 断裂」，需外部新机制才可能翻案；不得外推其它 news 集。
+- 证据闸：论坛双帖（§3.2/3.3）+ 论文多样证 PASS（18 篇/15 作者，含 Pacific-Basin Finance 2025 对口本集数据）。
+
+（后续模板梯度收敛后继续追加，不覆盖）

@@ -273,7 +273,9 @@ def _toolkit_gate_check(expressions: List[str]) -> Optional[Dict[str, Any]]:
     检查项（纯静态，不依赖战役目录/catalog）：
       1. 语法（verifier 权威）
       2. 不可访问算子（ts_min/ts_max 等 platform_constraints.inaccessible_ops）
+      2b. REGULAR scope 违规（COMBO/SELECTION-only 算子，2026-11-23 补）
       3. 毒模式正则（platform_constraints.poison_patterns）
+      4. 算子存在性 / 元数 / 命名参数（op_arity）
     返回 None=通过，dict=整批拒绝（含逐条 issues 与修复提示）。
 
     失效方向（2026-10-28 审查 #14 改）：`platform_constraints.json` 找不到时**fail-closed**
@@ -308,6 +310,16 @@ def _toolkit_gate_check(expressions: List[str]) -> Optional[Dict[str, Any]]:
         except re.error:
             continue
 
+    # 2b) REGULAR scope 违规（2026-11-23 补）：COMBO/SELECTION-only 算子进 REGULAR
+    #     multisim ⇒ 平台 ERROR + 整批 CANCELLED。平台 get_operators 103 个与本地
+    #     catalog scope 零漂移核对确认，19 个非 REGULAR 算子须本地拦下。
+    non_regular: set = set()
+    if _load_non_regular_ops is not None:
+        try:
+            non_regular = set(_load_non_regular_ops())
+        except Exception as e:
+            logger.warning(f"[toolkit-gate] REGULAR scope 表加载失败（降级不阻断）：{e}")
+
     issues_by_expr: Dict[int, List[str]] = {}
     for i, expr in enumerate(expressions):
         issues = []
@@ -315,6 +327,13 @@ def _toolkit_gate_check(expressions: List[str]) -> Optional[Dict[str, Any]]:
         for op in inaccessible:
             if re.search(rf"\b{re.escape(op)}\s*\(", expr):
                 issues.append(f"[INACCESSIBLE_OP] {op} 平台不可访问，用已验证等价算子替换")
+        # 2b) REGULAR scope
+        #     词边界匹配而非 `name(`：`in` / `universe_size` 是无参形态，
+        #     强制括号会漏检（2026-11-23 测试实证）。
+        for op in non_regular:
+            if re.search(rf"\b{re.escape(op)}\b", expr):
+                issues.append(f"[SCOPE] {op} 不属 REGULAR 域（COMBO/SELECTION-only），"
+                              f"REGULAR 回测会整批 ERROR/CANCELLED")
         # 3) 毒模式
         for name, pat in poison_patterns:
             if pat.search(expr):
@@ -392,10 +411,16 @@ def _record_gate_pass(region: str, expressions: List[str], failure: Optional[Dic
 
     失败不阻断提交流程本身（调用方已 return）；但落库失败**不再静默**（2026-10-28 审查 #14）：
     - 此前 `except Exception: pass` 让「审计没写成」与「写成了」成为同一个观测值；
-    - 且裸 `INSERT` 撞 `UNIQUE(region, wave, dataset)` —— 同一批表达式重发时第二行必抛
-      IntegrityError 被吞 ⇒ **审计行静默丢失**（wave 键就是表达式指纹，重发即同键）。
-      现改 `ON CONFLICT(region, wave, dataset) DO UPDATE`（同批重发只刷新 updated_at）；
-    - 连接改走 `wqb.db_conn.connect` 规范工厂（自带测试期禁写生产库的硬闸）。
+    - 连接走 `wqb.db_conn.connect` 规范工厂（自带测试期禁写生产库的硬闸）。
+
+    2026-11-23 修复 **upsert 不依赖 UNIQUE 约束**：原用
+    `INSERT ... ON CONFLICT(region,wave,dataset) DO UPDATE`，但生产 data/wqb.db 是历史库，
+    `CREATE TABLE IF NOT EXISTS` 不会给已存在的表补约束 ⇒ 实际表零索引（index_list 空），
+    每次调用都报 `ON CONFLICT clause does not match any PRIMARY KEY or UNIQUE constraint`
+    ⇒ **所有 MCP 直发批的门禁审计行静默丢失**（与 346 个活跃波无 gate_results 的断链呼应）。
+    同时库里已存在 10+ 组重复键（最多同键 5 行），直接 `CREATE UNIQUE INDEX` 会被历史数据挡住。
+    故改为「先 UPDATE ... WHERE，rowcount=0 再 INSERT」：有/无 UNIQUE 约束都能幂等写入，
+    不动历史数据，重复键全部刷新而非新增。
     """
     try:
         import hashlib
@@ -417,14 +442,22 @@ def _record_gate_pass(region: str, expressions: List[str], failure: Optional[Dic
             con = sqlite3.connect(db, timeout=5)
         try:
             now = datetime.now().isoformat(timespec="seconds")
-            con.execute(
-                "INSERT INTO gate_results (region, wave, dataset, all_pass, report_json, created_at, updated_at) "
-                "VALUES (?,?,?,?,?,?,?) "
-                "ON CONFLICT(region, wave, dataset) DO UPDATE SET "
-                "all_pass=excluded.all_pass, report_json=excluded.report_json, updated_at=excluded.updated_at",
-                (region, wave_key, "mcp_direct", 1 if all_pass else 0,
-                 json.dumps(report, ensure_ascii=False), now, now),
+            values = (region, wave_key, "mcp_direct", 1 if all_pass else 0,
+                      json.dumps(report, ensure_ascii=False), now, now)
+            # 先试图刷新已有行（历史库无 UNIQUE 约束，ON CONFLICT 不可用）；
+            # 无命中再插入。两条路径都幂等：同批重发只刷新、不新增。
+            cur = con.execute(
+                "UPDATE gate_results SET all_pass=?, report_json=?, updated_at=? "
+                "WHERE region=? AND wave=? AND dataset=?",
+                (values[3], values[4], values[6], region, wave_key, "mcp_direct"),
             )
+            if cur.rowcount == 0:
+                con.execute(
+                    "INSERT INTO gate_results "
+                    "(region, wave, dataset, all_pass, report_json, created_at, updated_at) "
+                    "VALUES (?,?,?,?,?,?,?)",
+                    values,
+                )
             con.commit()
         finally:
             con.close()
@@ -450,130 +483,10 @@ if _REPO_SRC.is_dir() and str(_REPO_SRC) not in sys.path:
     sys.path.insert(0, str(_REPO_SRC))
 try:
     from wqb.expression.op_arity import check_expressions as _op_arity_check_expressions
+    from wqb.expression.op_arity import load_non_regular_ops as _load_non_regular_ops
 except Exception:  # pragma: no cover - 单独安装的 MCP 无工作区 src ⇒ 降级
     _op_arity_check_expressions = None
-
-@mcp.tool()
-
-async def create_simulation(
-    region: str,
-    universe: str,
-    type: str = "REGULAR",
-    delay: int = 1,
-    decay: int = 4,
-    neutralization: str = "SUBINDUSTRY",
-    truncation: float = 0.08,
-    test_period: str = "P0Y0M",
-    language: str = "FASTEXPR",
-    unit_handling: str = "VERIFY",
-    nan_handling: str = "ON",
-    lookback: Optional[int] = None,
-    alpha_expression: Optional[str] = None,
-    combo: Optional[str] = None,
-    selection: Optional[str] = None,
-    pasteurization: str = "ON",
-    max_trade: str = "OFF",
-    selection_handling: str = "POSITIVE",
-    selection_limit: int = 1000,
-    component_activation: str = "IS",
-) -> Dict[str, Any]:
-    """
-    Create a new simulation on BRAIN platform.
-    
-    This tool creates and starts a simulation with your alpha code. Use this after you have your alpha formula ready.
-    if field type=VECTOR should deal with vec_ suffer vec_*(FIELD)
-    Args:
-        type: Simulation type ("REGULAR" or "SUPER")
-        region: Market region (e.g., "USA"). 必填——不设默认值，防止
-            MCP 默认值误用导致错误区域回测（与 batch_create_simulations
-            的 base_region 必填同约定）。
-        universe: Universe of stocks (e.g., "TOP3000"). 必填——不设默认值。
-        delay: Data delay (0 or 1)
-        decay: Decay value for the simulation
-        neutralization: Neutralization method
-        truncation: Truncation value
-        test_period: Test period (e.g., "P0Y0M" for 1 year 6 months)
-        language: Expression language ("FASTEXPR" or "PYTHON")
-        unit_handling: Unit handling method. Used for FASTEXPR simulations.
-        nan_handling: NaN handling method
-        lookback: Historical lookback window. Only used for PYTHON simulations; defaults to 256 for PYTHON.
-        alpha_expression: Alpha expression code (for REGULAR type)
-        combo: Combo code (for SUPER type)
-        selection: Selection code (for SUPER type). For USA SUPER simulations,
-            this must include (prod_correlation > 0)
-    
-    Returns:
-        Simulation creation result with ID and location
-    """
-    instrument_type = "EQUITY"
-    visualization = False
-    try:
-        # 参数确认日志：防止 MCP 默认值覆盖调用方传入的 region/universe
-        logger.info(f"[create_simulation] region={region}, universe={universe}, delay={delay}, "
-                    f"neutralization={neutralization}, decay={decay}, truncation={truncation}")
-
-        await refresh_region_map_from_platform()
-        _err = _validate_region_settings(region, universe, neutralization)
-        if _err:
-            return _err
-
-        normalized_language = language.upper()
-        settings_kwargs = {
-            "instrumentType": instrument_type,
-            "region": region,
-            "universe": universe,
-            "delay": delay,
-            "decay": decay,
-            "neutralization": neutralization,
-            "truncation": truncation,
-            "testPeriod": test_period,
-            "language": normalized_language,
-            "visualization": visualization,
-            "pasteurization": pasteurization,
-            "maxTrade": max_trade,
-            "selectionHandling": selection_handling,
-            "selectionLimit": selection_limit,
-            "componentActivation": component_activation,
-        }
-
-        if normalized_language == "PYTHON":
-            settings_kwargs["lookback"] = 256 if lookback is None else lookback
-            settings_kwargs["unitHandling"] = None
-            settings_kwargs["nanHandling"] = None
-        else:
-            settings_kwargs["unitHandling"] = unit_handling
-            settings_kwargs["nanHandling"] = nan_handling
-
-        settings = SimulationSettings(
-            **settings_kwargs
-        )
-        
-        sim_data = SimulationData(
-            type=type,
-            settings=settings,
-            regular=alpha_expression,
-            combo=combo,
-            selection=selection
-        )
-        
-        # 治本（2026-10-28）：``brain_client.create_simulation`` **阻塞到仿真出结果**并
-        # 返回平台原始 alpha 响应，这里顺手落库。此前只有 campaign pipeline 落库，于是
-        # 通过 MCP 单条跑的 alpha「平台有、本地无」——面板与产率统计都看不见。
-        # ``_persist_alpha`` 内部全 try/except（且平台失败时 obj 里没有 id，会被跳过），
-        # 绝不影响本工具的返回值。
-        _raw = await brain_client.create_simulation(sim_data)
-        try:
-            _persist_alpha(_raw, source="create_simulation")
-        except Exception:  # noqa: BLE001 — 双保险：落库绝不能让仿真结果丢失
-            pass
-        return _slim_alpha_response(_raw)
-    except Exception as e:
-        extra_info = ""
-        error_msg = str(e)
-        if error_msg and "does not support event inputs" in error_msg:
-            extra_info = "If fields is vector type  should use vec_* operator with event input"
-            return {"error": f"An unexpected error occurred: {str(e)}. {extra_info}"}
-        return {"error": f"An unexpected error occurred: {str(e)}"}
+    _load_non_regular_ops = None
 
 # --- Alpha and Data Retrieval Tools ---
 
@@ -600,8 +513,13 @@ async def create_multi_simulation(
     validate_fields: bool = False
 ) -> Dict[str, Any]:
     """
-    🚀 Create multiple regular alpha simulations on BRAIN platform in a single request.
-    
+    🚀 Create regular alpha simulations on BRAIN platform — **MCP 唯一回测出口**。
+
+    2026-11-21 用户指令：单仿真工具 ``create_simulation`` 已从 MCP 层删除，
+    所有回测（含单条探针）一律走本工具（``alpha_expressions`` 可只传 1 条）。
+    底层 ``brain_client.create_simulation`` 仍保留，仅供 gem/super_build 等
+    内部单条阻塞链路使用，**不对外暴露为 MCP 工具**。
+
     This tool creates a multisimulation with multiple regular alpha expressions.
     By default (wait_for_completion=False) it submits and immediately returns the
     simulation locations so the caller can poll with lookINTO_SimError_message.
@@ -610,7 +528,7 @@ async def create_multi_simulation(
     
     Call get_platform_setting_options to get the valid options for the simulation.
     Args:
-        alpha_expressions: List of alpha expressions/code strings (2-10 expressions required)
+        alpha_expressions: List of alpha expressions/code strings (1-10 expressions; 1 = 单条探针)
         instrument_type: Type of instruments (default: "EQUITY")
         region: Market region (e.g., "USA"). 必填——不设默认值，防止
             MCP 默认值误用导致整批在错误区域回测（2026-08-31 根治：
@@ -652,8 +570,15 @@ async def create_multi_simulation(
             return _err
 
         # Validate input
+        # 2026-11-21：下限保持 2 —— **平台硬约束实证**：单元素数组被拒
+        # （400 "Multi-simulations require multiple simulations in request array.
+        # Single simulations are required to be submitted without the wrapping array."）。
+        # MCP 单仿真工具 create_simulation 已按用户指令删除，故单条探针无法从
+        # MCP 面发起；探针须并发 2 条（如 rank(field) 与 ts_delta(field,5)），
+        # 或走内部 CLI（tools/kor_form_probe.py 等底层 brain_client 调用）。
         if len(alpha_expressions) < 2:
-            return {"error": "At least 2 alpha expressions are required"}
+            return {"error": "At least 2 alpha expressions are required (platform rejects "
+                             "single-element arrays; use 2 probes, e.g. rank(field) + ts_delta(field,5))"}
         if len(alpha_expressions) > 10:
             return {"error": "Maximum 10 alpha expressions allowed per request"}
 

@@ -68,14 +68,14 @@ lastModified 2026-09-18）只有两条属性，逐字引用：
 | c | 分组豁免名单含 region/asset/group 等自造键 | 官方**恰好 6 个**（见上），其余不豁免 |
 | d | 按模板族判（`res`/`reslag`/`pp` 一律非 ATOM） | 模板族只是**代理预警**；判据永远是字段级 dataset id 唯一 |
 
-⚠ 文档表格的 2Y 阈值（D1 2.38 / D0 3.96）与平台实际回报的 limit 不一致：IND/D1 `O0JLn561`
+⚠ 文档表格的 2Y 阈值（D1 2.38 / ~~D0 3.96~~；D0 已排除）与平台实际回报的 limit 不一致：IND/D1 `O0JLn561`
 （单数据集、2Y=1.73）在 `checks` 里是 **`LOW_2Y_SHARPE` PASS** ⇒ 实线 ≤1.73。**以平台回报为准**。
 
 | 项 | 规则 | 出处 |
 |---|---|---|
 | **字段** | 所有数据字段必须来自**同一数据集** | 正文 |
 | **豁免** | **恰好 6 个** group 字段不计入数据集限制：`country` / `exchange` / `market` / `sector` / `industry` / `subindustry` | **平台文档 `single-dataset-alphas`**（lastModified 2026-09-18）；⚠ 本文旧版只写「`industry` / `country` 等」并记为 4 个，**已按平台原文更正为 6 个** |
-| **检测差异** | **免 IS Ladder Sharpe 测试**，改为「Last 2Y Avg IS Sharpe ≥ 阈值」：D1 = **2.38** / D0 = **3.96**；且「**若 turnover < 30%，IS Sharpe Ladder PASS_THRESHOLDS × 0.85**」⇒ D1 低换手实际线 **2.023** | 平台文档 `single-dataset-alphas` |
+| **检测差异** | **免 IS Ladder Sharpe 测试**，改为「Last 2Y Avg IS Sharpe ≥ 阈值」：D1 = **2.38** / ~~D0 = **3.96**~~（D0 已排除）；且「**若 turnover < 30%，IS Sharpe Ladder PASS_THRESHOLDS × 0.85**」⇒ D1 低换手实际线 **2.023** | 平台文档 `single-dataset-alphas` |
 | ⚠ **口径冲突（未解，按平台实测线执行）** | 文档写 2.38/2.023，但 EUR/D1 实测 `checks` 数组里 `LOW_2Y_SHARPE` 的 `limit` = **1.58**；`786pLKnb` 2Y=1.78 / TO=0.1124 / `failed_ra=0` / **ACTIVE** ⇒ 按文档线它该被拦，实际已提交成功。**裁决：以平台按区域回报的 `limit` 为准，文档表格视为全局缺省** | 本轮实测 |
 | ⚠ **陷阱** | `inst_pnl()` / `convert()` **计为使用 pv1** ⇒ `inst_pnl(<非 pv1 字段>)` **不算 ATOM**。**平台原文**：「The use of inst_pnl() and convert() operators is considered as utilizing the pv1 dataset since these operators rely on pv1 data for calculations.」⇒ 这条是文档级明文，不只是论坛评论 | 平台文档 + YL61874 评论 |
 | ⚠ **陷阱** | 判「同一数据集」要看 **dataset id**，**不要按字段名/前缀猜** —— 名字像同库、实际属另一类别 | XW76815 评论 |

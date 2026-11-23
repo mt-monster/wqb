@@ -7,7 +7,7 @@
 ## 7.1 S4 由哪几段组成（顺序即执行顺序）
 
 ```
-S3 收批 → ① prod-first 探针 → ② s4-prescreen 预筛 → ③ review_wave 评审（workflow_campaign S4） → ④ 逐候选链 → 步 8
+S3 收批 → ① prod-first 探针 → ② s4-prescreen 预筛 → ③ review_wave 评审（workflow_campaign S4） → ③b 梯度回测（必做，见 §7.10） → ④ 逐候选链 → 步 8
 ```
 
 | 段 | 输入 | 输出 | 去向 |
@@ -15,6 +15,7 @@ S3 收批 → ① prod-first 探针 → ② s4-prescreen 预筛 → ③ review_w
 | ① **prod-first**（定义见主文步 5b） | 本波 `backtest_results` | 族级 `EXPAND` / `STOP`；写 `alphas.prod_correlation` 与 ledger `prod_first_<wave>` | `STOP` 的族按 D0-P，**不扩变体** |
 | ② **s4-prescreen** | 本波 alpha_id 清单 | 每条 `READY` / `REVIEW` / `REJECT` | `REJECT`（全灭）判死，**不进 ③④**；只有 READY / REVIEW 往下走（8 条从 8 次逐条评审压成 1 次预筛 + 仅存活者进链，约 8 倍效率） |
 | ③ **review_wave** | 本波 alpha_id（节点自动从 `backtest_results` 解析） | 墙 / near / salvage 池、`expOS` 列、ledger `s4_walls_<region>_<wave>` | 评审通过者进 ④；未通过者按 §7.3 的墙决定去向 |
+| ③b **梯度回测（必做）** | 进入改进的候选（1–2 闸 / S≥1.0 近闸） | 逐层 Δ 表（S/F/2Y/TO/sub/RA）+ 新基线 | 每层最佳 Δ 成新基线；全层收敛 → 进 ④ 或判 FAIL；**未完成梯度不得写「天花板」**（§7.10） |
 | ④ **逐候选链** | 评审通过的候选 | 逐条稳健 / 相关性 / 评审结论 | `brain-calculate-alpha-selfcorr-quick`（本地快筛）→ `check_self_correlation` → `compute_mutual_correlation`（候选集内两两）→ `check_correlation`（平台 prod）→ [`brain-alpha-robustness`](../../brain-alpha-robustness/SKILL.md) → [`brain-alpha-judge`](../../brain-alpha-judge/SKILL.md)（参考评审）；按需 `brain-explain-alphas`（Mode B 换概念前查概念重叠，非每候选必经） |
 
 ## 7.2 调用
@@ -140,6 +141,75 @@ mcp__wqb-db__get_salvage_pool  region=$REGION  boost_dim=<见下表>  exclude_da
 
 未编排项与本步相关的按需工具：`brain-alpha-repair` 只作配方查表；单条表达式修复走 [`wq-brain-alpha-optimization-v1`](../../wq-brain-alpha-optimization-v1/SKILL.md)；阈值不达标的修法族见 [`brain-how-to-pass-alpha-test`](../../brain-how-to-pass-alpha-test/SKILL.md)。
 
-## 7.10 完成定义
+## 7.10 梯度回测（必做，2026-11-21 用户指令）
+
+> 用户原话：「把梯度回测嵌入到回测的流程中必做」。来源：2026-11-20 已裁定的「单算子替换扫描法」，本条把它从**按需工具**升级为**流程必做阶段**（§7.1 的 ③b）。
+
+### 7.10.0 前置体检（必做，2026-11-21 in4 教训固化）
+
+**梯度开始前，必须先对目标数据集跑 1 条探针的 `get_alpha_yearly_stats`，核数据窗口**：
+- 看**每年** `longCount/shortCount/pnl`；任一年 `lc/sc/pnl` 全 0 = 该年**无数据**（不是零持仓假象——先用 1 条有持仓探针交叉确认）。
+- **有缺年的数据集**：梯度结论的**适用域只限有数据的年份**，且必须在档案显式写「数据窗口 = YYYY–YYYY」；**数据层排除优先于信号/结构判断**（不得报「2Y 弱」当信号结论）。
+- **反例（institutions4，2026-11-21）**：5 层 32 臂梯度全建立在**只有 2019–2020 两年**的数据上（2014–2018 与 2021–2023 逐年 lc/sc/pnl 全 0），终点查逐年才发现——`2Y=0.00` 被误判成「信号时间结构弱」，实际是**最近两年无数据**。⇒ 前置 1 条探针的逐年可省掉 32 臂空转，并让「数据层排除 vs 信号死」的归因从一开始就正确。
+- 十年窗口的任务因此**先验数据集可回测区间**（`get_datasets` 的 description/dateCreated + 1 条探针逐年），再决定是否投入完整梯度。
+
+### 7.10.1 触发条件与定义
+
+- **触发**：任何进入改进阶段的候选——`failed_ra_count ∈ {1,2}`，或 `S ≥ 1.0` 的近闸件。**未触发**：首探即全灭（REJECT）的批、纯参数微调（decay/窗口/中性化档）不需梯度（参数层属 Mode A，见 §7.8）。
+- **定义**：冻结基线其余部分，只把**一个槽位**换成该槽位**同 category 的全部候选** → 每臂单维 → 读 Δ（S/F/2Y/TO/sub/RA）→ 该层最佳 Δ 成为新基线 → 下一层。
+  - **同层全部 Δ≤0 = 该层收敛**，进入下一层或停手。
+  - **算子交互非加性** ⇒ 换层后下游层必须重扫（不得沿用上层的最优参数结论）。
+- **层次序**（缺省，可按信号类型调整但不跳层）：内层信号构造（字段/聚合）→ 内层时序算子（窗口/平滑）→ 分组轴（sector/industry/subindustry）→ 外层包装（rank/group_rank/group_zscore/winsorize/tvr_decay）→ 设置档（中性化/decay/truncation，属 Mode A 但可作最后一层）。
+
+### 7.10.2 执行工具与发批
+
+```bash
+# 生成同 category 全替换矩阵（其他部分逐字冻结）
+$WQ_PY tools/research/operator_swap_matrix.py --expr "<基线表达式>" --op <算子名> [--nth N] [--out logs/_tmp_swap.json]
+# 发批前静态闸
+mcp__wq-brain-http__operator_audit(expressions=[...])       # 幽灵算子
+mcp__wq-brain-http__preflight_expressions(alpha_expressions=[...], dataset_id=<ds>)  # 字段存在 + VECTOR 折叠
+mcp__wq-brain-http__create_multi_simulation(alpha_expressions=[...], ...)            # 每批 ≤10 臂
+```
+
+- **并发**：一批 ≤10 臂，在飞 ≤2（用户 2026-11-21 口径）；一次一批更稳（GBR 端到端实测 5–15 分钟）。
+- **每层臂数**：= 该槽位同 arity 的候选取值数；**不足须写明排除理由**（如 no-op 去重、arity 不兼容、幽灵算子）。排除项计入档案。
+
+### 7.10.3 留痕与验收（缺一即未完成）
+
+| 项 | 要求 |
+|---|---|
+| Δ 表 | 落 `tracking/<R>/waves/<wave>_gradient_<dataset>.md`：每层一张表（臂/变体/单维改动/S/F/2Y/TO/sub/RA/ΔS/Δ2Y/结论） |
+| 台账 | `wave_results.key_findings` 增 `[gradient]` 行（`[layerN] best=<op> ΔS=... ΔF=... converge=yes/no`；各写入方只替换自己前缀行，AGENTS §8.6） |
+| 验收① | 每槽位替换臂数 = 同 arity 候选取值数（不足有理由） |
+| 验收② | 至少 2 层（内层 + 外层） |
+| 验收③ | 每层写明「最优算子 + Δ 读数 + 是否收敛」 |
+| 验收④ | 收敛后**不得**再用同族参数微调续命（属「同一想法换壳」，§7.9 计数规则） |
+
+### 7.10.4 与「闸失败归因」的分工（勿混）
+
+| | `tools/gate_attribution.py`（§7.6 前置） | 梯度回测（本节） |
+|---|---|---|
+| 成本 | **零仿真**（读已有读数） | 仿真（每层 5–10 臂） |
+| 产出 | `verdict` + 逐闸 `levers` + `stop_rule`（**方向**） | 逐层 Δ 表（**实测最优**） |
+| 用法 | 先跑，判 `PUSH_TARGETED` / `SWITCH_AXIS` / `BLOCKED_BY_CORRELATION` | 按归因方向执行；归因判 `SWITCH_AXIS` 时，梯度第一层就应是轴全替换 |
+
+### 7.10.5 已知反例（不算梯度层，防误耗臂）
+
+1. **`rank`/`group_rank` 前的单调变换是数学空操作**：`signed_power(x,0.5/2)`、`log` 包在 rank 前 → 读数逐位相同（GBR 实证）⇒ 不算一层。
+2. **单元素 VECTOR 的 `vec_avg` ≡ `vec_max` ≡ `vec_min`**：读数逐位相同（earnings6 实证）⇒ 三个相同读数不是三次独立复现。
+3. **稀疏信号会让窗口/轴扫描整体失效**：非零日密度低时，窗口 22/66/126/250 × 轴 3 档共 6 臂逐位相同（earnings6 `vec_stddev` 实证）⇒ 先看非零密度再决定扫不扫。
+4. **`decay` 只在快信号上有效**（`decay 0` 与 `1` 逐位相同，只留一个）；低换手信号（TO<12.5%）降 decay 对 F 零贡献（F 公式 0.125 下限）。
+
+### 7.10.6 区域/工作流落地状态
+
+| 对象 | 状态 |
+|---|---|
+| GBR | ✅ workflow `gbr-regular-alpha-mine.dwf.ts` v16 已内嵌单算子替换扫描阶段；本 SKILL ⑤ 已升级为必做 |
+| USA | ✅ workflow 已含梯度阶段 |
+| KOR / DEU | ⚠ workflow 尚无独立梯度阶段，按本 SKILL 在回测阶段手工执行；迭代 workflow 时补阶段 |
+| 硬度 | **未完成一次完整梯度的数据集，其「天花板 / 判死」只能记 PROVISIONAL**（反例：GBR institutions6 多骨架横向扫描、无严格单维梯度 ⇒ PROVISIONAL；institutions1 91→16 变体梯度才出 S1.63 全闸件） |
+
+## 7.11 完成定义
 
 本波每条候选都有去向：进步 8（过 ④）/ 留在 near / salvage（带墙名）/ 判死（进步 9 的封存）；`s4_walls_<region>_<wave>` 已写。

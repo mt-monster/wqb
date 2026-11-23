@@ -427,6 +427,37 @@ def load_catalog_names(path: Optional[str] = None) -> FrozenSet[str]:
     return frozenset()
 
 
+@lru_cache(maxsize=4)
+def load_non_regular_ops(path: Optional[str] = None, scope: str = "REGULAR") -> FrozenSet[str]:
+    """平台目录里**不支持给定 scope** 的算子名（默认：REGULAR 域禁用集）。
+
+    2026-11-23 核对平台 get_operators（103 个，scope 与本地 catalog 零漂移）：
+    19 个算子只属 COMBO / SELECTION（`generate_stats` / `combo_a` / `reduce_*` /
+    `self_corr` / `in` / `universe_size`）。它们若进 REGULAR multisim，平台判
+    ERROR 并**连坐整批 CANCELLED**；原存在性/元数闸不查 scope，故漏检。
+    用 catalog 的 scope 字段判定：无 scope 信息的条目按"不禁用"处理（fail-open
+    偏向不误杀，因该集合只用于新增拦截，漏一条不会破坏既有合法表达式）。
+    """
+    paths = [path] if path else _catalog_candidates()
+    disabled: set = set()
+    found = False
+    for p in paths:
+        if p and os.path.isfile(p):
+            try:
+                with open(p, encoding="utf-8") as f:
+                    payload = json.load(f)
+            except (OSError, json.JSONDecodeError):
+                continue
+            for entry in _iter_catalog_entries(payload):
+                name = str(entry.get("name") or "").strip()
+                scopes = entry.get("scope")
+                if name and scopes and scope not in scopes:
+                    disabled.add(name)
+            found = True
+            break
+    return frozenset(disabled) if found else frozenset()
+
+
 # ---------------------------------------------------------------------------
 # 表达式扫描
 # ---------------------------------------------------------------------------

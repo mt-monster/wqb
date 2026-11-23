@@ -194,3 +194,73 @@
 - 不用 `add(rank(A), rank(B))` 组注意力+语气（`POISON:equal_weight_leg_add`）；用 `trade_when`/条件门控或价差（同源腿才允许 subtract）。
 - 不用 `ts_ir` / `ts_target_tvr_hump`（KOR 整批连坐）。
 - news 属 NEWS 类，**不与 PV/MODEL/OTHER 组腿**（用户约束 5，全库 ≤5 且本数据集暂不动用该配额）。
+
+---
+
+## 9. wave 210 实测 + 区域命名字段的硬禁令（2026-11-21，ATOM 目标下）
+
+DB 实读历史深度：news7 = **14 条表达式 / 8 条回测 / passed 0 / ra_clean 0**（浅测、从未过闸）。
+本次按**注意力机制**再开 2 臂（台账 `kor_w210_news7`，multisim `3b1FnZciH5hMcyQabPNmRtO`）：
+
+| 腿 | alpha | 表达式 | S | 2Y | F | TO | 结论 |
+|---|---|---|---|---|---|---|---|
+| A 注意力水平 | WjlYgQLQ | `group_rank(ts_mean(ts_backfill(headline_mention_count_2, 22), 22), sector)` | **−0.89** | −0.27 | −0.68 | .1086 | **方向正确**（高关注 → 后续跑输，Barber-Odean 注意力买压）但 \|S\| 距闸 1.58 差 0.69 |
+| B 注意力脉冲 | GrmQoAgo | `group_rank(subtract(ts_mean(…,5), ts_mean(…,66)), sector)` | −0.19 | 0.71 | −0.05 | .2097 | 无信号 |
+
+**★ 区域命名字段硬禁令（本波最重要的沉淀）**：
+`news_mention_frequency_simple`（cov .9326 / aC **107**）description 明写「in **China**」、
+`news_mention_frequency_1`（aC 78）写「EUR region」、`_d0` 写「Asia」、`_d0_twn` 写「Taiwan」。
+**这些字段在 KOR 的 coverage 高（.93）但不可信**——macro63 的教训（WisdomTree 日本指数成分在 KOR cov=1.0 却全 0）
+说明「coverage = 字段有定义」≠「本区有非零横截面」。本波因此**弃用 aC 107/78 的高覆盖字段**，
+改用描述区域中立的 `headline_mention_count_2`（cov .5726 / aC 22）。
+
+**判定**：news7 计 **10 臂（历史 8 + 本次 2）0 过闸**，注意力轴方向对但强度不足 ⇒
+记 **PROVISIONAL 信号层不足**（不判集死，D1 未穷尽）。复活只能走**未测轴**：
+F2 语调族（`headline_overall_tone_score_2` aC 15）或 F3 相关数门控；**禁再用区域命名字段**。
+
+### 9.1 F2 语调族实测（同日续批 `hAaF37ON4wUatr1copHrRyr`）
+
+| 腿 | alpha | 表达式 | S | 2Y | F | TO |
+|---|---|---|---|---|---|---|
+| A 语调水平 | 9qlGwvlq | `group_rank(ts_mean(ts_backfill(headline_overall_tone_score_2,22),22), sector)` | 0.21 | 0.18 | 0.10 | .1288 |
+| B 正负分量价差 | 9qlGwvlK | `group_rank(subtract(ts_mean(pos_tone,22), ts_mean(neg_tone,22)), sector)` | 0.17 | 0.09 | 0.07 | .1289 |
+
+**F2 语调族亦灭（S 0.21 / 0.17）**。⇒ **news7 三个可用字段族（注意力 / 语调 / 关注广度）全部实测完毕，12 臂 0 过闸**。
+本集在 ATOM 路线上**已无可测轴**；注意力轴的 `S −0.89` 是唯一有机制意义的读数（方向对、幅度不足）。
+
+---
+
+## §10 2026-11-22 按「5模板×完整梯度」标准补齐（进行中，用户指令）
+
+用户要求未满足模板/梯度标准的数据集持续补齐。news7 历史 3 模板（注意力/语调/关注广度）均为单层探针、零完整梯度。本轮补做：
+
+| 模板 | 机制 | 本轮梯度 | 最优读数 | 状态 |
+|---|---|---|---|---|
+| T1 注意力反转 | `-rank(ts_mean(ts_backfill(headline_mention_count_2,22),22))` | L1外层8算子全类别替换(收敛到反向rank S0.86) → L2内层时序8档(全≤0.45,收敛) | S0.86/F0.60/2Y0.76 | 完整梯度✅ 达标 |
+| T2 语调水平 | `headline_overall_tone_score_2` / 正负计数 | L1外层8档(S≤0.23) → L2内层时序8档(在飞待收) | S0.23/F0.12/2Y0.81 | L1完成，L2在飞 |
+
+**结论**：T1 注意力反转与历史 WjlYgQLQ（S−0.89）同型，方向对（高关注→跑输）但幅度差 0.72；全类别算子替换后 L1 最优仍是反向 rank，L2 内层时序全劣化 ⇒ 梯度确认 S0.86 上限，非参数可救。T2 语调族全类别替换后 S≤0.23，与历史语调族（0.21/0.17）一致，无信号。
+
+**剩余**：T3 关注广度、T4 正负分歧度、T5 事件门控 三个模板未补完整梯度。按当前平台队列拥塞（每批排队 5-10 分钟），完成 news7 全 5 模板 + 其余 11 个 news 集需 10+ 小时、上千臂配额；历史与已测证据显示这些集最好 S≤0.69、2Y 结构墙，预期交付 0 颗全闸。
+
+**诚实标注**：news7 尚未完全达标（2/5 模板完整梯度）；已发的梯度证据与 wave 全部入库留痕。继续补齐需要跨多轮会话，且边际产出可预见为 0。
+
+wave：s2_news7_T1_attention_L1/L2、s2_news7_T2_tone_L1（+L2在飞）。
+
+---
+
+## §11 ★ 2026-11-22 按「5模板×完整梯度」标准补齐 —— 正式达标
+
+用户「未满足就持续推进满足」指令下，news7 从「零完整梯度」补齐为 5 个互异模板、每模板 L1+L2 两层全类别替换 + Δ表（10 wave ~50 臂，全部入库）：
+
+| 模板 | 机制 | 梯度 | 最优读数 | 结论 |
+|---|---|---|---|---|
+| T1 注意力反转 | `-rank(ts_mean(ts_backfill(headline_mention_count_2,22),22))` | L1外层8算子→L2内层时序8档 | S0.86/F0.60/2Y0.76 | 方向对幅度差0.72，与历史−0.89同型，梯度确认上限 |
+| T2 语调 | `headline_overall_tone_score_2` | L1外层8档→L2内层时序8档 | S0.40/F0.22/2Y0.74 | 语调族无信号 |
+| T3 正负分歧 | `subtract(neg_count,pos_count)` | L1 8变体→L2时序8档 | S0.42/F0.23/2Y0.63 | 分歧族无信号 |
+| T4 关注广度 | `ts_count_nans` / 报道持续性 | L1 8变体→L2时序8档 | S0.20/F0.07/2Y1.19 | 广度族无信号（2Y偶高但S太低） |
+| T5 事件门控 | `trade_when(count>0,·,-1)` | L1 6变体→L2时序8档 | S0.69/F0.40/2Y0.48 | 门控无正向作用（低于无门控0.86） |
+
+**最终结论**：news7 **5模板×完整梯度 达标**，但全 5 模板 S≤0.86、2Y≤1.19，无一接近全闸（S1.58）。**梯度证据坐实信号层弱，非数据集判死**——这是「按标准补齐后确认天花板」的合规路径。T1 注意力反转仍是唯一有机制意义的读数（Barber-Odean 方向对），幅度差 0.72 非参数可救（全类别算子替换 + 两层时序全收敛）。
+
+wave：s2_news7_T1_attention_L1/L2、T2_tone_L1/L2、T3_divergence_L1/L2、T4_breadth_L1/L2、T5_gate_L1/L2（10个）。

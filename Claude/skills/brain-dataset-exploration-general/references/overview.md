@@ -18,7 +18,7 @@
 | 找数据集 / 字段 | `get_datasets` / `get_datafields`（`get_datasets` 传错 universe 会静默返回空） |
 | 平台合法设置 | `get_platform_setting_options` / `get_operators` |
 | 文档 | `get_documentations`（目录）/ `get_documentation_page`（单页；页名以目录为准） |
-| 仿真（字段深挖用） | `create_simulation`（单条探针）/ `create_multi_simulation`（合批，见 datafield-exploration §0） |
+| 仿真（字段深挖用） | `create_multi_simulation`（唯一出口，最少 2 条——平台拒绝单元素数组；探针用 2 条对照 / 合批见 datafield-exploration §0；单仿真工具已于 2026-11-21 从 MCP 层删除） |
 | 论坛 / 赛事（默认不用） | `search_forum_posts_local` / `read_forum_post` / `get_glossary_terms` / `get_events` / `get_competition_details` |
 
 （旧文要求「总是先调 `authenticate`」：不需要——各工具在调用前由 MCP 服务端自行 `ensure_authenticated`；`authenticate` 无参数，只在排查登录状态时手动调。）

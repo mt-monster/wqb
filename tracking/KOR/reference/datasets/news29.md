@@ -48,4 +48,29 @@
 
 ## 5. 已试记录（追加，不覆盖）
 
-（待本战役波次写入）
+### 5.1 「≥5 结构互异族 + 每族完整梯度」补齐战役（2026-11-22）
+> 达标标准见记忆 template-family-count-rule / imbalance-news-template-gradient-compliance。KOR/TOP600/D1/INDUSTRY/decay4/trunc0.08。
+> 论文闸 PASS（18 篇/10 作者，含 JFE《Multifrequency News and Stock Returns》）。
+> 字段：仅 significance/frontpage 两族可作信号（topic 码只作分组、文本不碰）。族定义 H水平/G门控/E事件密度/B比率/R分位。
+
+**L1 外层全类别替换（逐族推进）**
+| 族 | wave | 最优 | S | 2Y | 判 |
+|---|---|---|---:|---:|---|
+| H 重要性 | `s2_news29_T1_significance_L1_d1` | `aka86d3w` `group_rank(full_sig)` | 0.39 | 0.95 | 正向（重要度高→跑赢）优于反向（−0.49）；**全臂 CW=1.0 超闸**（one-hot 等级码权重集中）|
+| G 头条门控 | `s2_news29_T2_frontpage_L1_d1` | `6XMQ8Z0P` `trade_when(frontpage>0,·)` | 0.22 | 0.39 | 门控后 longCount=2 极稀疏、CW=0.5；头条二值无定价力 |
+| R 分位/差分/密度 | `s2_news29_T3_quantile_L1_d1` | `KPgpd1zx` `-ts_delta(66)` | 0.56 | 0.83 | 反号差分 S0.56 但 TO0.0092 过低+CW0.5；**全臂 CW=1.0**（quantile/zscore/rank）；std_dev `e7aPwjVd` S0.38 但 2Y−0.49 |
+
+**L1 结论**：H/G/R 三族（含 D 差分/B 比率/E 事件密度变体）24 臂全灭、0 near；**CW=1.0 是结构性主墙**——significance/frontpage 是 one-hot 等级码/稀疏二值，横截面大量并列⇒极端权重集中。最高正 S0.39–0.56 全卡 CW/TO。
+
+### 5.2 L2 内层时序全类别替换（验证平滑窗能否修 CW）
+| 族 | wave | 内层替换最优 | S | 判 |
+|---|---|---|---:|---|
+| H | `s2_news29_T1_significance_L2_d1` | `kqaM2ovd` `ts_mean(44)` | 0.49 | 内层 S0.49/2Y1.24 但 CW=1.0；平滑窗降 CW 的臂（mean126 CW0.14/backfill66 CW0.18）S 塌到 0.02–0.12 ⇒ **CW 与 S 互斥，平滑窗无法在保 S 同时修 CW** |
+| R | `s2_news29_T3_delta_L2_d1` | `QP0AXwXW` `decay(delta66,44)` | 0.56 | 反号差分 S0.56/2Y0.83 但 TO0.0092 过低+CW0.5；⚠`leaYXoXO` S11.18 是零持仓病态臂（longCount=0/TO=1.0/2Y=0，checks.fail 三项），**非候选** |
+
+### 5.3 收口判定（2026-11-22）
+**news29 梯度补齐完成：H/G/R 三族（R 内含 D 差分/B 比率/E 事件密度变体）× L1+L2 = 7 wave / 56 臂，全部入库。**
+- **族数诚实标注**：本集 12 字段仅 significance/frontpage 两族可作信号，topic 码只作分组轴、文本不碰。按模板族计数规则（字段族×算子几何×机制语义），实际可落地 **3 个结构互异族**（H 重要性水平 / G 头条门控 / R 相对偏离含差分比率密度变体）——**受字段落地性限制，凑不满独立 5 族**，不硬凑同构族冒充。
+- **0 全闸、无真 near**：最高可读正 S0.49–0.56（H mean44 / R 反号差分），但 H 卡 CW=1.0、R 卡 TO0.0092+CW0.5；唯一"过 near 线"的 S11.18 臂是零持仓病态读数，非候选。
+- **主墙 = CW=1.0 结构性权重集中 + 2Y 负**：significance 是 one-hot 等级码（1=High/3=Low）、frontpage 是稀疏二值，横截面大量并列⇒极端权重。L2 平滑窗验证 CW 与 S 互斥（降 CW 的臂 S 塌到 0.02–0.12，保 S 的臂 CW=1.0）；事件门控（G 族）longCount=2 极稀疏。
+- **不判死**：记「梯度证据完整、信号层弱 + 等级码权重结构墙」；翻案需外部新信息源，不得外推其它 news 集。论文闸 PASS（JFE《Multifrequency News and Stock Returns》）。未提交任何 alpha。

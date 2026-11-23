@@ -376,3 +376,13 @@ disp_s = ts_rank(disp66, 252)                                                  /
 - 每个杠杆先做**归因对照**（裸跑 vs 加杠杆同批）再入册，禁止无对照入册。
 - 跨区移植前 2 槽小批先验方向（TWN/KOR/DEU 符号翻转先例见 [['_basket-and-atom']] §四）。
 - 同一经济腿只贡献 1 颗（clone 相关 self 0.96 实例）。
+
+## 收割与克隆墙（2026-11-21 战役新增，详见 [['_harvest-and-clone-wall']]）
+
+- **★ 收割顺序**：`prod` → **本地** `check_self_correlation` → **本地** `compute_mutual_correlation` → 逐年 longCount/pnl。28 颗 prod 未超线候选（阈值见 `config.PRODCORR_CEILING`）里 **self-corr 挂 11 颗**、篮内互相关挂 9 颗、**prod 挂 0 颗** ⇒ 两个本地闸零配额零等待，应紧跟 prod 之后做。
+- **★ 收割分母用 `pyramids.effective ≥ 1`（≤2 塔）**，不是「塔位是否点亮」：DEU 池 925 → 484（≤2 塔）→ 28（prod 未超线，阈值见 `config.PRODCORR_CEILING`）→ 17（self 过）→ **6**（篮内互相关过）。
+- **★ 判 self 闸只认 `check_self_correlation` 的 `max_correlation`**，不认 `alphas.self_correlation` 列（实测 `GrmPOz05`：DB 记 0.3136 / 本地 OS 池实测 **0.9038**）。
+- **★ 「换字段」不能当梯度用**：`sentiment7 × sentiment27` 残差化族换 `snl27` 中性化目标（分位/中心/形状三类）产出 **6 颗 RA-clean**（S 1.84–1.94 / 2Y 2.18–2.46），**族内互相关 0.77–0.999**、对已提交件 `bl6OWZ2M` **0.932–0.976** ⇒ 6 颗只有 1 条独立信息且被 OS 池占位，**全撞 self-corr 0.70**。同族冗余度高时梯度必须换**信息源**。
+- **★ 跨区移植比值形态先做 2 槽小批先验**：EUR 已交付的内部人「金额 ÷ 股数」比值移植 DEU ⇒ S **0.37** / 2Y **−0.41**。但 **self-corr 仅 0.038**（与 OS 池完全正交）⇒ **形态不迁移 ≠ 机制无价值**：是干净的**新信号位储备**，缺强度杠杆。
+- **★ 平台 prod 相关性服务会账号级熔断**：`status=platform_unavailable` + `retry_after` 递减但**每次重试都拉长冷却期** ⇒ 熔断期内不重试，先做本地闸；`inflight=true` 时不重新触发。
+- **★ 会话内 MCP 参数类型会被压平**：整数透传、**浮点/布尔被转字符串** ⇒ `truncation` / `filter_sharpe` / `refresh` / `threshold` 传不进去。绕过＝用 MCP 客户端直连同一个 `main.py` 服务（见 [['_harvest-and-clone-wall']] §七）。

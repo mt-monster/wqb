@@ -2,7 +2,8 @@
 
 ## 为什么需要这个模块
 
-``tools_sim.create_simulation`` 原先只把表达式提交到平台、把结果返回给调用方，
+``tools_sim.create_simulation``（MCP 单仿真工具，2026-11-21 已删；现落库挂在
+``create_multi_simulation`` 收批链路）原先只把表达式提交到平台、把结果返回给调用方，
 **对 ``backtest_results`` / ``CampaignStore`` 零引用**。于是通过 MCP 单条跑（或网页
 手跑）的 alpha：**平台有、本地无** —— 面板（读本地库）看不到、挖掘产率被低估。
 实测 2026-10-28：当日 ``alpha_corr_cache`` 新登记 41 颗，其中 18 颗在

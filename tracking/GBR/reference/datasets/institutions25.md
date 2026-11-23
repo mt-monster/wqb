@@ -163,3 +163,95 @@
 ## 9. 小结
 
 institutions25 = 24 字段全 VECTOR 的**做空侧机构行为**面板（2026-07-01 同批 onboard，institutions 塔 ×1.4）。平台 cov 全 0 是 GBR 盲区；GBR 本轮 61 条回测（lc 17–701、sc 0–701、both0=0、max S=1.26）证明数据真实存在，**不可 `excluded`**（无 lc/sc 双边同零的数据层实测）；判 `needs_probe`，用 v11 逐字段 type 生成的 24 条 VECTOR `vec_avg` NONE 探针确认配置伪影 vs 真信号。`position_change`/`sentiment`(αC14) 是主力信号腿，`crowding`/`age` 组合实测 S 达 1.26/0.98；全 VECTOR **必须 `vec_avg`/`vec_sum` 折叠**（不得套 MATRIX 原生形态）、统一 `rank` 去量纲、禁跨族裸水平混腿。`density=dense`（日更面板、覆盖稳定）。
+
+---
+
+## 11. 2026-11-21 · 纯 ATOM 配置档网格 + 同集双字段组合（用户「ATOM 优先」指令）
+
+> 前置裁定：历史最优 S1.26（MPYNLJ5k 等）都是 **FAST 档 + 跨集 add**（`loaned_share_count_main` / `transaction_count_main` 属已点亮 shortinterest 塔）⇒ **不是 ATOM、且违反已亮塔红线**，不能作为交付依据。本节只测**纯 inst25 单腿 + 同集字段**。
+
+### 网格（4 批 10 臂，表达式固定 2 条最优内核）
+
+| 批 | 设置档 | 表达式内核 | S | F | 2Y | TO | RA |
+|---|---|---|---|---:|---:|---:|---:|---:|
+| 1 | **INDUSTRY** | quantile 内核 | 0.94 | 0.52 | 0.42 | 14.5% | 3 |
+| 1 | INDUSTRY | av_diff 内核 | 0.95 | 0.53 | 0.40 | 13.8% | 3 |
+| 2 | **SECTOR** | quantile | 0.76 | 0.41 | 0.16 | 13.3% | 3 |
+| 2 | SECTOR | av_diff | 0.77 | 0.42 | 0.12 | 12.7% | 3 |
+| 3 | **FAST** | quantile | **1.10** | 0.47 | 0.44 | 20.7% | 3 |
+| 3 | FAST | av_diff | 1.09 | 0.47 | 0.39 | 19.8% | 3 |
+| 4 | SUBINDUSTRY | `add(crowding, position_change)` | 0.61 | 0.31 | 0.49 | 11.8% | 3 |
+| 4 | SUBINDUSTRY | `multiply(crowding, position_change)` | **−0.40** | −0.13 | −0.72 | 22.2% | 4 |
+| 4 | SUBINDUSTRY | `add(crowding, sentiment)` | 0.56 | 0.27 | 0.26 | 10.1% | 3 |
+| 4 | SUBINDUSTRY | `add(position_change, sentiment)` | 0.58 | 0.29 | 0.36 | 8.8% | 3 |
+
+> 内核 = `reverse(group_rank(vector_neut(ts_quantile(vec_sum(inst25_position_change),66), ts_backfill(vec_sum(inst25_crowding),66)), industry))`（quantile 版）/ `ts_av_diff` 版。
+
+### 结论：纯 inst25 ATOM 面收敛（PROVISIONAL，不判死）
+
+1. **单腿各档天花板**：**FAST 1.10**（本轮新高，略超 SUBINDUSTRY 历史 1.08）> SUBINDUSTRY 1.08 > INDUSTRY 0.95 > SECTOR 0.77 > MARKET 0.70 > STATISTICAL 0.57 > CROWDING 0.03。
+2. **同集双字段组合劣于单腿**：`add` 两腿稀释到 0.56–0.61（crowding 与 position_change 同向但信息重叠）；`multiply` 反号 −0.40（乘法复合误杀空头端，与论坛「乘法门控误杀」实证同源）。
+3. **结构判定**：24/24 字段已进回测 × 7 个中性化档 × 单腿/双字段组合均 ≤1.10，距 S 闸 1.58 差 **0.48**⇒ **该集在 GBR 当前几何与配置下无 S≥1.58 的 ATOM 形态**。
+4. **不判死**（用户红线「轻易不判死」）：这是 **ATOM 面收敛（PROVISIONAL）**，不是数据集死——24 字段跨 3 个机制族（持仓变化/拥挤度/情绪），未来若出现新几何或作为**辅助腿**（条件/分组/残差式入场，见 §7.7 允许清单）仍有价值；历史 S1.26 已证明它在跨集组合里能贡献边际。
+5. **交付结论**：inst25 不产出 tar 闸 ATOM 件；institutions 塔的席位仍靠 institutions1（ZYaQdNO1 已 ACTIVE 1/3）。
+
+---
+
+## 12. 2026-11-21 · 完整梯度终态（5 层 68 臂，GRADIENT_DONE）
+
+> 背景：用户质询「institutions25 有无经过完整的梯度流程」⇒ 核实为**未做**（§11 只是设置档网格 + 同集双字段，不是 5 层全类别梯度）⇒ 本轮补做。档案：`tracking/GBR/waves/wave20261121_gradient_institutions25.md`
+
+| 层 | 覆盖 | 最优 | 关键读数 |
+|---|---|---|---|
+| §7.10.0 体检 | 2 探针 | — | **2014–2023 十年均有 lc/pnl**（2014 lc295 → 2023 lc305）⇒ 窗口合格 |
+| **L1 信号构造** | 23 臂 / **24/24 字段** | `reverse(activity)` | **23/23 全为负 S（−0.38~−0.96）⇒ 全族统一反向**；镜像后 activity 0.82 / manager_avg_trade_length 0.71 / entry_position 0.64 |
+| **L2 内核** | 16 臂（15/16 可测） | **`ts_rank`**（S0.81 / 2Y+0.22） | 无内核超 ts_zscore 0.82；ts_rank 以 S−0.01 换 2Y+0.27；ts_product/days_from_last_change 反转后仍负 |
+| **L2b 窗口** | 4 臂 | **窗 66**（S0.86/2Y0.32） | ΔS+0.05；250/504/750 同档 0.79–0.81 |
+| **L3 轴** | 6 臂 | **`subindustry`**（S0.88/2Y0.54） | 细轴 2Y 最高（与 imb5「粗轴好」相反 ⇒ 按族实测）；market≡exchange≡country 逐位相同 |
+| **L4 外包** | 7 臂 | `group_rank`（S0.88） | **全 ΔS 负**；group_scale/zscore 把 2Y 抬到 0.95–0.98 但 S 崩到 0.51–0.55、TO 翻倍 51% |
+| **L5 设置** | 8 臂（4 档×2 轴）+ 4 臂重扫 | **`FAST`**（S1.01，ΔS+0.13） | INDUSTRY 0.79–0.81 / SECTOR 0.64–0.66 / decay8 0.77–0.80（但 F0.43/TO12.4% 是内部严线最优）；L5-R 内核重扫确认 **ts_rank 仍最优** |
+
+**终态（可写死）**：
+- **纯 ATOM 天花板 = S1.01 / F0.37 / 2Y0.30 / TO23.7%**（FAST × `group_rank(ts_rank(ts_backfill(vec_avg(inst25_activity),250),66), industry)` × reverse），**距 S 闸 0.57 / F 闸 0.63 / 2Y 闸 1.28**。
+- 备选：SUBINDUSTRY 基线（S0.88 / F0.39 / **2Y0.54** / TO19.8%）；decay8（S0.80 / F0.43 / TO12.4%）。
+- **判据升级**：D1–D6 六维全部有实测（结构互异模板 20+ / 24/24 字段 / 矩与水平比 / 轴 6 / 非线性 rank+quantile / 配置 5 档）⇒ **天花板从 PROVISIONAL 升级为可写死**；`gradient_gate` = **GRADIENT_DONE**（dom=24 / arc_layers=7 / arc_rows=9）。
+- **不判死**：信号层强度不足（非数据集死），按 §7.7 仍可作辅助腿（条件/分组/残差式入场）。
+- 与 §11 历史网格的一致性：历史 FAST 1.10 ≈ 本轮 FAST 1.01（差异来自内核/构造不同），**完整梯度独立复现了 ATOM 天花板 ~1.0**。
+
+---
+
+## 13. 2026-11-22 · 模板穷尽终判（**23 个互异模板 × 完整 5 层梯度 + L5-R，~740 臂**）
+
+> 背景：用户指令「**ATOM 并没有穷尽，只是对当时用的模板穷尽了**，那就再换一个模板持续做梯度，且换了模板之后要做完整的梯度流程」⇒ §12 的 1.01 只是**模板 A 的**天花板，不是数据集天花板。本轮把 L1 里 23 条互异构造（单字段水平 / 计数窗 6 种 / 比值 2 种 / 残差组合 / 方向比）**逐条跑完各自完整 5 层 + L5-R**。
+
+### 23 模板天花板全表
+
+| 模板 | 构造 | 天花板 S | F | 2Y | 终态形态 |
+|---|---|---:|---:|---:|---|
+| **C** | `position_change ⊖ crowding` 同集残差组合 | **1.26** | 0.61 | 0.58 | FAST × ts_delta126 × industry |
+| **P** | `security_trade_count_3yr` | **1.23** | **0.71** | **1.93** | FAST × **group_scale** × ts_av_diff250 × subindustry |
+| F | `position_change` 单腿 | 1.08 | — | — | FAST |
+| E | `age` | 1.04 | — | — | FAST |
+| A | `activity` | 1.01 | 0.37 | 0.30 | FAST × ts_rank66 × subindustry |
+| M | `is_open` | 1.01 | 0.53 | 0.04 | FAST × ts_delta250 × market |
+| D | `entry_position` | 0.99 | — | — | FAST |
+| B | `vec_sum(position_change)` | 0.97 | — | — | FAST |
+| J | `security_trade_count_1wk` | 0.96 | 0.51 | 0.54 | FAST × ts_std_dev504 |
+| Q | `manager_count` | 0.95 | 0.47 | 0.14 | FAST × ts_sum250 × industry |
+| S | `sentiment` | 0.93 | 0.56 | 0.48 | 基线 × ts_ir66 × industry |
+| G / H / I / N / T | concentration / trade_length / avg_trade_length / crowding / TSI | 0.90 | 0.42–0.57 | −0.07–0.54 | 各族 |
+| L | `position` | 0.89 | 0.53 | 0.39 | 基线 |
+| O | `security_trade_count_2yr` | 0.85 | 0.40 | 0.28 | FAST × ts_mean126 × market |
+| U | `security_trade_count_3mo` | 0.82 | 0.50 | 0.39 | decay8 × ts_std_dev66 |
+| K / R / V | 当日计数 / manager_position_count / `divide(1mo,1yr)` | 0.80 | 0.39–0.42 | 0.25–**0.79** | 各族 |
+| W | `divide(cover, short)` | 0.78 | 0.44 | **0.74** | 基线 × ts_arg_min504 × industry |
+
+### 终判
+
+- **S 天花板 = 1.26（模板 C）**；**2Y 天花板 = 1.93（模板 P，唯一越过 2Y 闸 1.58 的形态）**。
+- **交付 = 0 颗**：C 卡 2Y（0.58，差 1.00）+ F（0.61，差 0.39）；P 卡 S（1.23，差 0.35）+ F（0.71，差 0.29）。
+- ★★ **本数据集最深的结构性结论：S 与 2Y 系统性互斥**。C（S1.26/2Y0.58）从 S 侧、P（S1.23/2Y1.93）从 2Y 侧各自逼近，但**无模板同时满足 S≥1.58 ∧ 2Y≥1.58**。
+- ★ **V/W 证明互斥不是绝对的**：序数型内核（`ts_arg_max` / `ts_arg_min`）给出 **2Y/S ≈ 0.95–0.99**（V 0.80/0.79、W 0.78/0.74）——**跷跷板被消掉，但绝对强度只有 0.78–0.80**。这是「要么强但不稳、要么稳但不强」的量化证据。
+- **状态**：ATOM 面穷尽 + S 层弱 ⇒ **不判死**（用户 2026-11-19 明令「轻易不判死」）。**可用价值 = 跨集第二腿**：P（2Y1.93）、V/W（2Y 稳健、TO 3–4%）适合做 regular 组合的 2Y 稳定腿，不作单集主信号。
+- **梯度验收**：`gradient_gate` = GRADIENT_DONE（23 模板 / 每模板 ≥5 层 / L5-R 全跑）。
+- **方法论沉淀**（可迁移到其它数据集）：① 内核算子**按族且按窗口长度**选（D 计数族四个窗各有不同冠军）；② **外层算子与「内核是否已无量纲」强耦合**——ts_ir / ts_arg_* / divide 型只能用 `group_rank`，纯水平型才可换 `group_scale`（P 是唯一成功案例：+0.10S / +0.95 2Y）；③ 设置档不是普遍杠杆——**差分/波动型内核吃 FAST，水平/序数型内核吃基线或 decay8**；④ 5 次内核翻转全部发生在换设置基线之后 ⇒ **L5-R 必做**。

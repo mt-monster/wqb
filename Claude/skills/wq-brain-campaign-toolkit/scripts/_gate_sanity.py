@@ -74,7 +74,8 @@ def check_sanity_event_type(ctx, dataset, exprs, field_types):
     tracking/KOR/TOOLKIT_CHECKLIST.md 记 Wave 16（other553）实测「102 个算子中无 ts_event_* 系列，
     8/8 ERROR」；闸1 也把它当未知函数拦，known_ops 亦无。结果是旧闸 8 的修复建议（去用 ts_event_*）
     照做必挂。EVENT 字段在标准算子下的行为**未验证**（MEA fundamental6 整集报废教训），
-    故只要引用就 FAIL：先用 1 条探针（create_simulation 单条）确认再放量。
+    故只要引用就 FAIL：先用 2 条探针（create_multi_simulation 最少 2 条——平台拒
+    单元素数组；2026-11-21 起单仿真 create_simulation 已从 MCP 层删除）确认再放量。
     """
     issues = []
     if not field_types:

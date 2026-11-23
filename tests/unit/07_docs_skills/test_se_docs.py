@@ -1207,6 +1207,7 @@ def test_df_documented_method_expressions_pass_the_mcp_static_gate_grammar():
             r = v.check_expression(e)
             assert r["valid"], (e, r["errors"])
     src = _read(MCP_DIR / "tools_sim.py")
+    # 2026-11-21：下限保持 2（平台实证拒绝单元素数组）；MCP 单仿真工具已删
     assert "_toolkit_gate_check(alpha_expressions)" in src and "len(alpha_expressions) < 2" in src and "len(alpha_expressions) > 10" in src
     t = _read(DF / "SKILL.md")
     assert "单次 2–10 条" in t and "没有 `? :` 三元" in t

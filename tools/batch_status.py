@@ -77,7 +77,7 @@ async def _get_authed(brain, url):
 
 
 async def fetch_one(brain, loc_full):
-    """GET 单条 simulation location → {status, alpha, error, metrics}。"""
+    """GET 单条 simulation location → {status, alpha, error, metrics, progress}。"""
     resp = await _get_authed(brain, loc_full)
     if resp.status_code != 200:
         return {"error": f"HTTP {resp.status_code}", "status_code": resp.status_code}
@@ -93,6 +93,7 @@ async def fetch_one(brain, loc_full):
         "status": data.get("status"),
         "alpha": data.get("alpha"),
         "error": err,
+        "progress": data.get("progress"),
         "sharpe": is_.get("sharpe") or m.get("sharpe"),
         "fitness": is_.get("fitness") or m.get("fitness"),
         "turnover": is_.get("turnover") or m.get("turnover"),
@@ -123,6 +124,7 @@ async def fetch_batch(brain, batch_id):
             "all_terminal": done,
             "children": [],
             "parent_status": parent.get("status"),
+            "parent_progress": parent.get("progress"),
             "error": parent.get("error") or (f"parent {st} but children empty" if done else ""),
         }
     out_children = []
@@ -174,6 +176,49 @@ _TRANSIENT_EXC_NAMES = ("ConnectError", "ReadTimeout", "ConnectTimeout", "WriteT
                         "PoolTimeout", "RemoteProtocolError", "ReadError", "NetworkError",
                         "TransportError", "TimeoutException")
 
+#: 死批判据（2026-11-23 用户「三、优化空间」落入）——平台排队期 progress 长期停在 0.35
+#: 且 children 不注册。**判死必须"进度停滞 + children=0 + 超时"三条同时成立**，
+#: 单看某一次查询会误判：2026-11-23 KOR imb5 T2 在 20min 时被人工判死重发，
+#: 结果原批与重发批最终都 COMPLETE（平台只是注册/排队慢），白烧一批配额。
+STUCK_PROGRESS = {0.35, 0.1, 0.15}  # 排队期典型 progress（见 platform-ops-pitfalls: 0.35=排队）
+STUCK_AFTER_S = 1500.0  # 缺省 25min
+
+
+def _progress_key(batch):
+    """取可比较的进度指纹：有 children 时用 (child_count, terminal)，否则用 parent_progress。"""
+    if batch.get("child_count"):
+        return (batch.get("child_count"), batch.get("terminal"))
+    return batch.get("parent_progress")
+
+
+def detect_stuck(batches, state, now, stuck_after=STUCK_AFTER_S):
+    """标记「进度停滞 + children=0 + 超时」的死批嫌疑。
+
+    ``state`` 跨轮持久：{batch_id: (progress_key, first_seen_ts)}。
+    返回 [{"batch_id", "progress", "stalled_s", "verdict": "STUCK_SUSPECT"|"OK"}]。
+    **不给"重发"建议**——只提示"可判死候选"，是否重发由人按 stuck_after 决定。
+    """
+    out = []
+    for b in batches:
+        bid = b.get("batch_id")
+        key = _progress_key(b)
+        prev = state.get(bid)
+        if prev is None or prev[0] != key:
+            state[bid] = (key, now)
+            stalled = 0.0
+        else:
+            stalled = now - prev[1]
+        no_children = not b.get("child_count")
+        queued = key in STUCK_PROGRESS if no_children else False
+        stuck = no_children and queued and stalled >= stuck_after and not b.get("all_terminal")
+        out.append({
+            "batch_id": bid,
+            "progress": key,
+            "stalled_s": round(stalled, 1),
+            "verdict": "STUCK_SUSPECT" if stuck else "OK",
+        })
+    return out
+
 
 def _is_transient(exc):
     if isinstance(exc, (ConnectionError, TimeoutError, OSError)):
@@ -182,15 +227,20 @@ def _is_transient(exc):
 
 
 async def watch_loop(brain, ids, watch, interval, max_waits, sleep=None,
-                     max_net_fail=MAX_CONSECUTIVE_NET_FAIL):
+                     max_net_fail=MAX_CONSECUTIVE_NET_FAIL,
+                     stuck_after=STUCK_AFTER_S, stuck_state=None):
     """轮询直到全部 terminal / 超时；网络瞬断只计一次失败、不终止轮询。
 
     2026-09-21 根治：一次 `ConnectionError: Failed to connect …`（transport 层重试
     耗尽后抛出）曾直接炸掉整个 --watch（ASI mech_screen 批：两个 multisim 已
     COMPLETE，watcher 却带着 0 收成退出，下游 harvest 收到 0 条）。瞬断只在
     连续 max_net_fail 次后才放弃；--watch 未开启时保持原语义（直接抛出）。
+
+    2026-11-23 新增死批判据（``detect_stuck``）：进度停滞 + children=0 超 ``stuck_after``
+    秒时打印 STUCK_SUSPECT，但**不自动终止轮询**（平台可能只是慢）。
     """
     sleep = sleep or asyncio.sleep
+    state = stuck_state if stuck_state is not None else {}
     all_ok = False
     final = None
     t0 = time.time()
@@ -200,6 +250,13 @@ async def watch_loop(brain, ids, watch, interval, max_waits, sleep=None,
         try:
             final, all_ok = await run_once(brain, ids)
             net_fail = 0
+            if final:
+                for st in detect_stuck(final, state, time.time(), stuck_after):
+                    if st["verdict"] == "STUCK_SUSPECT":
+                        print(f"\n[STUCK_SUSPECT] {st['batch_id']} 进度恒定 {st['progress']} "
+                              f"已 {st['stalled_s']:.0f}s（>{stuck_after:.0f}s）且 children=0"
+                              f" ⇒ 死批候选。**判死前先交叉验证**：再查一次 batch_status；"
+                              f"若仍无 children 才可重发（单次查询不足以判死）。", flush=True)
         except Exception as e:  # noqa: BLE001 - 只放行瞬断类
             if not watch or not _is_transient(e):
                 raise
@@ -223,6 +280,8 @@ async def main():
     ap.add_argument("--watch", action="store_true", help="轮询直到全部 terminal 或超时")
     ap.add_argument("--interval", type=float, default=20.0, help="轮询间隔秒（默认 20）")
     ap.add_argument("--max-waits", type=int, default=180, help="最大轮询次数（默认 180≈60min）")
+    ap.add_argument("--stuck-after", type=float, default=STUCK_AFTER_S,
+                    help=f"死批嫌疑阈值秒（进度停滞+children=0 超此值才报 STUCK_SUSPECT，默认 {int(STUCK_AFTER_S)}s=25min）")
     ap.add_argument("--json", dest="json_out", help="结果落盘 JSON 路径")
     a = ap.parse_args()
 
@@ -231,8 +290,19 @@ async def main():
     brain = BrainApiClient()
 
     ids = [i.replace(f"{brain.base_url}/simulations/", "") for i in a.ids]
+    stuck_state = {}
     final, all_ok = await watch_loop(brain, ids, watch=a.watch, interval=a.interval,
-                                     max_waits=a.max_waits)
+                                     max_waits=a.max_waits, stuck_after=a.stuck_after,
+                                     stuck_state=stuck_state)
+
+    if final:
+        # detect_stuck 同 key 时不刷新时间戳（只有 progress 变化才重置），
+        # 所以轮询结束后再调一次即可出终态报告，不会重置停滞时钟。
+        stuck = detect_stuck(final, stuck_state, time.time(), a.stuck_after)
+        for b, st in zip(final, stuck):
+            b["stuck"] = st
+        if any(x["verdict"] == "STUCK_SUSPECT" for x in stuck):
+            print("\n[stuck] 存在死批嫌疑（见上），判死前请再查一次交叉验证。")
 
     if a.json_out:
         os.makedirs(os.path.dirname(a.json_out) or ".", exist_ok=True)

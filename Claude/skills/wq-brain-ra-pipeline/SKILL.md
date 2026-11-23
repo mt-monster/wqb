@@ -9,7 +9,7 @@ allowed-tools:
   - mcp__wqb-db__*
   - mcp__wq-brain-http__*
 version: "3.3"
-last_verified: 2026-11-20
+last_verified: 2026-11-21
 ---
 # WQ BRAIN RA Pipeline（REGULAR Alpha 挖掘编排 SOP）
 
@@ -216,6 +216,12 @@ last_verified: 2026-11-20
 - **调用**：`s4-prescreen`（全灭直接判死）→ `workflow_campaign(stage="S4", dataset=$DS, wave=$W)`（评审；解析不到 alpha_id 即 FAIL，用其列出的字符串波号重试）→ **对 `failed_ra_count` 只剩 1–2 闸的候选插「闸失败归因」**（`tools/gate_attribution.py --alpha-id <id> --correlation`，零仿真；细则见 [`references/gate-attribution.md`](references/gate-attribution.md)）→ 逐候选链（selfcorr-quick → `check_self_correlation` → `compute_mutual_correlation` → `check_correlation` → `brain-alpha-robustness` → judge）。
 - **★ 闸失败归因（只差一两闸时必做）**：`failed_ra_count ∈ {1,2}` 的候选**不得直接开始刷参数**——先跑 `tools/gate_attribution.py` 拿 `verdict` + 逐闸 `levers` + `stop_rule`，再按裁决逐条推。
   裁判表（码 0/3/4/5 × `READY` / `PUSH_TARGETED` / `PUSH_CORRELATION_CORNER` / `SWITCH_AXIS` / `BLOCKED_BY_CORRELATION` / 两闸以上）、两条零成本前置判据（F 闸闭式 `to_target = returns×(S/F_target)²`：`to_target ≤ 0.125` ⇒ 减速数学上不可达，别再刷 `decay`/`backfill`/`hump`；prod 余量先测再决定推不推 S）、停手线四条见 [`gate-attribution.md`](references/gate-attribution.md) §7 / §8。
+- **★★ 梯度回测（必做，2026-11-21 用户指令「把梯度回测嵌入到回测的流程中必做」）**：进入改进阶段的候选（`failed_ra_count ∈ {1,2}`，或 `S ≥ 1.0` 的近闸件）**必须**走「同槽位全类别替换 + Δ 表归因 + 逐层推进」；**不得**只换一个算子就停、也不得跳过它直接盲扫参数。
+  - **做法**：冻结基线其余部分，只把**一个槽位**（算子 / 窗口 / 分组轴 / 外层包装）换成**该槽位同 category 的全部候选** → 每臂单维 → 读 Δ（S/F/2Y/TO/sub/RA）→ 该层最佳 Δ 成为新基线 → 下一层；**同层全部 Δ≤0 即该层收敛**。算子交互非加性 ⇒ **换层后下游层须重扫**。
+  - **工具**：`$WQ_PY tools/research/operator_swap_matrix.py --expr "<基线>" --op <算子> [--nth N]`（同 category 全替 + arity 三形态 + no-op 去重 / 等价族与语义变更族标注）；发批前 `mcp__wq-brain-http__operator_audit` 查幽灵算子、`preflight_expressions` 查字段。
+  - **留痕与验收**：Δ 表落波次档案（`tracking/<R>/waves/<wave>_gradient_<dataset>.md`），并向 `wave_results.key_findings` 增加 `[gradient]` 行（各写入方只替换自己前缀行，AGENTS §8.6）。验收四条——① 每槽位替换臂数 = 该槽位同 arity 候选取值数（不足须写明排除理由）；② 至少 2 层（如内层信号 → 外层包装）；③ 每层写明「最优算子 + Δ 读数 + 是否收敛」；④ 收敛后不得再用同族参数微调续命。
+  - **与闸失败归因的分工**：`gate_attribution` 是**零仿真归因**（读已有读数出杠杆表、定方向）；梯度是**仿真执行**（逐臂实测、出 Δ 表）。先归因定杠杆，再梯度实测；两者串行，缺一不可。
+  - **硬度**：**未完成一次完整梯度的数据集，「天花板 / 判死」只能记 PROVISIONAL**（反例：GBR institutions6 历史为多骨架横向扫描、无严格单维梯度 ⇒ 只能 PROVISIONAL）。workflow 侧已内嵌梯度阶段的是 GBR v16 与 USA；KOR / DEU 待补（迭代 workflow 时按本条加阶段）。
 - **产物**：ledger `s4_walls_<region>_<wave>`、`salvage_pool`；`wave_results.key_findings` 固定四列——① 强度上限（max|S| + 正负向极值 + 2Y；反向臂同样是候选）/ ② 机制方向与证伪条件（缺登记显式「未登记」，回测后必须补）/ ③ prod 读数（「未测」是显式结论，不等于低相关）/ ④ 闸缺口按 (门槛−实测)/|门槛| 排序（不是 FAIL 行数）+ TO 越界标注（`[0.03, 0.70]`，只标注不删行；越界行不进 prod/self 队列）。下波设计先读这四列，别只看 GREEN/RED。每条候选有去向。
 - **完成定义**：本波每条候选都有去向——进步 8 / 留 near / salvage（带墙名）/ 判死（进步 9）。
 - **失败分支**：卡闸 → `get_salvage_pool(boost_dim=…)` 找辅助腿；Mode B 2–3 轮仍卡墙 → 找武器（`forum_recon` 触发表 #4，每波 ≤ 1 次）；同一想法 > 10 种结构仍不过 → 步 9 记 `dead_end`；**判「无解 / 天花板」或记 `dead_end` 之前，IS 强但被某闸卡住的族必须先扫等价算子替换**（`signed_power`→`quantile`、`ts_scale`→`quantile` / `normalize` 等：换数值路径、一次动多个闸，几何调整一次只动一个；决策表 D15 前置、步 9 细则 §9.5 1b），prod 墙先做 D0-P 的诊断前置。

@@ -1775,6 +1775,11 @@ S17_TOP_DIR_ALLOWLIST = {
     # 已登记于 docs/governance/untracked_allowlist.md 并加入根 .gitignore。
     # 目录名写死在 skill.py 与 doc_path_refs baseline 里，所以选「登记 + ignore」而非迁走。
     "selfcorr_quick_out",
+    # SA 候选实验快照落点（2026-11-24 布局审计登记）：SA base 研究脚本把候选实验
+    # 结果（sa_v*.json / sa_candidate_baseline.json 等）写到 `output/sa_*.json`。
+    # 运行期产物、零代码引用、可重生成，已加入根 .gitignore（同 selfcorr_quick_out
+    # 的「登记 + ignore」形态）——登记是为让 S17 磁盘面扫描不再误红，非承认其入库。
+    "output",
 }
 #: 点开头的目录一律放行：宿主配置（.claude/.clinerules/.qoder-cn/.workbuddy/.mcp 等）
 #: 与各客户端自管，逐个登记会随宿主增减反复误红；VCS/解释器缓存也在这一类。

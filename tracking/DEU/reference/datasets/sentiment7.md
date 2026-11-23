@@ -141,3 +141,66 @@
 - **前稿草稿里的六法读数已移除**：它在 3 个字段里只测了 `snt7_views` 一个（288/500 = 57.6% 等），属**抽样读数**，违反「全字段探测禁止抽样」约束（AGENTS.md §4），且本轮无从复跑，故不保留二手数字。要动态读数须按 3 个字段全量重跑。
 - **前稿草稿的「字段全表」表头缺失**（数据行直接顶格、无表头与分隔行），本轮已按标准列序重建，并补齐聚合统计 / 字段族拆解 / 可用性三分三节。
 - **未验证**：平台未给出字段的非零率、更新频率与逐日截面宽度；`snt7_views` 的向量维度（project / access type 的实际卡氏积大小）也未实读。这些只能靠回测或 Labs 数据探针取得。
+
+## 4. 平台实况与「第 3 席」目标（2026-11-23 实读，**本节是回测证据，覆盖前 3 节的静态推断**）
+
+### 4.1 SENTIMENT 塔在 DEU = **2/3**，两席机制均 prod-clean
+
+| 席位 | 件 | 机制 | S | F | 2Y | TO | prod | self | 提交日 |
+|---|---|---|---:|---:|---:|---:|---:|---:|---|
+| 1 | `bl6OWZ2M`（`DEU_R_alpha_01`） | **snt7 注意力 IR 水平** | 2.03 | 1.61 | 2.54 | 16.1% | **0.6671** | 0.0306 | 2026-11-04 |
+| 2 | `vRAvXvZb`（`DEU_R_snl27kurt_01`） | snl27 kurtosis / totaldomains^2.25 | 1.63 | 1.02 | 2.31 | 20.2% | **0.5614** | 0.3276 | 2026-11-18 |
+
+`bl6OWZ2M` 逐字代码（**这是必须去相关的母件**）：
+```
+a = ts_backfill(vec_avg(snt7_all_languages_views), 22);
+vector_neut(ts_quantile(ts_ir(ts_mean(max(a, ts_delay(a, 5)), 5), 22), 252, driver="gaussian"),
+            ts_backfill(vec_avg(snl27_relpopularity08), 22))   @ SUBINDUSTRY / d2 / trunc 0.02
+```
+**⇒ 3/3 只差 1 颗，且两个已有机制的 prod 余量都很大（0.56 / 0.67）。这是全场最便宜的一席。**
+
+### 4.2 卡点 = self-corr，不是 prod
+
+`kqNRX1ZP`（本地 READY 库存件，S **2.06** / F 1.86 / 2Y 2.37 / sub 1.49 / RN 1.63 / **RA fail 列表为空**、连 `CLUSTER_TEST` 都 pass）
+实为 `bl6OWZ2M` 的**近重复变体**（同 snt7→ts_ir→quantile 核，只多一重 `snl27_totaldomains` 正交化 + 窗 120 vs 252）：
+
+**self-corr = 0.7936 FAIL**（对其余 21 颗 OS 件全部 ≤ 0.14）⇒ 单件近重复，非整族同质。
+
+**⇒ 结论：`snt7` 的「水平 + ts_ir + ts_quantile」抽取被 `bl6OWZ2M` 占满，同抽取的任何窗口/正交基/decay 变体都过不了 0.70。
+第 3 席必须换抽取或换机制。**
+
+### 4.3 本轮去相关探针（批 `3uM07agUm59GbGM1eS4A4XL5`，3 臂，SUBINDUSTRY / d2 / trunc 0.02，对齐母件）
+
+| 臂 | 机制 | 表达式核心 | 依据 |
+|---|---|---|---|
+| **S1** | 尾部注意力水平（**换归约**） | `vec_max` 替代 `vec_avg`，其余同母件 | `vec_*` 归约是独立算子类别轴（max > avg > min，sum≡avg）；母件只用过 avg |
+| **S2** | 注意力**扩散度**（换机制） | `divide(vec_max(snt7_views), vec_avg(snt7_views))` | 语言/项目维度的注意力集中度 ≠ 水平；Da/Engelberg/Gao 2011 `10.1111/j.1540-6261.2010.01628.x`（注意力配置） |
+| **S3** | 注意力**变化率**（换机制） | `ts_delta(vec_avg(all_languages_views), 66)` | Moat et al. 2013 `10.1038/srep01801`（浏览量→交易量，变化而非水平）；本档 §2 也优先差分 |
+
+**验收判据（事前写定）**：S ≥ 1.58 且 self-corr < 0.70（对 `bl6OWZ2M` 与 `vRAvXvZb`）⇒ 即 SENTIMENT 第 3 席 → 塔点亮。
+若三臂 S 全 < 1.2，则回到 §2 白名单里**尚未回测**的「语言份额」形态
+`group_rank(divide(vec_avg(all_languages_views), vec_sum(snt7_views)), sector)`（单一经济含义，且天然与水平抽取正交）。
+
+### ★ 4.4 探针结果：三臂全灭，且否证「vec_max > vec_avg」（2026-11-23 21:5x）
+
+| 臂 | 机制 | id | S | F | 2Y | TO | sub | RA |
+|---|---|---|---:|---:|---:|---:|---:|---:|
+| 母件 | level + ts_ir + quantile（`vec_avg`） | `bl6OWZ2M` | **2.03** | **1.61** | **2.54** | 16.1% | 1.20 | 0 |
+| S1 | 换 `vec_max` 归约 | `O0WL7jLv` | 1.41 | 0.94 | 1.36 | 16.2% | 0.59 | 4（+`IS_LADDER` 第4年 1.36<1.58） |
+| S2 | 扩散度 `vec_max/vec_avg` | `gJalj5lm` | 0.79 | 0.18 | 0.25 | **66.9%** | 0.01 | 4 |
+| S3 | 变化率 `ts_delta(·,66)` | `Jj8A7kAx` | 0.31 | 0.05 | −0.68 | **50.5%** | 0.12 | 4 |
+
+**三条结论**
+
+1. **★★ `vec_max` 在 snt7 上比 `vec_avg` 差 0.62**（2.03 → 1.41，且新增 `IS_LADDER_SHARPE` 第 4 年失败）
+   ⇒ **「vec_max > vec_avg」不是通用律**，`vec_*` 归约的选择与「杠杆跨核不可移植」同类，必须逐核实测。
+   （对照：`vector-fold-is-its-own-operator-category` 的 max>avg 结论来自全 VECTOR 的 KOR 数据集；
+   此处 snt7 的向量维度是「语言 × 访问类型」，`max` 取到的是**最热单一语言页**这一噪声最大的分量。）
+2. **比值型 TO 66.9% / 差分型 TO 50.5%** ⇒ 两者都是**结构型 TO 死因**（`divide(A,B)` 当 A、B 同源同流量时，
+   比值逐日重排；`ts_delta` 在日更计数上是纯噪声）。snt7 是低流量日更计数，任何分子分母同源的重排都会炸换手。
+3. **★★ snt7 的信号形态是特定的**：只有「水平 + ts_ir + ts_quantile」能到 2.03，换归约/比值/差分全塌到 0.31–1.41。
+   `signal-form-specificity-test` 第 3 次复现（前两次：GBR institutions1、EUR insider）。
+
+**⇒ SENTIMENT 第 3 席在 snt7 上结构性关闭。** 唯一未试的 §2 白名单形态是「语言份额」
+`divide(vec_avg(all_languages_views), vec_sum(snt7_views))` —— 但它同样是同源比值，
+按本档结论 2 的 TO 死因，预期不高；若要真攻该席，应换数据集（sentiment33 NLP 面）而非继续挤 snt7。

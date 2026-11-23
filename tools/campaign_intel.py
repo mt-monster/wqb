@@ -1222,7 +1222,7 @@ async def _cmd_prod_first(a):
     print(f"\n[prod-first] 族级结论：EXPAND={n_expand} STOP={n_stop} UNKNOWN={summary['unknown']}")
     if n_stop and not n_expand:
         print("[prod-first] 本波全部探针撞 prod 墙：该数据集/信号族对生产池同质，"
-              "下一波换族/换集（决策表 D0：撞 prod-corr 墙 → 换白名单不同数据集 regenerate，勿磨同腿变体）")
+              "下一波换族/换集（~~决策表 D0~~：撞 prod-corr 墙 → 换白名单不同数据集 regenerate，勿磨同腿变体；D0 已排除，只做 D1）")
     if a.write_ledger:
         try:
             # ledger_kv.region 存区域名（VARCHAR），不是 regions.id
